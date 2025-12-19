@@ -47,7 +47,7 @@ const SignIn: React.FC = () => {
             {/* Header Section */}
             <div className="flex flex-col items-center text-center mb-4">
               <Link to="/" className="block">
-                <img src={signupLogo} alt="Night Crawlers" className="w-[270px] h-auto object-contain -mb-24" />
+                <img src={signupLogo} alt="Night Crawlers" className="w-[270px] h-auto object-contain -mb-20" />
               </Link>
               <h1 className="text-xl md:text-2xl font-bold text-[#222222] mb-1">
                 Welcome Back!
@@ -107,7 +107,7 @@ const SignIn: React.FC = () => {
               <button 
                 type="submit" 
                 disabled={isSubmitting} 
-                className="w-full h-10 bg-[#C62222] hover:bg-[#a51d1d] text-white text-base font-medium rounded-md shadow-md transition-colors mt-3"
+                className="w-full h-10 bg-[#C62222] hover:bg-[#a51d1d] text-white text-base font-medium rounded-md shadow-md transition-colors mt-12"
               >
                 Sign In
               </button>
