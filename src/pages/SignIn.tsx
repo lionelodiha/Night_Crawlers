@@ -1,14 +1,18 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { SignInForm } from '../types';
-import Button from '../components/ui/Button';
 import Input from '../components/ui/Input';
+import signinImage from '../assets/signin-image.png';
+import signupLogo from '../assets/signup-logo.png';
+import helpCircle from '../assets/help-circle.svg';
+import mailIcon from '../assets/mail.svg';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState<SignInForm>({
     email: '',
     password: ''
   });
+  const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -23,80 +27,109 @@ const SignIn: React.FC = () => {
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
-      alert('Sign in successful!');
+      alert('Logged in successfully!');
     }, 2000);
   };
 
   return (
-    <div className="min-h-screen bg-night-gray-50 flex items-center justify-center py-12">
-      <div className="max-w-md w-full mx-4">
-        <div className="bg-white rounded-xl shadow-lg p-8">
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-night-dark-800 mb-2">Welcome Back</h1>
-            <p className="text-night-gray-600">Sign in to your account</p>
-          </div>
+    <div className="flex h-screen overflow-hidden bg-white">
+      {/* Left Side - Image */}
+      <div className="hidden md:block w-[852px] h-full flex-shrink-0">
+        <img src={signinImage} alt="Sign In" className="w-full h-full object-cover" />
+      </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-night-gray-700 mb-2">
-                Email Address
-              </label>
-              <Input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="Enter your email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-              />
+      {/* Right Side - Form */}
+      <div className="flex-1 flex flex-col h-full overflow-y-auto custom-scrollbar">
+        {/* Main Content Centered */}
+        <div className="flex-1 flex flex-col justify-center px-10 pt-6 pb-12">
+          <div className="w-full max-w-[400px] mx-auto">
+            
+            {/* Header Section */}
+            <div className="flex flex-col items-center text-center mb-4">
+              <Link to="/" className="block">
+                <img src={signupLogo} alt="Night Crawlers" className="w-[270px] h-auto object-contain -mb-24" />
+              </Link>
+              <h1 className="text-xl md:text-2xl font-bold text-[#222222] mb-1">
+                Welcome Back!
+              </h1>
+              <p className="text-[#667085] text-xs leading-relaxed max-w-sm">
+                Welcome back! Please log in with your correct details.
+              </p>
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-night-gray-700 mb-2">
-                Password
-              </label>
-              <Input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="Enter your password"
-                value={formData.password}
-                onChange={handleInputChange}
-                required
-              />
-            </div>
-
-            <div className="flex items-center justify-between">
-              <label className="flex items-center">
-                <input
-                  type="checkbox"
-                  className="rounded border-gray-300 text-night-red-600 focus:ring-night-red-500"
+            {/* Form Section */}
+            <form onSubmit={handleSubmit} className="space-y-3.5">
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-[#344054]">Email*</label>
+                <Input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  className="w-full px-3.5 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-sm focus:ring-1 focus:ring-[#C62222] focus:border-[#C62222]"
+                  required
                 />
-                <span className="ml-2 text-sm text-night-gray-600">Remember me</span>
-              </label>
-              <Link to="/forgot-password" className="text-sm text-night-red-600 hover:text-night-red-700">
-                Forgot password?
-              </Link>
-            </div>
+              </div>
 
-            <Button
-              type="submit"
-              variant="primary"
-              className="w-full"
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Signing in...' : 'Sign In'}
-            </Button>
-          </form>
+              <div className="space-y-1">
+                <label className="block text-xs font-semibold text-[#344054]">Password*</label>
+                <div className="relative">
+                  <Input
+                    type="password"
+                    name="password"
+                    placeholder="Create a password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className="w-full px-3.5 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-sm focus:ring-1 focus:ring-[#C62222] focus:border-[#C62222] pr-9"
+                    required
+                  />
+                  <img src={helpCircle} alt="help" className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-60" />
+                </div>
+              </div>
 
-          <div className="mt-6 text-center">
-            <p className="text-night-gray-600">
-              Don't have an account?{' '}
-              <Link to="/signup" className="text-night-red-600 hover:text-night-red-700 font-medium">
-                Sign up
-              </Link>
-            </p>
+              {/* Remember Me & Forgot Password */}
+              <div className="flex items-center justify-between">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={rememberMe}
+                    onChange={(e) => setRememberMe(e.target.checked)}
+                    className="w-4 h-4 border-gray-300 rounded text-[#C62222] focus:ring-[#C62222]"
+                  />
+                  <span className="text-[#344054] text-xs font-medium">Remember for 30 days</span>
+                </label>
+                <Link to="/forgot-password" className="text-[#C62222] text-xs font-medium hover:underline">
+                  Forgot password
+                </Link>
+              </div>
+
+              <button 
+                type="submit" 
+                disabled={isSubmitting} 
+                className="w-full h-10 bg-[#C62222] hover:bg-[#a51d1d] text-white text-base font-medium rounded-md shadow-md transition-colors mt-3"
+              >
+                Sign In
+              </button>
+
+              <div className="text-center mt-4">
+                <span className="text-[#222222] text-xs">Don't have an account? </span>
+                <Link to="/signup" className="text-[#C62222] font-medium text-xs hover:underline ml-1">
+                  Sign Up
+                </Link>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-2 flex justify-between items-center bg-white mt-auto">
+          <p className="text-xs text-[#667085]">© Night Crawlers 2026.inc</p>
+          <div className="flex items-center gap-2">
+            <img src={mailIcon} alt="mail" className="w-4 h-4 opacity-60" />
+            <a href="mailto:help@nightcrawlers.com" className="text-xs text-[#667085] hover:text-[#344054]">
+              help@nightcrawlers.com
+            </a>
           </div>
         </div>
       </div>
