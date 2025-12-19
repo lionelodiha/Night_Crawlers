@@ -42,7 +42,7 @@ const SignIn: React.FC = () => {
       <div className="flex-1 flex flex-col h-full overflow-y-auto custom-scrollbar">
         {/* Main Content Centered */}
         <div className="flex-1 flex flex-col justify-center px-10 pt-6 pb-12">
-          <div className="w-full max-w-[400px] mx-auto">
+          <div className="w-full max-w-[340px] mx-auto">
             
             {/* Header Section */}
             <div className="flex flex-col items-center text-center mb-4">
