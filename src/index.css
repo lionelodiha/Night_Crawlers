@@ -1,0 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.5;
+  font-weight: 400;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom Components */
+@layer components {
+  .btn-primary {
+    @apply bg-night-red-600 hover:bg-night-red-700 text-white font-semibold py-3 px-6 rounded-pill transition-colors duration-200 text-sm;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-night-gray-300 hover:border-night-gray-400 text-night-gray-700 hover:text-night-gray-800 font-semibold py-3 px-6 rounded-pill transition-colors duration-200 text-sm;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-night-red-600 text-night-red-600 hover:bg-night-red-600 hover:text-white font-semibold py-3 px-6 rounded-pill transition-all duration-200 text-sm;
+  }
+  
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  }
+  
+  .vendor-card {
+    @apply flex flex-col items-center text-center p-4 rounded-xl hover:shadow-md transition-shadow duration-200;
+  }
+  
+  .feature-card {
+    @apply card text-center;
+  }
+  
+  .section-title {
+    @apply text-3xl md:text-4xl font-bold text-night-dark-800 mb-4;
+  }
+  
+  .section-subtitle {
+    @apply text-lg text-night-gray-600 mb-8 max-w-3xl;
+  }
+}
+
+/* Utility Classes */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Focus Styles for Accessibility */
+.focus-visible {
+  @apply focus:outline-none focus:ring-2 focus:ring-night-red-500 focus:ring-offset-2;
+}

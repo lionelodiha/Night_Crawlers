@@ -1,0 +1,725 @@
+* {
+  box-sizing: border-box;
+}
+
+.home2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #ffffff;
+  width: 1467px;
+  height: 4085px;
+  overflow: hidden;
+
+  .aboutNightCrawlers {
+    flex-shrink: 0;
+    line-height: 27px;
+    letter-spacing: 0;
+    color: var(--grey-base, #363838);
+    font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 18px;
+  }
+
+  .autoWrapper {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    align-self: stretch;
+    margin-top: -62px;
+    padding-right: 42px;
+    padding-left: 27px;
+
+    .nightCrawlersLogoWhi {
+      width: 284px;
+      height: 284px;
+    }
+
+    .menuNav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 128px;
+      margin-left: 183px;
+      width: 557px;
+      min-width: 557px;
+      height: 36px;
+
+      .home {
+        line-height: 36px;
+        letter-spacing: 0;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 24px;
+      }
+    }
+
+    .navButtons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 121px;
+      margin-left: 254px;
+      width: 120px;
+      min-width: 120px;
+      height: 42px;
+
+      .buttonLogIn {
+        display: flex;
+        align-items: flex-start;
+        border-radius: 200px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+        background: #c62222;
+        padding: 10px 10px 7px 7px;
+
+        .shoppingCart {
+          width: 25px;
+          height: 25px;
+        }
+      }
+
+      .buttonLogIn2 {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 7px;
+        border-radius: 200px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+        background: #c62222;
+        width: 42px;
+        height: 42px;
+
+        .customer {
+          flex-shrink: 0;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+
+    .heroSection1 {
+      display: flex;
+      position: absolute;
+      bottom: -226px;
+      left: 215px;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 1032px;
+      height: 263px;
+
+      .everyDeliveryToYourD {
+        margin: 0px 0px 0px 125px;
+        width: 743px;
+        height: 72px;
+        text-align: center;
+        line-height: 58px;
+        letter-spacing: -0.96px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 48px;
+        font-weight: 600;
+      }
+
+      .nightCrawlersIsMoreT {
+        margin: 40px 0px 0px;
+        width: 1032px;
+        height: 84px;
+        text-align: center;
+        line-height: 24px;
+        letter-spacing: -0.4px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+
+      .exploreCategoriesBut {
+        display: flex;
+        align-items: flex-start;
+        margin-top: 40px;
+        margin-left: 403px;
+        width: 225px;
+
+        .exploreCategoriesHer {
+          margin: 0px 0px 0px -62px;
+          width: 263px;
+          height: 27px;
+          text-align: center;
+          letter-spacing: 0;
+          color: #c62222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 20px;
+          font-weight: 600;
+        }
+
+        .forward {
+          margin-top: 6px;
+          margin-left: 4px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+
+  .heroSection2 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin: 318px 33px 0px 48px;
+
+    .aboutNightCrawlers2 {
+      display: inline-flex;
+      align-items: center;
+      align-self: stretch;
+      justify-content: center;
+      column-gap: 10px;
+      margin-right: 589px;
+      margin-left: 586px;
+      border: 1px solid #eaecf0;
+      border-radius: 50px;
+      background: #2e3d860d;
+      padding: 7px 9px;
+    }
+
+    .heroSection2Inner1 {
+      display: flex;
+      align-items: flex-start;
+      margin-top: 90px;
+      padding-right: 2px;
+      width: 1386px;
+      height: 527px;
+
+      .heroSection2Inner2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        margin-left: -4px;
+        padding-right: 4px;
+        width: 674px;
+
+        .redefiningConvenienc {
+          margin: 0px 0px 0px -1px;
+          width: 590px;
+          line-height: 58px;
+          letter-spacing: -0.96px;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 48px;
+          font-weight: 600;
+        }
+
+        .nightCrawlersIsMoreT2 {
+          margin: 54px 0px 0px;
+          width: 670px;
+          line-height: 24px;
+          letter-spacing: -0.4px;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 20px;
+        }
+      }
+
+      .hero2Image {
+        margin-top: -16px;
+        margin-left: 171px;
+        width: 543px;
+        height: 543px;
+      }
+    }
+  }
+
+  .heroSection3 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin: 107px 38px 0px 43px;
+
+    .restaurant1 {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .heroSection3Heading {
+      display: flex;
+      align-items: center;
+      width: 1386px;
+
+      .orderTastyMealsThrou {
+        margin: 0px 0px 0px -4px;
+        width: 299px;
+        height: 79px;
+        line-height: 40px;
+        letter-spacing: 0;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 32px;
+        font-weight: 600;
+      }
+
+      .exploreButton {
+        position: relative;
+        margin-left: 860px;
+        width: 233px;
+        height: 30px;
+
+        .exploreAllRestauants {
+          position: absolute;
+          top: 2px;
+          left: -26px;
+          width: 236px;
+          height: 27px;
+          text-align: center;
+          letter-spacing: 0;
+          color: #c62222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 20px;
+          font-weight: 600;
+        }
+
+        .forward2 {
+          position: absolute;
+          top: 8px;
+          left: 209px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+
+    .restaurantContainer1 {
+      display: flex;
+      align-items: center;
+      align-self: stretch;
+      margin: 120px 131px 0px 130px;
+
+      .kFc {
+        margin: 14px 0px 0px;
+        line-height: 36px;
+        letter-spacing: 0;
+        color: #c62222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+      }
+
+      .vector {
+        width: 158px;
+        height: 167px;
+      }
+
+      .restaurant2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 288px;
+        padding-right: 12px;
+        padding-left: 12px;
+      }
+
+      .restaurant3 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 260px;
+        padding-right: 6px;
+        padding-left: 6px;
+      }
+    }
+
+    .restaurantContainer2 {
+      display: flex;
+      align-items: center;
+      align-self: stretch;
+      justify-content: space-between;
+      margin: 120px 395px 0px 379px;
+      padding-right: 4px;
+      min-width: 612px;
+      height: 217px;
+    }
+  }
+
+  .heroSection4 {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin: 99px 36px 0px 43px;
+    padding-bottom: 2px;
+
+    .ourFeatures {
+      display: inline-flex;
+      align-items: center;
+      align-self: stretch;
+      justify-content: center;
+      column-gap: 10px;
+      margin-right: 607px;
+      margin-left: 603px;
+      border: 1px solid #eaecf0;
+      border-radius: 50px;
+      background: #2e3d860d;
+      padding: 7px 9px;
+      height: 36px;
+    }
+
+    .features {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      margin-top: 90px;
+      padding-right: 4px;
+      height: 260px;
+
+      .fromLateNightBitesTo {
+        margin: 24px 0px 0px;
+        width: 275px;
+        text-align: center;
+        line-height: 19px;
+        letter-spacing: -0.32px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+      }
+
+      .easyToOrder {
+        margin: 20px 0px 0px;
+        line-height: 34px;
+        letter-spacing: -0.56px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .phoneIconFrame {
+        display: flex;
+        align-items: center;
+        align-self: stretch;
+        margin-right: 88px;
+        margin-left: 88px;
+        border-radius: 100px;
+        background: #e7575742;
+        padding: 18px 17px 17px 18px;
+
+        .iPhone16Pro {
+          width: 65px;
+          height: 65px;
+        }
+      }
+
+      .feature1 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0px 25px 13px 26px;
+      }
+
+      .feature2 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-left: 203px;
+        padding: 0px 25px 13px 26px;
+      }
+    }
+  }
+
+  .heroSection5 {
+    display: flex;
+    align-items: center;
+    align-self: stretch;
+    justify-content: space-between;
+    margin: 143px 34px 0px 42px;
+    min-width: 1391px;
+    height: 467px;
+
+    .vector2 {
+      position: relative;
+      width: 723px;
+      height: 467px;
+      background-image: url(../image/mjc0y6gt-upzkjhz.svg);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      .f35De54EE1534162Ac35 {
+        position: absolute;
+        top: 44px;
+        left: 19px;
+        width: 368px;
+        height: 368px;
+      }
+
+      .weOnlyOfferTheBestSe {
+        position: absolute;
+        top: 241px;
+        left: 387px;
+        width: 276px;
+        height: 62px;
+        line-height: 29px;
+        letter-spacing: -0.48px;
+        color: #ffffff;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 24px;
+        font-weight: 500;
+      }
+    }
+
+    .hero4Content {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      .redefiningConvenienc2 {
+        width: 611px;
+        line-height: 58px;
+        letter-spacing: -0.96px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 48px;
+        font-weight: 600;
+      }
+
+      .nightCrawlersIsMoreT3 {
+        margin: 48px 0px 0px;
+        width: 605px;
+        line-height: 24px;
+        letter-spacing: -0.4px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .subscribeEmail {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    margin: 151px 43px 0px 41px;
+    border: 1px solid #eaecf0;
+    border-radius: 4px;
+    box-shadow: 4px 4px 15px 2px #a8a6a652;
+    background: #f9fafb0d;
+    padding-right: 49px;
+    padding-left: 28px;
+    height: 411px;
+    overflow: hidden;
+
+    .subscribeEmailInputC {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 75px;
+
+      .exclusiveMenusPromot {
+        width: 448px;
+        line-height: 58px;
+        letter-spacing: -0.96px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 48px;
+        font-weight: 600;
+      }
+
+      .joinTheNightCrawlers {
+        margin: 12px 0px 0px;
+        width: 470px;
+        line-height: 19px;
+        letter-spacing: -0.32px;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+      }
+
+      .input {
+        display: flex;
+        align-items: center;
+        column-gap: 4px;
+        margin-top: 22px;
+        border: 1px solid var(--Gray-300, #d0d5dd);
+        border-radius: 8px;
+        box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+        background: var(--White, #ffffff);
+        padding: 9px 13px;
+        width: 464px;
+        height: 40px;
+        overflow: hidden;
+
+        .text {
+          flex-shrink: 0;
+          width: 343px;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: var(--Gray-500, #667085);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
+
+        .buttonSubscribe {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: center;
+          column-gap: 10px;
+          border-radius: 0px 4px 4px 0px;
+          background: #c62222;
+          padding: 10px;
+          width: 103px;
+          height: 40px;
+
+          .subscribe {
+            flex-shrink: 0;
+            line-height: 24px;
+            letter-spacing: 0;
+            color: #fcfcfc;
+            font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .subscribeImage {
+      margin-top: -32px;
+      margin-left: 392px;
+      width: 442px;
+      height: 442px;
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin-top: 95px;
+    background: #222222;
+    padding-bottom: 1px;
+    height: 272px;
+    overflow: hidden;
+
+    .autoWrapper2 {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      justify-content: space-between;
+      margin-top: -23px;
+      padding-right: 48px;
+      padding-left: 26px;
+
+      .logoFooterText {
+        position: relative;
+        width: 281px;
+        height: 182px;
+
+        .nightCrawlersLogoBla {
+          position: absolute;
+          top: -15px;
+          left: 1px;
+          width: 240px;
+          height: 240px;
+        }
+
+        .getYourFavoriteMeals {
+          position: absolute;
+          top: 139px;
+          left: 16px;
+          width: 268px;
+          height: 40px;
+          line-height: 20px;
+          letter-spacing: 0;
+          color: #ffffff;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 14px;
+        }
+      }
+
+      .links {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 32px;
+        margin-top: 56px;
+        width: 681px;
+
+        .aFooterLinksColumn {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          align-items: flex-start;
+          row-gap: 10px;
+
+          .heading {
+            flex-shrink: 0;
+            align-self: stretch;
+            line-height: 20px;
+            letter-spacing: 0;
+            color: var(--Gray-400, #98a2b3);
+            font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .footerLinks {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            align-items: flex-start;
+            align-self: stretch;
+            row-gap: 6px;
+
+            .text2 {
+              flex-shrink: 0;
+              line-height: 24px;
+              letter-spacing: 0;
+              color: var(--Gray-200, #e4e7ec);
+              font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+              font-size: 16px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .footerIncSocials {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      justify-content: space-between;
+      margin-top: 61px;
+      border-radius: 0px 0px 4px 4px;
+      background: #c62222;
+      padding: 12px 38px 8px 41px;
+      min-width: 1467px;
+      overflow: hidden;
+
+      .footerText {
+        margin: 3px 0px 0px;
+        width: 296px;
+        height: 27px;
+        line-height: 30px;
+        letter-spacing: 0;
+        color: #ffffff;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 18px;
+      }
+
+      .socials {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 186px;
+        min-width: 186px;
+        height: 31px;
+
+        .instagram {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

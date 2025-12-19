@@ -1,0 +1,135 @@
+* {
+  box-sizing: border-box;
+}
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #222222;
+  padding-bottom: 1px;
+  width: 1467px;
+  height: 272px;
+  overflow: hidden;
+
+  .autoWrapper {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    justify-content: space-between;
+    margin-top: -23px;
+    padding-right: 48px;
+    padding-left: 26px;
+
+    .logoFooterText {
+      position: relative;
+      width: 281px;
+      height: 182px;
+
+      .nightCrawlersLogoBla {
+        position: absolute;
+        top: -15px;
+        left: 1px;
+        width: 240px;
+        height: 240px;
+      }
+
+      .getYourFavoriteMeals {
+        position: absolute;
+        top: 139px;
+        left: 16px;
+        width: 268px;
+        height: 40px;
+        line-height: 20px;
+        letter-spacing: 0;
+        color: #ffffff;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+    }
+
+    .links {
+      display: flex;
+      align-items: flex-start;
+      column-gap: 32px;
+      margin-top: 56px;
+      width: 681px;
+
+      .aFooterLinksColumn {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        align-items: flex-start;
+        row-gap: 10px;
+
+        .heading {
+          flex-shrink: 0;
+          align-self: stretch;
+          line-height: 20px;
+          letter-spacing: 0;
+          color: var(--Gray-400, #98a2b3);
+          font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        .footerLinks {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          align-self: stretch;
+          row-gap: 6px;
+
+          .text {
+            flex-shrink: 0;
+            line-height: 24px;
+            letter-spacing: 0;
+            color: var(--Gray-200, #e4e7ec);
+            font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .footerIncSocials {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    justify-content: space-between;
+    margin-top: 61px;
+    border-radius: 0px 0px 4px 4px;
+    background: #c62222;
+    padding: 12px 38px 8px 41px;
+    min-width: 1467px;
+    overflow: hidden;
+
+    .footerText {
+      margin: 3px 0px 0px;
+      width: 296px;
+      height: 27px;
+      line-height: 30px;
+      letter-spacing: 0;
+      color: #ffffff;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 18px;
+    }
+
+    .socials {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 186px;
+      min-width: 186px;
+      height: 31px;
+
+      .instagram {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+}

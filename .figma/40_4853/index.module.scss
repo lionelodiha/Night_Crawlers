@@ -1,0 +1,186 @@
+* {
+  box-sizing: border-box;
+}
+
+.signUpSection {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1px 13px 1px 26px;
+  width: 425px;
+  height: 683px;
+  overflow: hidden;
+
+  .autoWrapper {
+    position: relative;
+    margin-left: 45px;
+    width: 284px;
+    height: 284px;
+
+    .nightCrawlersLogoWhi {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 284px;
+      height: 284px;
+    }
+
+    .startYourNightCrawle {
+      position: absolute;
+      top: 194px;
+      right: -65px;
+      width: 398px;
+      height: 29px;
+      line-height: 29px;
+      letter-spacing: -0.48px;
+      color: #222222;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .signUpToEnjoyFastDel {
+      position: absolute;
+      top: 244px;
+      right: -79px;
+      width: 434px;
+      height: 34px;
+      text-align: center;
+      line-height: 17px;
+      letter-spacing: -0.28px;
+      color: #667085;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin-top: 31px;
+    row-gap: 20px;
+
+    .text {
+      flex-grow: 1;
+      line-height: 24px;
+      letter-spacing: 0;
+      color: var(--Gray-500, #667085);
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 16px;
+    }
+
+    .label {
+      flex-shrink: 0;
+      line-height: 20px;
+      letter-spacing: 0;
+      color: var(--Gray-700, #344054);
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .inputWithLabel {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: flex-start;
+      align-self: stretch;
+      row-gap: 6px;
+
+      .content {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        align-self: stretch;
+        column-gap: 8px;
+        border: 1px solid var(--Gray-300, #d0d5dd);
+        border-radius: 4px;
+        box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+        background: var(--White, #ffffff);
+        padding: 9px 13px;
+      }
+    }
+
+    .inputWithLabel2 {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: flex-start;
+      align-self: stretch;
+      row-gap: 6px;
+
+      .content2 {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        align-self: stretch;
+        column-gap: 8px;
+        border: 1px solid var(--Gray-300, #d0d5dd);
+        border-radius: 4px;
+        box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+        background: var(--White, #ffffff);
+        padding: 9px 13px;
+
+        .text2 {
+          flex-grow: 1;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: #667085;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
+      }
+    }
+
+    .inputWithLabel3 {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: flex-start;
+      align-self: stretch;
+      row-gap: 6px;
+
+      .input {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        align-self: stretch;
+        column-gap: 8px;
+        border: 1px solid var(--Gray-300, #d0d5dd);
+        border-radius: 4px;
+        box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+        background: var(--White, #ffffff);
+        padding: 9px 13px;
+        overflow: hidden;
+
+        .helpCircle {
+          flex-shrink: 0;
+          width: 16px;
+          height: 16px;
+          overflow: hidden;
+        }
+      }
+    }
+
+    .aInputFieldBase {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: flex-start;
+      align-self: stretch;
+      row-gap: 6px;
+
+      .hintText {
+        flex-shrink: 0;
+        align-self: stretch;
+        line-height: 20px;
+        letter-spacing: 0;
+        color: var(--Gray-500, #667085);
+        font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+    }
+  }
+}
