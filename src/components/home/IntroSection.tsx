@@ -1,47 +1,44 @@
 import React from 'react';
+import hero2Image from '../../../.figma/image/mje7na9d-ei1m5xv.png';
 
 const IntroSection: React.FC = () => {
   return (
-    <section className="bg-white py-16 md:py-24">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Text Content */}
-          <div className="order-2 md:order-1">
-            <h2 className="text-3xl md:text-4xl font-bold text-night-dark-900 mb-6 leading-tight">
-              Redefining Convenience,<br />
-              One Delivery at a Time.
-            </h2>
-            <p className="text-night-gray-500 text-base md:text-lg leading-relaxed mb-6">
-              Night Crawlers is more than a delivery app—we're a platform built to 
-              elevate how people discover, enjoy, and experience food. We combine 
-              seamless technology with trusted restaurant partners to bring quality 
+    <section className="flex flex-col items-center w-full max-w-[1386px] mx-auto h-auto min-h-[676px] gap-[90px] py-16">
+      <div className="flex items-center justify-center w-full">
+        <div className="flex items-center justify-center gap-[10px] px-[9px] py-[7px] border border-[#eaecf0] rounded-[50px] bg-[#2e3d860d]">
+          <p className="text-[#363838] text-[18px] leading-[27px] tracking-normal font-poppins m-0">
+            About Night Crawlers
+          </p>
+        </div>
+      </div>
+
+      <div className="flex items-center justify-between w-full px-8">
+        <div className="flex flex-col items-start gap-[48px]">
+          <h2 className="text-[#222222] text-[48px] font-semibold leading-[58px] tracking-[-0.96px] font-poppins w-[590px] m-0">
+            Redefining Convenience, One Delivery at a Time.
+          </h2>
+          <div className="flex flex-col gap-6 w-[674px]">
+            <p className="text-[#222222] text-[20px] leading-[24px] tracking-[-0.4px] font-poppins m-0">
+              Night Crawlers is more than a delivery app—we’re a platform built to
+              elevate how people discover, enjoy, and experience food. We combine
+              seamless technology with trusted restaurant partners to bring quality
               meals closer to you, no matter the hour.
             </p>
-            <p className="text-night-gray-500 text-base md:text-lg leading-relaxed mb-6">
-              From everyday favorites to late-night cravings, we make ordering 
-              effortless and satisfying, with fast delivery and a user experience 
-              designed around your comfort. Our mission is to set a new standard for 
-              speed, reliability, and taste—helping you enjoy the meals you love 
-              with zero stress and total convenience.
+            <p className="text-[#222222] text-[20px] leading-[24px] tracking-[-0.4px] font-poppins m-0">
+              From everyday favorites to late-night cravings, we make ordering
+              effortless and satisfying, with fast delivery and a user experience
+              designed around your comfort. Our mission is to set a new standard for
+              speed, reliability, and taste—helping you enjoy the meals you love with
+              zero stress and total convenience.
             </p>
-            <p className="text-night-gray-500 text-base md:text-lg leading-relaxed">
-              At Night Crawlers, we're committed to empowering local food 
-              businesses, supporting innovation, and delivering joy with every 
-              order. Your hunger inspires us; your satisfaction drives us.
+            <p className="text-[#222222] text-[20px] leading-[24px] tracking-[-0.4px] font-poppins m-0">
+              At Night Crawlers, we’re committed to empowering local food businesses,
+              supporting innovation, and delivering joy with every order. Your hunger
+              inspires us; your satisfaction drives us.
             </p>
-          </div>
-
-          {/* Image */}
-          <div className="order-1 md:order-2 flex justify-center md:justify-end">
-            <div className="relative w-full max-w-lg aspect-square">
-              <img
-                src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Top%20down%20view%20of%20a%20delicious%20gourmet%20meal%20on%20a%20round%20white%20plate%2C%20healthy%20food%2C%20grilled%20chicken%2C%20vegetables%2C%20professional%20food%20photography%2C%20isolated%20on%20white%20background&image_size=square"
-                alt="Delicious meal plate"
-                className="w-full h-full object-contain drop-shadow-2xl"
-              />
-            </div>
           </div>
         </div>
+        <img src={hero2Image} alt="Delicious meal plate" className="w-[543px] h-[543px] object-contain flex-shrink-0" />
       </div>
     </section>
   );

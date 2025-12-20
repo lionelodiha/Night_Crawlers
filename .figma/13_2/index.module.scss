@@ -35,16 +35,14 @@
     }
 
     .menuNav {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
+      column-gap: 64px;
       margin-top: 128px;
       margin-left: 183px;
-      width: 557px;
-      min-width: 557px;
-      height: 36px;
 
       .home {
+        flex-shrink: 0;
         line-height: 36px;
         letter-spacing: 0;
         color: #222222;
@@ -54,17 +52,15 @@
     }
 
     .navButtons {
-      display: flex;
+      display: inline-flex;
       align-items: center;
-      justify-content: space-between;
+      column-gap: 36px;
       margin-top: 121px;
       margin-left: 254px;
-      width: 120px;
-      min-width: 120px;
-      height: 42px;
 
       .buttonLogIn {
         display: flex;
+        flex-shrink: 0;
         align-items: flex-start;
         border-radius: 200px;
         box-shadow: 0px 4px 4px 0px #0000001a;
@@ -79,6 +75,7 @@
 
       .buttonLogIn2 {
         display: flex;
+        flex-shrink: 0;
         align-items: center;
         justify-content: center;
         column-gap: 7px;
@@ -99,18 +96,16 @@
     .heroSection1 {
       display: flex;
       position: absolute;
-      bottom: -226px;
+      bottom: -212px;
       left: 215px;
       flex-direction: column;
-      align-items: flex-start;
+      align-items: center;
       width: 1032px;
-      height: 263px;
+      height: 249px;
+      row-gap: 40px;
 
       .everyDeliveryToYourD {
-        margin: 0px 0px 0px 125px;
-        width: 743px;
-        height: 72px;
-        text-align: center;
+        flex-shrink: 0;
         line-height: 58px;
         letter-spacing: -0.96px;
         color: #222222;
@@ -120,7 +115,8 @@
       }
 
       .nightCrawlersIsMoreT {
-        margin: 40px 0px 0px;
+        flex-shrink: 0;
+        align-self: stretch;
         width: 1032px;
         height: 84px;
         text-align: center;
@@ -133,9 +129,8 @@
 
       .exploreCategoriesBut {
         display: flex;
+        flex-shrink: 0;
         align-items: flex-start;
-        margin-top: 40px;
-        margin-left: 403px;
         width: 225px;
 
         .exploreCategoriesHer {
@@ -163,18 +158,20 @@
   .heroSection2 {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     align-self: stretch;
     margin: 318px 33px 0px 48px;
+    row-gap: 90px;
 
     .aboutNightCrawlers2 {
       display: inline-flex;
+      flex-shrink: 0;
       align-items: center;
       align-self: stretch;
       justify-content: center;
       column-gap: 10px;
-      margin-right: 589px;
-      margin-left: 586px;
+      margin-right: 588px;
+      margin-left: 588px;
       border: 1px solid #eaecf0;
       border-radius: 50px;
       background: #2e3d860d;
@@ -183,17 +180,16 @@
 
     .heroSection2Inner1 {
       display: flex;
-      align-items: flex-start;
-      margin-top: 90px;
-      padding-right: 2px;
-      width: 1386px;
-      height: 527px;
+      flex-shrink: 0;
+      align-items: center;
+      align-self: stretch;
+      justify-content: space-between;
 
       .heroSection2Inner2 {
         display: flex;
         flex-direction: column;
+        flex-shrink: 0;
         align-items: flex-start;
-        margin-left: -4px;
         padding-right: 4px;
         width: 674px;
 
@@ -220,8 +216,7 @@
       }
 
       .hero2Image {
-        margin-top: -16px;
-        margin-left: 171px;
+        flex-shrink: 0;
         width: 543px;
         height: 543px;
       }
@@ -231,23 +226,27 @@
   .heroSection3 {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     align-self: stretch;
-    margin: 107px 38px 0px 43px;
+    margin: 91px 38px 0px 43px;
+    row-gap: 120px;
 
     .restaurant1 {
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;
       align-items: center;
     }
 
     .heroSection3Heading {
       display: flex;
+      flex-shrink: 0;
       align-items: center;
-      width: 1386px;
+      align-self: stretch;
+      justify-content: space-between;
 
       .orderTastyMealsThrou {
-        margin: 0px 0px 0px -4px;
+        flex-shrink: 0;
         width: 299px;
         height: 79px;
         line-height: 40px;
@@ -260,7 +259,7 @@
 
       .exploreButton {
         position: relative;
-        margin-left: 860px;
+        flex-shrink: 0;
         width: 233px;
         height: 30px;
 
@@ -289,10 +288,13 @@
     }
 
     .restaurantContainer1 {
-      display: flex;
+      display: inline-flex;
+      flex-shrink: 0;
       align-items: center;
       align-self: stretch;
-      margin: 120px 131px 0px 130px;
+      column-gap: 274px;
+      margin-right: 131px;
+      margin-left: 131px;
 
       .kFc {
         margin: 14px 0px 0px;
@@ -312,8 +314,8 @@
       .restaurant2 {
         display: flex;
         flex-direction: column;
+        flex-shrink: 0;
         align-items: center;
-        margin-left: 288px;
         padding-right: 12px;
         padding-left: 12px;
       }
@@ -321,41 +323,41 @@
       .restaurant3 {
         display: flex;
         flex-direction: column;
+        flex-shrink: 0;
         align-items: center;
-        margin-left: 260px;
         padding-right: 6px;
         padding-left: 6px;
       }
     }
 
     .restaurantContainer2 {
-      display: flex;
+      display: inline-flex;
+      flex-shrink: 0;
       align-items: center;
       align-self: stretch;
-      justify-content: space-between;
-      margin: 120px 395px 0px 379px;
-      padding-right: 4px;
-      min-width: 612px;
-      height: 217px;
+      column-gap: 274px;
+      margin-right: 398px;
+      margin-left: 398px;
     }
   }
 
   .heroSection4 {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center;
     align-self: stretch;
     margin: 99px 36px 0px 43px;
-    padding-bottom: 2px;
+    row-gap: 90px;
 
     .ourFeatures {
       display: inline-flex;
+      flex-shrink: 0;
       align-items: center;
       align-self: stretch;
       justify-content: center;
       column-gap: 10px;
-      margin-right: 607px;
-      margin-left: 603px;
+      margin-right: 605px;
+      margin-left: 605px;
       border: 1px solid #eaecf0;
       border-radius: 50px;
       background: #2e3d860d;
@@ -365,80 +367,71 @@
 
     .features {
       display: flex;
-      align-items: flex-start;
+      flex-shrink: 0;
+      align-items: center;
       align-self: stretch;
-      margin-top: 90px;
-      padding-right: 4px;
-      height: 260px;
-
-      .fromLateNightBitesTo {
-        margin: 24px 0px 0px;
-        width: 275px;
-        text-align: center;
-        line-height: 19px;
-        letter-spacing: -0.32px;
-        color: #222222;
-        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
-        font-size: 16px;
-      }
-
-      .easyToOrder {
-        margin: 20px 0px 0px;
-        line-height: 34px;
-        letter-spacing: -0.56px;
-        color: #222222;
-        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
-        font-size: 28px;
-        font-weight: 600;
-      }
-
-      .phoneIconFrame {
-        display: flex;
-        align-items: center;
-        align-self: stretch;
-        margin-right: 88px;
-        margin-left: 88px;
-        border-radius: 100px;
-        background: #e7575742;
-        padding: 18px 17px 17px 18px;
-
-        .iPhone16Pro {
-          width: 65px;
-          height: 65px;
-        }
-      }
+      column-gap: 203px;
 
       .feature1 {
         display: flex;
         flex-direction: column;
+        flex-shrink: 0;
         align-items: center;
         padding: 0px 25px 13px 26px;
-      }
 
-      .feature2 {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-left: 203px;
-        padding: 0px 25px 13px 26px;
+        .phoneIconFrame {
+          display: flex;
+          align-items: center;
+          align-self: stretch;
+          margin-right: 88px;
+          margin-left: 88px;
+          border-radius: 100px;
+          background: #e7575742;
+          padding: 18px 17px 17px 18px;
+
+          .iPhone16Pro {
+            width: 65px;
+            height: 65px;
+          }
+        }
+
+        .easyToOrder {
+          margin: 20px 0px 0px;
+          line-height: 34px;
+          letter-spacing: -0.56px;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 28px;
+          font-weight: 600;
+        }
+
+        .fromLateNightBitesTo {
+          margin: 24px 0px 0px;
+          width: 275px;
+          text-align: center;
+          line-height: 19px;
+          letter-spacing: -0.32px;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
       }
     }
   }
 
   .heroSection5 {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     align-self: stretch;
-    justify-content: space-between;
-    margin: 143px 34px 0px 42px;
-    min-width: 1391px;
-    height: 467px;
+    column-gap: 57px;
+    margin: 138px 34px 0px 42px;
 
     .vector2 {
       position: relative;
+      flex-shrink: 0;
       width: 723px;
       height: 467px;
-      background-image: url(../image/mjc0y6gt-upzkjhz.svg);
+      background-image: url(../image/mjcsj8mk-d7awi8c.svg);
       background-position: center;
       background-size: cover;
       background-repeat: no-repeat;
@@ -469,6 +462,7 @@
     .hero4Content {
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;
       align-items: flex-start;
 
       .redefiningConvenienc2 {
@@ -494,26 +488,31 @@
   }
 
   .subscribeEmail {
-    display: flex;
-    align-items: flex-start;
+    display: inline-flex;
+    align-items: center;
     align-self: stretch;
-    margin: 151px 43px 0px 41px;
+    column-gap: 392px;
+    margin: 151px 64px 0px 41px;
     border: 1px solid #eaecf0;
-    border-radius: 4px;
+    border-radius: 10px;
     box-shadow: 4px 4px 15px 2px #a8a6a652;
     background: #f9fafb0d;
-    padding-right: 49px;
+    padding-right: 28px;
     padding-left: 28px;
-    height: 411px;
     overflow: hidden;
 
     .subscribeEmailInputC {
       display: flex;
       flex-direction: column;
+      flex-shrink: 0;
       align-items: flex-start;
-      margin-top: 75px;
+      padding-right: 29px;
+      padding-bottom: 107px;
+      width: 470px;
+      height: 228px;
 
       .exclusiveMenusPromot {
+        margin: -107px 0px 0px -29px;
         width: 448px;
         line-height: 58px;
         letter-spacing: -0.96px;
@@ -524,7 +523,7 @@
       }
 
       .joinTheNightCrawlers {
-        margin: 12px 0px 0px;
+        margin: 17px 0px 0px -29px;
         width: 470px;
         line-height: 19px;
         letter-spacing: -0.32px;
@@ -537,13 +536,14 @@
         display: flex;
         align-items: center;
         column-gap: 4px;
-        margin-top: 22px;
+        margin-top: 17px;
+        margin-left: -29px;
         border: 1px solid var(--Gray-300, #d0d5dd);
         border-radius: 8px;
         box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
         background: var(--White, #ffffff);
         padding: 9px 13px;
-        width: 464px;
+        width: 470px;
         height: 40px;
         overflow: hidden;
 
@@ -583,8 +583,7 @@
     }
 
     .subscribeImage {
-      margin-top: -32px;
-      margin-left: 392px;
+      flex-shrink: 0;
       width: 442px;
       height: 442px;
     }
@@ -595,7 +594,7 @@
     flex-direction: column;
     align-items: flex-start;
     align-self: stretch;
-    margin-top: 95px;
+    margin-top: 64px;
     background: #222222;
     padding-bottom: 1px;
     height: 272px;

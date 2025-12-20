@@ -8,7 +8,7 @@ const Component = () => {
       <div className={styles.autoWrapper}>
         <div className={styles.logoFooterText}>
           <img
-            src="../image/mjc1lhwv-5ldqsov.png"
+            src="../image/mje8ir02-vtwrg5p.png"
             className={styles.nightCrawlersLogoBla}
           />
           <p className={styles.getYourFavoriteMeals}>
@@ -42,9 +42,9 @@ const Component = () => {
       <div className={styles.footerIncSocials}>
         <p className={styles.footerText}>© 2026 Night Crawlers.inc</p>
         <div className={styles.socials}>
-          <img src="../image/mjc1lhwv-gv75a08.png" className={styles.instagram} />
-          <img src="../image/mjc1lhwv-q14mbn3.png" className={styles.instagram} />
-          <img src="../image/mjc1lhwt-83a5821.png" className={styles.instagram} />
+          <img src="../image/mje8ir02-k02ewke.png" className={styles.instagram} />
+          <img src="../image/mje8ir02-wrgzyap.png" className={styles.instagram} />
+          <img src="../image/mje8iqzx-1n4d3p5.png" className={styles.instagram} />
         </div>
       </div>
     </div>

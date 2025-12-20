@@ -7,7 +7,7 @@ const Component = () => {
     <div className={styles.home2}>
       <div className={styles.autoWrapper}>
         <img
-          src="../image/mjc0y6hq-wrbfb6k.png"
+          src="../image/mjcsj8mw-wl84knt.png"
           className={styles.nightCrawlersLogoWhi}
         />
         <div className={styles.menuNav}>
@@ -19,12 +19,12 @@ const Component = () => {
         <div className={styles.navButtons}>
           <div className={styles.buttonLogIn}>
             <img
-              src="../image/mjc0y6hr-2itdpdi.png"
+              src="../image/mjcsj8mx-wu9cm29.png"
               className={styles.shoppingCart}
             />
           </div>
           <div className={styles.buttonLogIn2}>
-            <img src="../image/mjc0y6hr-ea4mw2e.png" className={styles.customer} />
+            <img src="../image/mjcsj8mx-0ny2fbt.png" className={styles.customer} />
           </div>
         </div>
         <div className={styles.heroSection1}>
@@ -41,7 +41,7 @@ const Component = () => {
           </p>
           <div className={styles.exploreCategoriesBut}>
             <p className={styles.exploreCategoriesHer}>Explore Categories here</p>
-            <img src="../image/mjc0y6hr-w9k9na6.png" className={styles.forward} />
+            <img src="../image/mjcsj8mx-k6r5j8g.png" className={styles.forward} />
           </div>
         </div>
       </div>
@@ -73,7 +73,7 @@ const Component = () => {
               order. Your hunger inspires us; your satisfaction drives us.
             </p>
           </div>
-          <img src="../image/mjc0y6hr-k6a5llc.png" className={styles.hero2Image} />
+          <img src="../image/mjcsj8mx-ev2hl3n.png" className={styles.hero2Image} />
         </div>
       </div>
       <div className={styles.heroSection3}>
@@ -83,30 +83,30 @@ const Component = () => {
           </p>
           <div className={styles.exploreButton}>
             <p className={styles.exploreAllRestauants}>Explore all Restauants</p>
-            <img src="../image/mjc0y6hr-w9k9na6.png" className={styles.forward2} />
+            <img src="../image/mjcsj8mx-k6r5j8g.png" className={styles.forward2} />
           </div>
         </div>
         <div className={styles.restaurantContainer1}>
           <div className={styles.restaurant1}>
-            <img src="../image/mjc0y6gt-ivobymq.png" className={styles.vector} />
+            <img src="../image/mjcsj8mk-7s2m22q.png" className={styles.vector} />
             <p className={styles.kFc}>KFC</p>
           </div>
           <div className={styles.restaurant2}>
-            <img src="../image/mjc0y6gt-gnr4f8f.png" className={styles.vector} />
+            <img src="../image/mjcsj8mk-fvxlkxx.png" className={styles.vector} />
             <p className={styles.kFc}>Chicken Republic</p>
           </div>
           <div className={styles.restaurant3}>
-            <img src="../image/mjc0y6gu-y5l81mo.png" className={styles.vector} />
+            <img src="../image/mjcsj8mk-62w5wch.png" className={styles.vector} />
             <p className={styles.kFc}>Dominos Pizza</p>
           </div>
         </div>
         <div className={styles.restaurantContainer2}>
           <div className={styles.restaurant1}>
-            <img src="../image/mjc0y6gu-skwg4ls.png" className={styles.vector} />
+            <img src="../image/mjcsj8mk-ctai8b8.png" className={styles.vector} />
             <p className={styles.kFc}>Killimanjaro&nbsp;</p>
           </div>
           <div className={styles.restaurant1}>
-            <img src="../image/mjc0y6gu-fo75ehx.png" className={styles.vector} />
+            <img src="../image/mjcsj8mk-ycr53i9.png" className={styles.vector} />
             <p className={styles.kFc}>Pizza Hut</p>
           </div>
         </div>
@@ -119,7 +119,7 @@ const Component = () => {
           <div className={styles.feature1}>
             <div className={styles.phoneIconFrame}>
               <img
-                src="../image/mjc0y6hq-zujynh7.png"
+                src="../image/mjcsj8mw-0g0f1dm.png"
                 className={styles.iPhone16Pro}
               />
             </div>
@@ -129,10 +129,10 @@ const Component = () => {
               reliably right to your doorstep, no matter the hour.”
             </p>
           </div>
-          <div className={styles.feature2}>
+          <div className={styles.feature1}>
             <div className={styles.phoneIconFrame}>
               <img
-                src="../image/mjc0y6hq-6ty7nep.png"
+                src="../image/mjcsj8mw-5x3sak9.png"
                 className={styles.iPhone16Pro}
               />
             </div>
@@ -142,10 +142,10 @@ const Component = () => {
               reliably right to your doorstep, no matter the hour.”
             </p>
           </div>
-          <div className={styles.feature2}>
+          <div className={styles.feature1}>
             <div className={styles.phoneIconFrame}>
               <img
-                src="../image/mjc0y6hq-26qp758.png"
+                src="../image/mjcsj8mw-opm2kmk.png"
                 className={styles.iPhone16Pro}
               />
             </div>
@@ -160,7 +160,7 @@ const Component = () => {
       <div className={styles.heroSection5}>
         <div className={styles.vector2}>
           <img
-            src="../image/mjc0y6hr-4asjbey.png"
+            src="../image/mjcsj8mw-3kmjcay.png"
             className={styles.f35De54EE1534162Ac35}
           />
           <p className={styles.weOnlyOfferTheBestSe}>
@@ -201,7 +201,7 @@ const Component = () => {
           </div>
         </div>
         <img
-          src="../image/mjc0y6hq-cp9tu2v.png"
+          src="../image/mjcsj8mw-c7hz7pl.png"
           className={styles.subscribeImage}
         />
       </div>
@@ -209,7 +209,7 @@ const Component = () => {
         <div className={styles.autoWrapper2}>
           <div className={styles.logoFooterText}>
             <img
-              src="../image/mjc0y6hq-4r8a0wr.png"
+              src="../image/mjcsj8mw-42gapir.png"
               className={styles.nightCrawlersLogoBla}
             />
             <p className={styles.getYourFavoriteMeals}>
@@ -243,9 +243,9 @@ const Component = () => {
         <div className={styles.footerIncSocials}>
           <p className={styles.footerText}>© 2026 Night Crawlers.inc</p>
           <div className={styles.socials}>
-            <img src="../image/mjc0y6hq-qajkgg3.png" className={styles.instagram} />
-            <img src="../image/mjc0y6hq-ihxxml5.png" className={styles.instagram} />
-            <img src="../image/mjc0y6hq-y554oab.png" className={styles.instagram} />
+            <img src="../image/mjcsj8mw-lakz722.png" className={styles.instagram} />
+            <img src="../image/mjcsj8mw-lqwftz2.png" className={styles.instagram} />
+            <img src="../image/mjcsj8mw-kvifq4r.png" className={styles.instagram} />
           </div>
         </div>
       </div>

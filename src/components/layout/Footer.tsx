@@ -1,66 +1,57 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Instagram, MessageCircle, Facebook } from 'lucide-react';
 import logo from '../../assets/logo.png';
+import instagramIcon from '../../../.figma/image/mje8ir02-k02ewke.png';
+import whatsappIcon from '../../../.figma/image/mje8ir02-wrgzyap.png';
+import facebookIcon from '../../../.figma/image/mje8iqzx-1n4d3p5.png';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#222222] text-white">
-      <div className="w-full px-6 md:px-12 pt-6">
-        <div className="flex flex-col md:flex-row md:items-start md:justify-between">
-          {/* Brand + text */}
-          <div className="relative w-[281px] h-[182px] mb-8 md:mb-0">
-            <img src={logo} alt="Night Crawlers" className="absolute top-[-56px] left-[1px] w-[240px] h-[240px] object-contain" />
-            <p className="absolute top-[110px] left-4 w-[268px] text-[14px] leading-5 text-white">
-              Get your favorite meals delivered fast,
-              <br />
-              fresh, and right to your door.
-            </p>
-          </div>
+    <footer className="flex flex-col items-center bg-[#222222] w-full h-auto min-h-[272px] overflow-hidden pb-0">
+      <div className="flex items-start justify-between w-full max-w-[1467px] mt-[-23px] pr-[48px] pl-[26px]">
+        {/* Brand + text */}
+        <div className="relative w-[281px] h-[182px]">
+          <img src={logo} alt="Night Crawlers" className="absolute top-[-15px] left-[1px] w-[240px] h-[240px] object-contain" />
+          <p className="absolute top-[139px] left-[16px] w-[268px] h-[40px] text-[14px] leading-[20px] tracking-normal text-white font-poppins m-0">
+            Get your favorite meals delivered fast, fresh, and right to your door.
+          </p>
+        </div>
 
-          {/* Links columns */}
-          <div className="flex gap-8 md:gap-8 mt-14 md:mt-0 w-full md:w-[681px]">
-            <div className="flex-1 space-y-[10px]">
-              <p className="text-[#98A2B3] text-[14px] font-semibold">Product</p>
-              <div className="space-y-[6px]">
-                <Link to="/overview" className="text-[#E4E7EC] text-base">Overview</Link>
-                <br />
-                <Link to="/features" className="text-[#E4E7EC] text-base">Features</Link>
-              </div>
+        {/* Links columns */}
+        <div className="flex items-start gap-[32px] mt-[56px] w-[681px]">
+          <div className="flex flex-col flex-grow items-start gap-[10px]">
+            <p className="text-[#98A2B3] text-[14px] leading-[20px] font-semibold tracking-normal font-inter m-0 w-full">Product</p>
+            <div className="flex flex-col items-start gap-[6px] w-full">
+              <Link to="/overview" className="text-[#E4E7EC] text-[16px] leading-[24px] font-medium tracking-normal font-inter hover:underline">Overview</Link>
+              <Link to="/features" className="text-[#E4E7EC] text-[16px] leading-[24px] font-medium tracking-normal font-inter hover:underline">Features</Link>
             </div>
-            <div className="flex-1 space-y-[10px]">
-              <p className="text-[#98A2B3] text-[14px] font-semibold">Company</p>
-              <div className="space-y-[6px]">
-                <Link to="/about" className="text-[#E4E7EC] text-base">About us</Link>
-                <br />
-                <Link to="/contact" className="text-[#E4E7EC] text-base">Contact</Link>
-              </div>
+          </div>
+          <div className="flex flex-col flex-grow items-start gap-[10px]">
+            <p className="text-[#98A2B3] text-[14px] leading-[20px] font-semibold tracking-normal font-inter m-0 w-full">Company</p>
+            <div className="flex flex-col items-start gap-[6px] w-full">
+              <Link to="/about" className="text-[#E4E7EC] text-[16px] leading-[24px] font-medium tracking-normal font-inter hover:underline">About us</Link>
+              <Link to="/contact" className="text-[#E4E7EC] text-[16px] leading-[24px] font-medium tracking-normal font-inter hover:underline">Contact</Link>
             </div>
-            <div className="flex-1 space-y-[10px]">
-              <p className="text-[#98A2B3] text-[14px] font-semibold">Legal</p>
-              <div className="space-y-[6px]">
-                <Link to="/terms" className="text-[#E4E7EC] text-base">Terms</Link>
-                <br />
-                <Link to="/privacy" className="text-[#E4E7EC] text-base">Privacy</Link>
-              </div>
+          </div>
+          <div className="flex flex-col flex-grow items-start gap-[10px]">
+            <p className="text-[#98A2B3] text-[14px] leading-[20px] font-semibold tracking-normal font-inter m-0 w-full">Legal</p>
+            <div className="flex flex-col items-start gap-[6px] w-full">
+              <Link to="/terms" className="text-[#E4E7EC] text-[16px] leading-[24px] font-medium tracking-normal font-inter hover:underline">Terms</Link>
+              <Link to="/privacy" className="text-[#E4E7EC] text-[16px] leading-[24px] font-medium tracking-normal font-inter hover:underline">Privacy</Link>
             </div>
           </div>
         </div>
       </div>
 
       {/* Red bar */}
-      <div className="bg-[#C62222] mt-10 py-3 px-8 flex items-center justify-between">
-        <p className="text-white text-[18px]">© 2026 Night Crawlers.inc</p>
-        <div className="flex items-center gap-4">
-          <a href="#" className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center">
-            <Instagram className="w-4 h-4 text-[#C62222]" />
-          </a>
-          <a href="#" className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center">
-            <MessageCircle className="w-4 h-4 text-[#C62222]" />
-          </a>
-          <a href="#" className="w-[30px] h-[30px] rounded-full bg-white flex items-center justify-center">
-            <Facebook className="w-4 h-4 text-[#C62222]" />
-          </a>
+      <div className="w-full bg-[#C62222] mt-[61px] rounded-b-[4px]">
+        <div className="flex items-start justify-between w-full max-w-[1467px] mx-auto px-[41px] pt-[12px] pb-[8px] overflow-hidden">
+          <p className="text-white text-[18px] leading-[30px] tracking-normal font-poppins m-[3px_0_0] w-[296px] h-[27px]">© 2026 Night Crawlers.inc</p>
+          <div className="flex items-center justify-between w-[186px] h-[31px]">
+            <img src={instagramIcon} alt="Instagram" className="w-[30px] h-[30px]" />
+            <img src={whatsappIcon} alt="WhatsApp" className="w-[30px] h-[30px]" />
+            <img src={facebookIcon} alt="Facebook" className="w-[30px] h-[30px]" />
+          </div>
         </div>
       </div>
     </footer>

@@ -41,7 +41,7 @@ const SignIn: React.FC = () => {
       {/* Right Side - Form */}
       <div className="flex-1 flex flex-col h-full overflow-y-auto custom-scrollbar">
         {/* Main Content Centered */}
-        <div className="flex-1 flex flex-col justify-center px-10 pt-6 pb-12">
+        <div className="flex-1 flex flex-col justify-start px-10 pt-20 pb-12">
           <div className="w-full max-w-[340px] mx-auto">
             
             {/* Header Section */}
@@ -123,11 +123,11 @@ const SignIn: React.FC = () => {
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-2 flex justify-between items-center bg-white mt-auto">
-          <p className="text-xs text-[#667085]">© Night Crawlers 2026.inc</p>
+        <div className="w-full h-24 p-8 flex justify-between items-end bg-white mt-auto">
+          <p className="text-sm text-[#667085] font-poppins">© Night Crawlers 2026.inc</p>
           <div className="flex items-center gap-2">
-            <img src={mailIcon} alt="mail" className="w-4 h-4 opacity-60" />
-            <a href="mailto:help@nightcrawlers.com" className="text-xs text-[#667085] hover:text-[#344054]">
+            <img src={mailIcon} alt="mail" className="w-4 h-4" />
+            <a href="mailto:help@nightcrawlers.com" className="text-sm text-[#667085] font-poppins hover:text-[#344054]">
               help@nightcrawlers.com
             </a>
           </div>

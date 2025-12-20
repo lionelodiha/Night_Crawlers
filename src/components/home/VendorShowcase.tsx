@@ -3,40 +3,77 @@ import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { VENDORS } from '../../utils/constants';
 
+import kfcImg from '../../../.figma/image/mje79tfs-ebqiolr.png';
+import chickenRepublicImg from '../../../.figma/image/mje79tft-mnpk82m.png';
+import dominosImg from '../../../.figma/image/mje79tfy-zdt3g00.png';
+import kilimanjaroImg from '../../../.figma/image/mje79tfy-vnfduy8.png';
+import pizzaHutImg from '../../../.figma/image/mje79tfy-l6ekoeg.png';
+
 const VendorShowcase: React.FC = () => {
   return (
-    <section className="py-16 md:py-24 bg-white">
-      <div className="container mx-auto px-4">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-16">
-          <div className="max-w-md">
-            <h2 className="text-3xl md:text-4xl font-bold text-night-dark-900 leading-tight">
-              Order Tasty Meals<br />
-              through us
-            </h2>
-          </div>
-          <Link to="/vendors" className="mt-4 md:mt-0 group flex items-center gap-1 text-night-red-600 font-semibold hover:text-night-red-700 transition-colors">
+    <section className="flex flex-col items-center w-full max-w-[1386px] mx-auto h-auto min-h-[753px] gap-[120px] py-16">
+      <div className="flex items-center justify-between w-full px-8">
+        <h2 className="text-[#222222] text-[32px] font-semibold leading-[40px] tracking-normal font-poppins w-[299px]">
+          Order Tasty Meals through us
+        </h2>
+        <div className="relative w-[233px] h-[30px]">
+          <Link to="/vendors" className="absolute top-[2px] left-[-26px] w-[236px] h-[27px] text-center text-[#c62222] text-[20px] font-semibold tracking-normal font-poppins hover:underline">
             Explore all Restaurants
-            <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </Link>
+          <ChevronRight className="absolute top-[5px] left-[209px] w-5 h-5 text-[#c62222]" strokeWidth={3} />
+        </div>
+      </div>
+
+      <div className="flex flex-col items-center w-full gap-[60px]">
+        {/* Row 1: KFC, Chicken Republic, Dominos */}
+        <div className="flex justify-center items-center w-full gap-[274px]">
+            <div className="flex flex-col items-center gap-[14px]">
+              <div className="w-[158px] h-[167px] overflow-hidden shadow-sm hover:scale-105 transition-transform duration-300">
+                <img src={kfcImg} alt="KFC" className="w-full h-full object-cover" />
+              </div>
+              <p className="text-[#c62222] text-[24px] font-medium leading-[36px] tracking-normal font-poppins m-0 text-center">
+                KFC
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center gap-[14px]">
+              <div className="w-[158px] h-[167px] overflow-hidden shadow-sm hover:scale-105 transition-transform duration-300">
+                <img src={chickenRepublicImg} alt="Chicken Republic" className="w-full h-full object-cover" />
+              </div>
+              <p className="text-[#c62222] text-[24px] font-medium leading-[36px] tracking-normal font-poppins m-0 text-center">
+                Chicken Republic
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center gap-[14px]">
+              <div className="w-[158px] h-[167px] overflow-hidden shadow-sm hover:scale-105 transition-transform duration-300">
+                <img src={dominosImg} alt="Dominos Pizza" className="w-full h-full object-cover" />
+              </div>
+              <p className="text-[#c62222] text-[24px] font-medium leading-[36px] tracking-normal font-poppins m-0 text-center">
+                Dominos Pizza
+              </p>
+            </div>
         </div>
 
-        {/* Vendor Grid - 3 top, 2 bottom centered layout */}
-        <div className="flex flex-wrap justify-center gap-x-12 gap-y-16 max-w-5xl mx-auto">
-          {VENDORS.map((vendor) => (
-            <div key={vendor.id} className="flex flex-col items-center group cursor-pointer w-[140px] md:w-[180px]">
-              <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden mb-4 shadow-sm group-hover:scale-105 transition-transform duration-300 border border-gray-100">
-                <img
-                  src={vendor.logo}
-                  alt={vendor.altText}
-                  className="w-full h-full object-cover"
-                />
+        {/* Row 2: Kilimanjaro, Pizza Hut */}
+        <div className="flex justify-center items-center w-full gap-[274px]">
+            <div className="flex flex-col items-center gap-[14px]">
+              <div className="w-[158px] h-[167px] overflow-hidden shadow-sm hover:scale-105 transition-transform duration-300">
+                <img src={kilimanjaroImg} alt="Killimanjaro" className="w-full h-full object-cover" />
               </div>
-              <h3 className="text-base md:text-lg font-medium text-night-dark-900 text-center group-hover:text-night-red-600 transition-colors">
-                {vendor.name}
-              </h3>
+              <p className="text-[#c62222] text-[24px] font-medium leading-[36px] tracking-normal font-poppins m-0 text-center">
+                Killimanjaro
+              </p>
             </div>
-          ))}
+
+            <div className="flex flex-col items-center gap-[14px]">
+              <div className="w-[158px] h-[167px] overflow-hidden shadow-sm hover:scale-105 transition-transform duration-300">
+                <img src={pizzaHutImg} alt="Pizza Hut" className="w-full h-full object-cover" />
+              </div>
+              <p className="text-[#c62222] text-[24px] font-medium leading-[36px] tracking-normal font-poppins m-0 text-center">
+                Pizza Hut
+              </p>
+            </div>
         </div>
       </div>
     </section>

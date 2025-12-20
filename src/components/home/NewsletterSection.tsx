@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { NewsletterForm } from '../../types';
-import Button from '../ui/Button';
-import Input from '../ui/Input';
+import subscribeImage from '../../../.figma/image/mje7taht-9jmjknp.png';
 
 const NewsletterSection: React.FC = () => {
   const [formData, setFormData] = useState<NewsletterForm>({
@@ -26,53 +25,45 @@ const NewsletterSection: React.FC = () => {
   };
 
   return (
-    <section className="py-16 md:py-24 bg-white border-t border-gray-100">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <div className="max-w-lg">
-            <h2 className="text-3xl md:text-4xl font-bold text-night-dark-900 mb-4 leading-tight">
-              Exclusive Menus & <br /> Promotions
-            </h2>
-            <p className="text-lg text-night-gray-600 mb-8 leading-relaxed">
-               Join the Night Crawlers tribe! Be the first to know about fresh deals,
-               new food spots, and exclusive night-time treats.
-            </p>
-            
-            {/* Newsletter Form */}
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Input
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={handleInputChange}
-                  required
-                  className="flex-1 bg-gray-50 border-gray-200"
-                />
-                <Button 
-                  type="submit" 
-                  variant="primary"
-                  disabled={isSubmitting}
-                  className="px-8"
-                >
-                  {isSubmitting ? 'Subscribing...' : 'Subscribe'}
-                </Button>
-              </div>
-            </form>
-          </div>
-
-          {/* Image */}
-          <div className="flex justify-center lg:justify-end">
-            <div className="relative w-full max-w-md h-[400px]">
-              <img 
-                 src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Happy%20delivery%20man%20in%20red%20uniform%20holding%20pizza%20boxes%20and%20phone%2C%20studio%20shot%2C%20white%20background%2C%20professional%20photography&image_size=portrait"
-                 alt="Delivery Person"
-                 className="w-full h-full object-contain"
+    <section className="flex justify-center w-full py-16">
+      <div className="flex items-center w-[1362px] h-[442px] px-7 bg-[#f9fafb0d] border border-[#eaecf0] rounded-[10px] shadow-[4px_4px_15px_2px_rgba(168,166,166,0.32)] overflow-hidden gap-[392px]">
+        {/* Left Column: Text & Input */}
+        <div className="flex flex-col items-start gap-5 w-[448px]">
+          <h2 className="text-[#222222] text-[48px] font-semibold leading-[58px] tracking-[-0.96px] font-poppins m-0">
+            Exclusive Menus & Promotions
+          </h2>
+          <p className="text-[#222222] text-[16px] leading-[19px] tracking-[-0.32px] font-poppins m-0">
+            Join the Night Crawlers tribe! Be the first to know about fresh deals, new
+            food spots, and exclusive night-time treats.
+          </p>
+          
+          <form onSubmit={handleSubmit} className="w-full">
+            <div className="flex items-center justify-between w-full h-[50px] bg-white border border-[#d0d5dd] rounded-[4px] shadow-[0px_1px_2px_0px_rgba(16,24,40,0.05)] pl-[13px] pr-0 overflow-hidden">
+              <input
+                type="email"
+                placeholder="Email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                className="flex-1 bg-transparent border-none outline-none text-[#667085] text-[16px] leading-[24px] font-poppins placeholder:text-[#667085] h-full"
               />
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="flex items-center justify-center w-[103px] h-full bg-[#c62222] text-[#fcfcfc] text-[16px] font-medium leading-[24px] font-poppins cursor-pointer hover:bg-[#a51d1d] transition-colors disabled:opacity-70"
+              >
+                {isSubmitting ? '...' : 'Subscribe'}
+              </button>
             </div>
-          </div>
+          </form>
         </div>
+
+        {/* Right Column: Image */}
+        <img 
+           src={subscribeImage}
+           alt="Delivery Person"
+           className="w-[442px] h-[442px] flex-shrink-0 object-contain"
+        />
       </div>
     </section>
   );

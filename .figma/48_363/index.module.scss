@@ -1,0 +1,546 @@
+* {
+  box-sizing: border-box;
+}
+
+.contactUs {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #ffffff;
+  padding-top: 59px;
+  width: 1440px;
+  height: 1303px;
+  overflow: hidden;
+
+  .autoWrapper {
+    display: flex;
+    align-items: flex-start;
+    align-self: stretch;
+    justify-content: space-between;
+    padding-right: 42px;
+    padding-left: 498px;
+
+    .menuNav {
+      display: inline-flex;
+      align-items: center;
+      column-gap: 64px;
+      margin-top: 4px;
+
+      .home {
+        flex-shrink: 0;
+        line-height: 36px;
+        letter-spacing: 0;
+        color: #222222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 24px;
+      }
+    }
+
+    .navButtons {
+      display: inline-flex;
+      align-items: center;
+      column-gap: 36px;
+
+      .buttonLogIn {
+        display: flex;
+        flex-shrink: 0;
+        align-items: flex-start;
+        border-radius: 200px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+        background: #c62222;
+        padding: 10px 10px 7px 7px;
+
+        .shoppingCart {
+          width: 25px;
+          height: 25px;
+        }
+      }
+
+      .buttonLogIn2 {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        column-gap: 7px;
+        border-radius: 200px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+        background: #c62222;
+        width: 42px;
+        height: 42px;
+
+        .customer {
+          flex-shrink: 0;
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+
+  .autoWrapper2 {
+    position: relative;
+    margin-top: 75px;
+    margin-left: 9px;
+    width: 1386px;
+    height: 130px;
+
+    .nightCrawlersLogoWhi {
+      position: absolute;
+      top: -241px;
+      left: 16px;
+      width: 284px;
+      height: 284px;
+    }
+
+    .headingAndSupporting {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      padding-right: 586px;
+      padding-left: 32px;
+      width: 1386px;
+      height: 130px;
+      row-gap: 20px;
+
+      .headingAndSubheading {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        align-items: flex-start;
+        align-self: stretch;
+        row-gap: 12px;
+
+        .subheading {
+          flex-shrink: 0;
+          align-self: stretch;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: #c62222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+          font-weight: 600;
+        }
+
+        .heading {
+          flex-shrink: 0;
+          align-self: stretch;
+          line-height: 44px;
+          letter-spacing: -0.64px;
+          color: var(--Gray-900, #101828);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 32px;
+          font-weight: 600;
+        }
+      }
+
+      .supportingText {
+        flex-shrink: 0;
+        align-self: stretch;
+        line-height: 30px;
+        letter-spacing: 0;
+        color: var(--Gray-500, #667085);
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 20px;
+      }
+    }
+  }
+
+  .container {
+    display: flex;
+    align-items: flex-start;
+    column-gap: 64px;
+    margin-top: 36px;
+    margin-left: 10px;
+    padding: 32px;
+    width: 1358px;
+    overflow: hidden;
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      align-items: flex-start;
+      row-gap: 48px;
+
+      .text2 {
+        flex-shrink: 0;
+        line-height: 24px;
+        letter-spacing: 0;
+        color: #c62222;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .mail {
+        flex-shrink: 0;
+        width: 24px;
+        height: 24px;
+        overflow: hidden;
+      }
+
+      .textAndSupportingTex {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        align-items: flex-start;
+        align-self: stretch;
+        row-gap: 8px;
+
+        .text {
+          flex-shrink: 0;
+          align-self: stretch;
+          line-height: 30px;
+          letter-spacing: 0;
+          color: var(--Gray-900, #101828);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 20px;
+          font-weight: 500;
+        }
+
+        .supportingText2 {
+          flex-shrink: 0;
+          align-self: stretch;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: var(--Gray-500, #667085);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
+      }
+
+      .row {
+        display: flex;
+        flex-shrink: 0;
+        align-items: flex-start;
+        align-self: stretch;
+        column-gap: 32px;
+
+        .aContactText {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          align-items: flex-start;
+          row-gap: 16px;
+        }
+      }
+
+      .aContactText2 {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        align-items: flex-start;
+        align-self: stretch;
+        row-gap: 16px;
+      }
+    }
+
+    .form {
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      align-items: flex-start;
+      border: 1px solid #eaecf0;
+      border-radius: 10px;
+      box-shadow: 4px 4px 15px 2px #a8a6a652;
+      background: #f9fafb;
+      padding: 39px 92px;
+      row-gap: 32px;
+
+      .formFields {
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        align-items: flex-start;
+        align-self: stretch;
+        row-gap: 24px;
+
+        .label {
+          flex-shrink: 0;
+          line-height: 20px;
+          letter-spacing: 0;
+          color: var(--Gray-700, #344054);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        .content2 {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          align-self: stretch;
+          column-gap: 8px;
+          border: 1px solid var(--Gray-300, #d0d5dd);
+          border-radius: 4px;
+          box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+          background: var(--White, #ffffff);
+          padding: 11px 15px;
+
+          .text3 {
+            flex-grow: 1;
+            line-height: 24px;
+            letter-spacing: 0;
+            color: var(--Gray-500, #667085);
+            font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+          }
+        }
+
+        .row2 {
+          display: flex;
+          flex-shrink: 0;
+          align-items: flex-start;
+          align-self: stretch;
+          column-gap: 32px;
+
+          .inputWithLabel {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            align-items: flex-start;
+            row-gap: 6px;
+          }
+        }
+
+        .inputWithLabel2 {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          align-self: stretch;
+          row-gap: 6px;
+        }
+
+        .inputWithLabel3 {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          align-self: stretch;
+          height: 154px;
+          row-gap: 6px;
+
+          .input {
+            display: flex;
+            flex-grow: 1;
+            align-items: center;
+            align-self: stretch;
+            column-gap: 8px;
+            border: 1px solid var(--Gray-300, #d0d5dd);
+            border-radius: 4px;
+            box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+            background: var(--White, #ffffff);
+            padding: 9px 13px;
+            overflow: hidden;
+          }
+        }
+
+        .checkbox {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          align-self: stretch;
+          column-gap: 12px;
+
+          .aCheckboxBase {
+            flex-shrink: 0;
+            border: 1px solid var(--Gray-300, #d0d5dd);
+            border-radius: 6px;
+            background: var(--White, #ffffff);
+            width: 20px;
+            height: 20px;
+            overflow: hidden;
+          }
+
+          .text6 {
+            flex-grow: 1;
+            line-height: 24px;
+            letter-spacing: 0;
+            color: #000000;
+            font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 16px;
+
+            .text4 {
+              line-height: 24px;
+              letter-spacing: 0;
+              color: var(--Gray-500, #667085);
+              font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+              font-size: 16px;
+            }
+
+            .text5 {
+              line-height: 24px;
+              letter-spacing: 0;
+              color: #c62222;
+              font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+              font-size: 16px;
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+
+      .aButtonBase {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        align-self: stretch;
+        justify-content: center;
+        column-gap: 8px;
+        border: 1px solid #c62222;
+        border-radius: 4px;
+        box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+        background: #c62222;
+        padding: 11px 19px;
+        overflow: hidden;
+
+        .text7 {
+          flex-shrink: 0;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: var(--White, #ffffff);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 20px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin-top: 67px;
+    background: #222222;
+    padding-bottom: 1px;
+    height: 272px;
+    overflow: hidden;
+
+    .autoWrapper3 {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      justify-content: space-between;
+      margin-top: -23px;
+      padding-right: 39px;
+      padding-left: 25px;
+
+      .logoFooterText {
+        position: relative;
+        width: 281px;
+        height: 182px;
+
+        .nightCrawlersLogoBla {
+          position: absolute;
+          top: -12px;
+          left: -1px;
+          width: 240px;
+          height: 240px;
+        }
+
+        .getYourFavoriteMeals {
+          position: absolute;
+          top: 139px;
+          left: 16px;
+          width: 268px;
+          height: 40px;
+          line-height: 20px;
+          letter-spacing: 0;
+          color: #ffffff;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 14px;
+        }
+      }
+
+      .links {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 32px;
+        margin-top: 60px;
+        width: 690px;
+
+        .aFooterLinksColumn {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          align-items: flex-start;
+          row-gap: 10px;
+
+          .heading2 {
+            flex-shrink: 0;
+            align-self: stretch;
+            line-height: 20px;
+            letter-spacing: 0;
+            color: var(--Gray-400, #98a2b3);
+            font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .footerLinks {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            align-items: flex-start;
+            align-self: stretch;
+            row-gap: 6px;
+
+            .text8 {
+              flex-shrink: 0;
+              line-height: 24px;
+              letter-spacing: 0;
+              color: var(--Gray-200, #e4e7ec);
+              font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+              font-size: 16px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .footerIncSocials {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      justify-content: space-between;
+      margin-top: 61px;
+      border-radius: 0px 0px 4px 4px;
+      background: #c62222;
+      padding: 12px 39px 8px 41px;
+      min-width: 1440px;
+      overflow: hidden;
+
+      .footerText {
+        margin: 3px 0px 0px;
+        width: 296px;
+        height: 27px;
+        line-height: 30px;
+        letter-spacing: 0;
+        color: #ffffff;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 18px;
+      }
+
+      .socials {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 186px;
+        min-width: 186px;
+        height: 31px;
+
+        .instagram {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

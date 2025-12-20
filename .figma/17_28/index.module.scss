@@ -1,0 +1,100 @@
+* {
+  box-sizing: border-box;
+}
+
+.subscribeEmail {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 392px;
+  border: 1px solid #eaecf0;
+  border-radius: 10px;
+  box-shadow: 4px 4px 15px 2px #a8a6a652;
+  background: #f9fafb0d;
+  padding-right: 28px;
+  padding-left: 28px;
+  width: 1362px;
+  height: 442px;
+  overflow: hidden;
+
+  .subscribeEmailInputC {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: flex-start;
+    row-gap: 20px;
+
+    .exclusiveMenusPromot {
+      flex-shrink: 0;
+      width: 448px;
+      line-height: 58px;
+      letter-spacing: -0.96px;
+      color: #222222;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+    }
+
+    .joinTheNightCrawlers {
+      flex-shrink: 0;
+      align-self: stretch;
+      line-height: 19px;
+      letter-spacing: -0.32px;
+      color: #222222;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 16px;
+    }
+
+    .input {
+      display: flex;
+      flex-grow: 1;
+      align-items: center;
+      align-self: stretch;
+      column-gap: 4px;
+      border: 1px solid var(--Gray-300, #d0d5dd);
+      border-radius: 4px;
+      box-shadow: var(--Shadow-xs, 0px 1px 2px 0px #1018280d);
+      background: var(--White, #ffffff);
+      padding: 9px 13px;
+      overflow: hidden;
+
+      .text {
+        flex-shrink: 0;
+        width: 351px;
+        line-height: 24px;
+        letter-spacing: 0;
+        color: var(--Gray-500, #667085);
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+      }
+
+      .buttonSubscribe {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        column-gap: 10px;
+        border-radius: 0px 4px 4px 0px;
+        background: #c62222;
+        padding: 10px;
+        width: 103px;
+        height: 40px;
+
+        .subscribe {
+          flex-shrink: 0;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: #fcfcfc;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .subscribeImage {
+    flex-shrink: 0;
+    width: 442px;
+    height: 442px;
+  }
+}

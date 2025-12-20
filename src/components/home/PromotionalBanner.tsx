@@ -1,4 +1,6 @@
 import React from 'react';
+import blobSvg from '../../../.figma/image/mjcs0hhd-e552yif.svg';
+import bowlPng from '../../../.figma/image/mjcs0hhx-rdln25f.png';
 
 const PromotionalBanner: React.FC = () => {
   return (
@@ -6,23 +8,16 @@ const PromotionalBanner: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           
-          {/* Left: Red Blob with Image */}
-          <div className="relative">
-             {/* Abstract Red Shape Background */}
-             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-night-red-600 rounded-[40%_60%_70%_30%/40%_50%_60%_50%] -z-10 transform -rotate-12"></div>
-             
-             <div className="relative z-10 flex flex-col items-center justify-center p-8 text-center">
-                <div className="relative w-64 h-64 md:w-80 md:h-80 mb-6">
-                  <img 
-                    src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Top%20view%20of%20jollof%20rice%20with%20chicken%20in%20a%20black%20bowl%2C%20professional%20food%20photography%2C%20isolated%20on%20transparent%20background&image_size=square" 
-                    alt="Delicious Jollof Rice" 
-                    className="w-full h-full object-contain drop-shadow-2xl"
-                  />
-                </div>
-                <p className="text-white font-medium text-lg md:text-xl max-w-xs leading-snug">
-                  We only offer the best service in town!
-                </p>
-             </div>
+          {/* Left: Red Blob with Image (Figma exact assets) */}
+          <div className="relative w-[723px] h-[467px]">
+            <div className="relative" style={{ transform: 'scale(0.85)', transformOrigin: 'left center' }}>
+              <img src={blobSvg} alt="red vector" className="absolute top-0 left-0 w-[723px] h-[467px] z-0" />
+              <img src={bowlPng} alt="bowl" className="absolute" style={{ top: 44, left: 19, width: 368, height: 368 }} />
+              <div className="absolute text-white font-medium" style={{ top: 241, left: 387, width: 276 }}>
+                We only offer the best service in town!
+              </div>
+              <div className="relative w-[723px] h-[467px]" />
+            </div>
           </div>
 
           {/* Right: Text Content */}
