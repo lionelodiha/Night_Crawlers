@@ -25,11 +25,9 @@ const Header: React.FC = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className={`${
-                  location.pathname === link.href
-                    ? 'text-night-dark-900 font-semibold'
-                    : 'text-night-gray-600 hover:text-night-dark-900'
-                } text-base`}
+                className={`nav-link-wavy text-base ${
+                  location.pathname === link.href ? 'active' : ''
+                }`}
               >
                 {link.name}
               </Link>
@@ -50,9 +48,9 @@ const Header: React.FC = () => {
               <Link
                 key={link.name}
                 to={link.href}
-                className={`${
-                  location.pathname === link.href ? 'text-night-dark-900 font-semibold' : 'text-night-gray-600'
-                } text-sm`}
+                className={`nav-link-wavy text-sm ${
+                  location.pathname === link.href ? 'active' : ''
+                }`}
               >
                 {link.name}
               </Link>

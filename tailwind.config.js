@@ -46,6 +46,7 @@ export default {
       fontFamily: {
         'night-script': ['Playfair Display', 'serif'],
         'night-sans': ['Inter', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
       },
       borderRadius: {
         'pill': '9999px',

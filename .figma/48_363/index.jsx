@@ -15,18 +15,19 @@ const Component = () => {
         <div className={styles.navButtons}>
           <div className={styles.buttonLogIn}>
             <img
-              src="../image/mjctvm1c-50so9b4.png"
+              src="../image/mjea4b1c-l9uec8w.png"
               className={styles.shoppingCart}
             />
           </div>
           <div className={styles.buttonLogIn2}>
-            <img src="../image/mjctvm1c-9tw20kf.png" className={styles.customer} />
+            <img src="../image/mjea4b1c-sxj9n98.png" className={styles.customer} />
           </div>
         </div>
       </div>
+      <img src="../image/mjea4b0i-p3iwoy1.svg" className={styles.vector1} />
       <div className={styles.autoWrapper2}>
         <img
-          src="../image/mjctvm1c-l6fhl3h.png"
+          src="../image/mjea4b1c-dffiij7.png"
           className={styles.nightCrawlersLogoWhi}
         />
         <div className={styles.headingAndSupporting}>
@@ -44,7 +45,7 @@ const Component = () => {
         <div className={styles.content}>
           <div className={styles.row}>
             <div className={styles.aContactText}>
-              <img src="../image/mjctvm0z-wreje68.svg" className={styles.mail} />
+              <img src="../image/mjea4b0g-1pnnjbi.svg" className={styles.mail} />
               <div className={styles.textAndSupportingTex}>
                 <p className={styles.text}>Email</p>
                 <p className={styles.supportingText2}>
@@ -54,7 +55,7 @@ const Component = () => {
               <p className={styles.text2}>help@nightcrawlers.com</p>
             </div>
             <div className={styles.aContactText}>
-              <img src="../image/mjctvm0z-sgj6hie.svg" className={styles.mail} />
+              <img src="../image/mjea4b0i-v996zyx.svg" className={styles.mail} />
               <div className={styles.textAndSupportingTex}>
                 <p className={styles.text}>Live chat</p>
                 <p className={styles.supportingText2}>
@@ -65,7 +66,7 @@ const Component = () => {
             </div>
           </div>
           <div className={styles.aContactText2}>
-            <img src="../image/mjctvm0z-ahoppgg.svg" className={styles.mail} />
+            <img src="../image/mjea4b0i-o0l7myy.svg" className={styles.mail} />
             <div className={styles.textAndSupportingTex}>
               <p className={styles.text}>Phone</p>
               <p className={styles.supportingText2}>Mon-Fri from 8am to 5pm.</p>
@@ -119,7 +120,7 @@ const Component = () => {
         <div className={styles.autoWrapper3}>
           <div className={styles.logoFooterText}>
             <img
-              src="../image/mjctvm1c-d5z2kq0.png"
+              src="../image/mjea4b1c-kt3komz.png"
               className={styles.nightCrawlersLogoBla}
             />
             <p className={styles.getYourFavoriteMeals}>
@@ -153,9 +154,9 @@ const Component = () => {
         <div className={styles.footerIncSocials}>
           <p className={styles.footerText}>© 2026 Night Crawlers.inc</p>
           <div className={styles.socials}>
-            <img src="../image/mjctvm1c-kjwg6cv.png" className={styles.instagram} />
-            <img src="../image/mjctvm1c-10kv87a.png" className={styles.instagram} />
-            <img src="../image/mjctvm1c-jkmb935.png" className={styles.instagram} />
+            <img src="../image/mjea4b1c-n8pga6t.png" className={styles.instagram} />
+            <img src="../image/mjea4b1c-k3ti7s8.png" className={styles.instagram} />
+            <img src="../image/mjea4b1c-5ek3ara.png" className={styles.instagram} />
           </div>
         </div>
       </div>
