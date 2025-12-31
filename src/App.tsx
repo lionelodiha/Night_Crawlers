@@ -5,6 +5,8 @@ import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
 import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
+import Vendors from './pages/Vendors';
+import VendorSignUp from './pages/VendorSignUp';
 
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
         <Route path="/signup" element={<SignUp />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/faq" element={<FAQ />} />
+        <Route path="/vendors" element={<Vendors />} />
+        <Route path="/vendor-signup" element={<VendorSignUp />} />
       </Routes>
     </Router>
   );

@@ -6,73 +6,141 @@ import minusIcon from '../assets/faq/minus.png';
 import plusIcon from '../assets/faq/plus.png';
 import aboutIcon from '../assets/faq/about2.png';
 
+interface FAQItem {
+  id: number;
+  question: string;
+  answer: string;
+  category: string;
+}
+
+const faqData: FAQItem[] = [
+  {
+    id: 0,
+    question: 'What is Night Crawlers?',
+    answer: 'Night Crawlers is a fast delivery platform connecting customers with restaurants, supermarkets, beauty stores and pharmacies.',
+    category: 'General Information'
+  },
+  {
+    id: 1,
+    question: 'How do I place an order?',
+    answer: 'You can place an order through our mobile app or website. Simply browse available vendors, select your items, and proceed to checkout.',
+    category: 'General Information'
+  },
+  {
+    id: 2,
+    question: 'What are your delivery fees?',
+    answer: 'Delivery fees vary based on distance and order amount. You can see the exact fee before confirming your order.',
+    category: 'Purchasing & Payment'
+  },
+  {
+    id: 3,
+    question: 'What payment methods do you accept?',
+    answer: 'We accept credit cards, debit cards, mobile money, and cash on delivery depending on your location.',
+    category: 'Purchasing & Payment'
+  }
+];
+
+const categories = ['General Information', 'Purchasing & Payment', 'Customer Support', 'Resources'];
+
 const FAQ: React.FC = () => {
   const [openIndex, setOpenIndex] = useState<number>(0);
+  const [selectedCategory, setSelectedCategory] = useState<string>('General Information');
+
+  const filteredFAQs = faqData.filter(faq => faq.category === selectedCategory);
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins overflow-x-hidden">
       <Header />
 
-      {/* Top spacing per Figma */}
-      <main className="flex-1 w-full max-w-[1440px] mx-auto pt-[59px] pb-0">
-        {/* Hero (without extra logo/underline) */}
-        <div className="relative mt-[54px] ml-[289px] w-[863px] h-[191px]">
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-[20px]">
-            <div className="inline-flex items-center justify-center gap-[10px] mx-[399px] border border-[#EAECF0] rounded-[50px] bg-[#2E3D860D] px-[9px] py-[7px]">
-              <p className="leading-[27px] text-[#363838] text-[18px]">FAQs</p>
-            </div>
-            <p className="text-center leading-[58px] tracking-[-0.96px] text-[#222222] text-[48px] font-semibold">Questions we Frequently get</p>
-            <p className="w-[768px] h-[30px] text-center leading-[30px] text-[#667085] text-[20px]">We’d love to hear from you. Please fill out this form or shoot us an email.</p>
+      <main className="relative w-full bg-white" style={{ minHeight: '900px' }}>
+        {/* FAQ Title Section */}
+        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center gap-[30px]" style={{ width: '863px', height: '191px', top: '60px' }}>
+          <div className="inline-flex items-center justify-center gap-[10px] border border-[#EAECF0] rounded-[50px] bg-[rgba(46,61,134,0.05)] px-[10px] py-[8px]">
+            <p className="leading-[27px] text-[#363838] text-[18px]">FAQs</p>
           </div>
+          <h1 className="text-center leading-[120%] tracking-[-0.02em] text-[#222222] text-[48px] font-semibold">Questions we Frequently get</h1>
+          <p className="text-center leading-[30px] text-[#667085] text-[20px]">We'd love to hear from you. Please fill out this form or shoot us an email.</p>
         </div>
 
-        {/* Content */}
-        <div className="flex justify-between mt-[72px] mx-[41px] min-w-[1358px]">
-          {/* Left categories */}
-          <div className="flex flex-col items-start mt-[1px] gap-[40px]">
-            <p className="text-[#C62222] text-[24px] font-semibold leading-[24px]">Categories</p>
-            <div className="flex flex-col items-center gap-[24px] w-[307px]">
-              <p className="w-[307px] h-[41px] px-[17px] pt-[9px] pb-[8px] leading-[24px] text-[#222222] text-[16px] font-medium border-l-2 border-[#C62222]">General Information</p>
-              <p className="w-[307px] h-[41px] px-[17px] pt-[6px] pb-[5px] leading-[30px] text-[#667085] text-[16px]">Purchasing & Payment</p>
-              <p className="w-[307px] h-[41px] px-[17px] pt-[6px] pb-[5px] leading-[30px] text-[#667085] text-[16px]">Customer Support&nbsp;</p>
-              <p className="w-[307px] h-[41px] px-[17px] pt-[6px] pb-[5px] leading-[30px] text-[#667085] text-[16px]">Resources</p>
-            </div>
-
-            {/* Support prompt - Qst title container */}
-            <div className="w-[309px] flex flex-col items-start gap-[12px] mt-[32px] mb-[24px]">
-              <div className="inline-flex items-center gap-[16px]">
-                <img src={aboutIcon} alt="icon" className="w-[24px] h-[24px]" />
-                <p className="text-[#222222] text-[20px] font-medium leading-[30px]">Still have a question?</p>
-              </div>
-              <p className="w-[309px] h-[18px] leading-[18px] text-[#667085] text-[12px]">If you didn’t find your answer, feel free to reach out.</p>
-              <p className="w-[309px] h-[24px] leading-[24px] text-[#C62222] text-[16px] underline">Contact us</p>
+        {/* Content Container */}
+        <div className="absolute" style={{ width: '1358px', left: '41px', top: '323px' }}>
+          {/* Left - Categories Sidebar */}
+          <div className="flex flex-col items-start gap-[40px]" style={{ width: '307px' }}>
+            <h2 className="text-[#C62222] text-[24px] font-semibold leading-[24px]">Categories</h2>
+            <div className="flex flex-col gap-[24px]" style={{ width: '307px' }}>
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setOpenIndex(0);
+                  }}
+                  className={`h-[41px] px-[17px] leading-[24px] text-[16px] text-left transition-all duration-200 ${
+                    selectedCategory === category
+                      ? 'font-medium text-[#222222] border-l-[3px] border-[#C62222]'
+                      : 'font-normal text-[#667085] border-l-[3px] border-transparent'
+                  }`}
+                  style={{ width: '307px' }}
+                >
+                  {category}
+                </button>
+              ))}
             </div>
           </div>
 
-          {/* Right FAQ list */}
-          <div className="flex flex-col items-center w-[768px]">
-            {/* Item 0 - expanded */}
-            <div className="relative flex flex-col items-start border border-[#C62222] rounded-[4px] px-[12px] py-[14px] w-[769px] h-[111px]">
-              <div className="inline-flex items-center justify-between w-full pr-[2px]">
-                <p className="w-[195px] leading-[30px] text-[#101828] text-[14px] font-medium">What is Night Crawlers</p>
-                <div className="flex items-center justify-center rounded-full bg-[#EAECF0] w-[20px] h-[20px]">
-                  <img src={minusIcon} alt="minus" className="w-[12px] h-[12px]" />
+          {/* Right - FAQ Accordion */}
+          <div className="absolute flex flex-col gap-[30px]" style={{ width: '768px', height: '381px', left: '590px', top: '0px' }}>
+            {filteredFAQs.map((faq, idx) => (
+              <div
+                key={faq.id}
+                onClick={() => setOpenIndex(idx)}
+                className={`rounded-[4px] px-[13px] py-[15px] cursor-pointer transition-all duration-200 ${
+                  openIndex === idx
+                    ? 'border-[1px] border-[#C62222] bg-white'
+                    : 'bg-[rgba(234,236,240,0.42)] border-0'
+                }`}
+                style={{ width: '769px' }}
+              >
+                <div className="flex items-center justify-between w-full">
+                  <p className={`text-[14px] leading-[30px] ${
+                    openIndex === idx ? 'font-medium' : 'font-normal'
+                  } text-[#101828]`}>
+                    {faq.question}
+                  </p>
+                  <div className="flex items-center justify-center rounded-full bg-[#EAECF0] w-[20px] h-[20px] flex-shrink-0">
+                    <img
+                      src={openIndex === idx ? minusIcon : plusIcon}
+                      alt="toggle"
+                      className="w-[12px] h-[12px]"
+                    />
+                  </div>
                 </div>
-              </div>
-              <p className="absolute top-[46px] left-[12px] w-[434px] h-[36px] leading-[18px] text-[#667085] text-[12px]">Purchasing & Payment We’d love to hear from you. Please fill out this form or shoot us an email.</p>
-            </div>
-
-            {/* Items 1-3 collapsed */}
-            {[1,2,3].map((idx) => (
-              <div key={idx} className="flex items-center justify-end gap-[530px] mt-[30px] mb-[20px] mr-[-1px] rounded-[4px] bg-[#EAECF06B] px-[13px] py-[20px] w-[769px]">
-                <p className="w-[195px] leading-[30px] text-[#101828] text-[14px]">What is Night Crawlers</p>
-                <div className="flex items-center justify-center rounded-full bg-[#EAECF0] w-[20px] h-[20px]">
-                  <img src={plusIcon} alt="plus" className="w-[12px] h-[12px]" />
-                </div>
+                {openIndex === idx && (
+                  <p className="mt-[15px] text-[12px] leading-[18px] text-[#667085]">
+                    {faq.answer}
+                  </p>
+                )}
               </div>
             ))}
           </div>
         </div>
+
+        {/* Support Section - Below Content */}
+        <div className="absolute" style={{ left: '41px', top: '750px' }}>
+          <div className="flex flex-col gap-[8px]">
+            <div className="inline-flex items-center gap-[16px]">
+              <img src={aboutIcon} alt="help icon" className="w-[24px] h-[24px]" />
+              <p className="text-[#222222] text-[20px] font-medium leading-[30px]">Still have a question?</p>
+            </div>
+            <p className="leading-[18px] text-[#667085] text-[12px]">If you didn't find your answer, feel free to reach out.</p>
+            <a href="/contact" className="leading-[24px] text-[#C62222] text-[16px] underline hover:no-underline transition-all duration-200">
+              Contact us
+            </a>
+          </div>
+        </div>
+
+        {/* Decorative underline */}
+        <div className="absolute" style={{ width: '60px', height: '2px', left: '996px', top: '277px', borderTop: '2px solid #C62222' }}></div>
       </main>
 
       <Footer />
