@@ -7,6 +7,10 @@ import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Vendors from './pages/Vendors';
 import VendorSignUp from './pages/VendorSignUp';
+import VendorSignIn from './pages/VendorSignIn';
+
+import Explore from './pages/Explore';
+import VendorDetails from './pages/VendorDetails';
 
 function App() {
   return (
@@ -19,6 +23,9 @@ function App() {
         <Route path="/faq" element={<FAQ />} />
         <Route path="/vendors" element={<Vendors />} />
         <Route path="/vendor-signup" element={<VendorSignUp />} />
+        <Route path="/vendor-signin" element={<VendorSignIn />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/vendor-details" element={<VendorDetails />} />
       </Routes>
     </Router>
   );

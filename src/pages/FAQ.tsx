@@ -52,95 +52,108 @@ const FAQ: React.FC = () => {
     <div className="min-h-screen bg-white flex flex-col font-poppins overflow-x-hidden">
       <Header />
 
-      <main className="relative w-full bg-white" style={{ minHeight: '900px' }}>
-        {/* FAQ Title Section */}
-        <div className="absolute left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center gap-[30px]" style={{ width: '863px', height: '191px', top: '60px' }}>
-          <div className="inline-flex items-center justify-center gap-[10px] border border-[#EAECF0] rounded-[50px] bg-[rgba(46,61,134,0.05)] px-[10px] py-[8px]">
-            <p className="leading-[27px] text-[#363838] text-[18px]">FAQs</p>
-          </div>
-          <h1 className="text-center leading-[120%] tracking-[-0.02em] text-[#222222] text-[48px] font-semibold">Questions we Frequently get</h1>
-          <p className="text-center leading-[30px] text-[#667085] text-[20px]">We'd love to hear from you. Please fill out this form or shoot us an email.</p>
-        </div>
-
-        {/* Content Container */}
-        <div className="absolute" style={{ width: '1358px', left: '41px', top: '323px' }}>
-          {/* Left - Categories Sidebar */}
-          <div className="flex flex-col items-start gap-[40px]" style={{ width: '307px' }}>
-            <h2 className="text-[#C62222] text-[24px] font-semibold leading-[24px]">Categories</h2>
-            <div className="flex flex-col gap-[24px]" style={{ width: '307px' }}>
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => {
-                    setSelectedCategory(category);
-                    setOpenIndex(0);
-                  }}
-                  className={`h-[41px] px-[17px] leading-[24px] text-[16px] text-left transition-all duration-200 ${
-                    selectedCategory === category
-                      ? 'font-medium text-[#222222] border-l-[3px] border-[#C62222]'
-                      : 'font-normal text-[#667085] border-l-[3px] border-transparent'
-                  }`}
-                  style={{ width: '307px' }}
-                >
-                  {category}
-                </button>
-              ))}
+      <main className="flex-grow w-full bg-white px-4 sm:px-6 md:px-[40px] py-[60px] sm:py-[80px]">
+        <div className="max-w-[1440px] mx-auto">
+          {/* FAQ Title Section */}
+          <div className="flex flex-col items-center justify-center gap-[20px] sm:gap-[25px] md:gap-[30px] text-center mb-[60px] sm:mb-[80px]">
+            <div className="inline-flex items-center justify-center gap-[8px] sm:gap-[10px] border border-[#EAECF0] rounded-[50px] bg-[rgba(46,61,134,0.05)] px-[12px] sm:px-[16px] py-[8px] sm:py-[10px]">
+              <p className="leading-[22px] sm:leading-[25px] md:leading-[27px] text-[#363838] text-[14px] sm:text-[16px] md:text-[18px]">FAQs</p>
             </div>
+            <h1 className="leading-[120%] tracking-[-0.02em] text-[#222222] text-[28px] sm:text-[36px] md:text-[48px] font-semibold max-w-[800px]">
+              Questions we Frequently get
+            </h1>
+            <p className="leading-[22px] sm:leading-[26px] md:leading-[30px] text-[#667085] text-[14px] sm:text-[17px] md:text-[20px] max-w-[600px]">
+              We'd love to hear from you. Please fill out this form or shoot us an email.
+            </p>
           </div>
 
-          {/* Right - FAQ Accordion */}
-          <div className="absolute flex flex-col gap-[30px]" style={{ width: '768px', height: '381px', left: '590px', top: '0px' }}>
-            {filteredFAQs.map((faq, idx) => (
-              <div
-                key={faq.id}
-                onClick={() => setOpenIndex(idx)}
-                className={`rounded-[4px] px-[13px] py-[15px] cursor-pointer transition-all duration-200 ${
-                  openIndex === idx
-                    ? 'border-[1px] border-[#C62222] bg-white'
-                    : 'bg-[rgba(234,236,240,0.42)] border-0'
-                }`}
-                style={{ width: '769px' }}
-              >
-                <div className="flex items-center justify-between w-full">
-                  <p className={`text-[14px] leading-[30px] ${
-                    openIndex === idx ? 'font-medium' : 'font-normal'
-                  } text-[#101828]`}>
-                    {faq.question}
-                  </p>
-                  <div className="flex items-center justify-center rounded-full bg-[#EAECF0] w-[20px] h-[20px] flex-shrink-0">
-                    <img
-                      src={openIndex === idx ? minusIcon : plusIcon}
-                      alt="toggle"
-                      className="w-[12px] h-[12px]"
-                    />
-                  </div>
-                </div>
-                {openIndex === idx && (
-                  <p className="mt-[15px] text-[12px] leading-[18px] text-[#667085]">
-                    {faq.answer}
-                  </p>
-                )}
+          {/* Content Container */}
+          <div className="flex flex-col lg:flex-row gap-[30px] lg:gap-[60px] w-full">
+            {/* Left - Categories Sidebar */}
+            <div className="flex flex-col items-start gap-[24px] lg:gap-[40px] w-full lg:w-[307px] lg:sticky lg:top-[80px] lg:h-fit">
+              <h2 className="text-[#C62222] text-[20px] lg:text-[24px] font-semibold leading-[20px] lg:leading-[24px]">Categories</h2>
+              <div className="flex flex-row lg:flex-col gap-[12px] lg:gap-[16px] w-full lg:w-[307px] overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => {
+                      setSelectedCategory(category);
+                      setOpenIndex(0);
+                    }}
+                    className={`h-[40px] lg:h-[41px] px-[14px] lg:px-[17px] leading-[20px] lg:leading-[24px] text-[14px] lg:text-[16px] text-left transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
+                      selectedCategory === category
+                        ? 'font-medium text-[#222222] border-l-[3px] border-[#C62222] bg-[rgba(198,34,34,0.05)]'
+                        : 'font-normal text-[#667085] border-l-[3px] border-transparent hover:bg-gray-50'
+                    }`}
+                  >
+                    {category}
+                  </button>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Support Section - Below Content */}
-        <div className="absolute" style={{ left: '41px', top: '750px' }}>
-          <div className="flex flex-col gap-[8px]">
-            <div className="inline-flex items-center gap-[16px]">
-              <img src={aboutIcon} alt="help icon" className="w-[24px] h-[24px]" />
-              <p className="text-[#222222] text-[20px] font-medium leading-[30px]">Still have a question?</p>
             </div>
-            <p className="leading-[18px] text-[#667085] text-[12px]">If you didn't find your answer, feel free to reach out.</p>
-            <a href="/contact" className="leading-[24px] text-[#C62222] text-[16px] underline hover:no-underline transition-all duration-200">
-              Contact us
-            </a>
+
+            {/* Right - FAQ Accordion */}
+            <div className="flex flex-col gap-[20px] lg:gap-[30px] w-full lg:flex-1">
+              {filteredFAQs.length > 0 ? (
+                filteredFAQs.map((faq, idx) => (
+                  <div
+                    key={faq.id}
+                    onClick={() => setOpenIndex(idx)}
+                    className={`rounded-[8px] px-[16px] lg:px-[20px] py-[16px] lg:py-[20px] cursor-pointer transition-all duration-200 ${
+                      openIndex === idx
+                        ? 'border-[1px] border-[#C62222] bg-white shadow-sm'
+                        : 'bg-[rgba(234,236,240,0.42)] border border-transparent hover:bg-[rgba(234,236,240,0.6)]'
+                    }`}
+                  >
+                    <div className="flex items-start justify-between w-full">
+                      <p className={`text-[14px] lg:text-[16px] leading-[22px] lg:leading-[26px] pr-4 ${
+                        openIndex === idx ? 'font-medium text-[#222222]' : 'font-normal text-[#101828]'
+                      }`}>
+                        {faq.question}
+                      </p>
+                      <div className="flex items-center justify-center rounded-full bg-[#EAECF0] w-[20px] h-[20px] lg:w-[24px] lg:h-[24px] flex-shrink-0 ml-2">
+                        <img
+                          src={openIndex === idx ? minusIcon : plusIcon}
+                          alt="toggle"
+                          className="w-[10px] h-[10px] lg:w-[12px] lg:h-[12px]"
+                        />
+                      </div>
+                    </div>
+                    {openIndex === idx && (
+                      <p className="mt-[12px] lg:mt-[16px] text-[13px] lg:text-[14px] leading-[18px] lg:leading-[20px] text-[#667085]">
+                        {faq.answer}
+                      </p>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-[40px] text-[#667085] text-[16px]">
+                  No FAQs found in this category.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Support Section */}
+          <div className="mt-[80px] lg:mt-[100px] flex flex-col lg:flex-row items-center justify-between gap-[30px] lg:gap-[40px]">
+            <div className="flex flex-col gap-[12px] text-center lg:text-left">
+              <div className="inline-flex items-center justify-center lg:justify-start gap-[16px]">
+                <img src={aboutIcon} alt="help icon" className="w-[24px] h-[24px]" />
+                <p className="text-[#222222] text-[20px] font-medium leading-[30px]">Still have a question?</p>
+              </div>
+              <p className="leading-[18px] text-[#667085] text-[14px]">If you didn't find your answer, feel free to reach out.</p>
+              <a 
+                href="/contact" 
+                className="inline-flex items-center justify-center lg:justify-start leading-[24px] text-[#C62222] text-[16px] underline hover:no-underline transition-all duration-200"
+              >
+                Contact us
+              </a>
+            </div>
+            
+            {/* Decorative underline */}
+            <div className="hidden lg:block w-[60px] h-[2px] border-t-[2px] border-[#C62222]"></div>
           </div>
         </div>
-
-        {/* Decorative underline */}
-        <div className="absolute" style={{ width: '60px', height: '2px', left: '996px', top: '277px', borderTop: '2px solid #C62222' }}></div>
       </main>
 
       <Footer />
