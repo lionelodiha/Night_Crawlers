@@ -50,11 +50,11 @@ const Footer: React.FC = () => {
 
       {/* Red bar */}
       <div className="w-full bg-[#C62222] mt-[61px] rounded-b-[4px]">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between w-full max-w-[1467px] mx-auto px-4 sm:px-[41px] pt-[12px] pb-[8px] overflow-hidden">
-          <p className="text-white text-[14px] sm:text-[16px] md:text-[18px] leading-[24px] sm:leading-[30px] tracking-normal font-poppins m-[3px_0_0] w-full sm:w-[200px] md:w-[296px] h-auto sm:h-[27px] mb-4 sm:mb-0">
+        <div className="flex flex-row items-center justify-between w-full max-w-[1467px] mx-auto px-4 sm:px-[41px] pt-[12px] pb-[8px] overflow-hidden">
+          <p className="text-white text-[12px] sm:text-[16px] md:text-[18px] leading-[24px] sm:leading-[30px] tracking-normal font-poppins m-0 w-auto">
             © 2026 Night Crawlers.inc
           </p>
-          <div className="flex items-center justify-between w-[120px] sm:w-[150px] md:w-[186px] h-[30px] sm:h-[31px]">
+          <div className="flex items-center gap-3 sm:gap-4 md:gap-6">
             <img src={instagramIcon} alt="Instagram" className="w-[25px] h-[25px] sm:w-[28px] sm:h-[28px] md:w-[30px] md:h-[30px]" />
             <img src={whatsappIcon} alt="WhatsApp" className="w-[25px] h-[25px] sm:w-[28px] sm:h-[28px] md:w-[30px] md:h-[30px]" />
             <img src={facebookIcon} alt="Facebook" className="w-[25px] h-[25px] sm:w-[28px] sm:h-[28px] md:w-[30px] md:h-[30px]" />

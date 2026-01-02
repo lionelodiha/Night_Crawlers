@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { ShoppingCart, User, Search, MapPin, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft } from 'lucide-react';
-import logo from '../assets/logo.png';
+import { Search, MapPin, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import AddressModal from '../components/modals/AddressModal';
+import { useCart } from '../context/CartContext';
 
 // Mock Data for Menu Items
 const menuItems = [
@@ -22,7 +22,7 @@ const menuItems = [
 ];
 
 const VendorDetails: React.FC = () => {
-  const [cartItems, setCartItems] = useState<Array<{ id: number; name: string; quantity: number; price: number; image: string }>>([]);
+  const { cartItems, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
   const handleOpenAddressModal = () => {
@@ -37,47 +37,26 @@ const VendorDetails: React.FC = () => {
     console.log('Selected address:', address);
   };
 
-  const addToCart = (item: typeof menuItems[0]) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(i => i.id === item.id);
-      if (existingItem) {
-        return prev.map(i => i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i);
-      }
-      return [...prev, { 
-        id: item.id, 
-        name: item.name, 
-        price: item.price, 
-        image: item.image, 
-        quantity: 1 
-      }];
+  const handleAddToCart = (item: typeof menuItems[0]) => {
+    addToCart({
+      id: item.id,
+      name: item.name,
+      price: item.price,
+      image: item.image
     });
   };
 
   const incrementCartItem = (id: number) => {
-    setCartItems(prev => prev.map(i => i.id === id ? { ...i, quantity: i.quantity + 1 } : i));
-  };
-
-  const removeFromCart = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
+    const item = cartItems.find(i => i.id === id);
+    if (item) updateQuantity(id, item.quantity + 1);
   };
 
   const decrementItem = (id: number) => {
-    setCartItems(prev => {
-      const existingItem = prev.find(i => i.id === id);
-      if (existingItem && existingItem.quantity > 1) {
-        return prev.map(i => i.id === id ? { ...i, quantity: i.quantity - 1 } : i);
-      }
-      // If quantity is 1, do we remove? The design shows a separate delete button, 
-      // so maybe '-' just stops at 1. Let's assume it stops at 1 based on common patterns 
-      // unless user clicks delete. Or we can remove. 
-      // Let's stick to 1 minimum for now since there's a delete button.
-      return prev;
-    });
+    const item = cartItems.find(i => i.id === id);
+    if (item && item.quantity > 1) {
+      updateQuantity(id, item.quantity - 1);
+    }
   };
-
-
-
-  const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins relative overflow-x-hidden">
@@ -88,8 +67,8 @@ const VendorDetails: React.FC = () => {
       <main className="flex-grow w-full max-w-[1440px] mx-auto px-[24px] md:px-[60px] pt-[0px] pb-[100px]">
         
         {/* Top Navigation Row: Search and Location */}
-        <div className="flex flex-col md:flex-row items-center justify-between gap-[12px] sm:gap-[16px] mb-[20px] sm:mb-[24px] mt-[20px] sm:mt-[24px]">
-             <div className="flex items-center w-full sm:w-[280px] md:w-[320px] h-[36px] sm:h-[40px] border border-[#D0D5DD] rounded-[6px] sm:rounded-[8px] overflow-hidden bg-white">
+        <div className="flex flex-row items-center justify-between gap-[10px] md:gap-[20px] mb-[20px] sm:mb-[24px] mt-[20px] sm:mt-[24px]">
+             <div className="flex-1 flex items-center h-[36px] sm:h-[40px] border border-[#D0D5DD] rounded-[6px] sm:rounded-[8px] overflow-hidden bg-white max-w-[400px]">
                 <input
                   type="text"
                   placeholder="Search here"
@@ -104,7 +83,8 @@ const VendorDetails: React.FC = () => {
                 onClick={handleOpenAddressModal}
               >
                 <MapPin className="text-[#C62222]" size={16} fill="#C62222" />
-                <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold">Nmdpra HQ</span>
+                <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold hidden sm:inline">Nmdpra HQ</span>
+                <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold sm:hidden">Address</span>
                 <ChevronDown className="text-[#222222]" size={14} />
               </div>
         </div>
@@ -174,7 +154,7 @@ const VendorDetails: React.FC = () => {
                   <div className="flex items-center justify-between mt-[8px] sm:mt-[12px]">
                     <span className="text-[#222222] text-[12px] sm:text-[14px] font-bold">₦ {item.price.toLocaleString()}</span>
                     <button 
-                      onClick={() => addToCart(item)}
+                      onClick={() => handleAddToCart(item)}
                       className="w-[28px] h-[28px] sm:w-[32px] sm:h-[32px] bg-[#F9FAFB] rounded-full flex items-center justify-center hover:bg-[#EAECF0] transition-colors"
                     >
                       <Plus size={14} className="text-[#667085]" />

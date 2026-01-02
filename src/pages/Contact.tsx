@@ -29,21 +29,23 @@ const Contact: React.FC = () => {
       
       <main className="flex-1 w-full max-w-[1440px] mx-auto pt-0 relative flex flex-col items-start">
 
-        {/* AutoWrapper2 - Title Section */}
-        <div className="relative mt-[16px] lg:ml-[9px] w-full lg:w-[1386px] lg:h-[130px] px-4 lg:px-0">
-            <div className="relative flex flex-col items-start lg:pr-[586px] lg:pl-[32px] w-full lg:w-[1386px] gap-[20px]">
-                <div className="flex flex-col items-start self-stretch gap-[12px]">
-                    <p className="text-[#C62222] text-[16px] font-semibold leading-[24px] font-poppins">Contact us</p>
-                    <h1 className="text-[#101828] text-[32px] font-semibold leading-[44px] tracking-[-0.64px] font-poppins">Chat to our friendly team</h1>
+        {/* Title Section */}
+        <div className="w-full px-4 sm:px-6 lg:px-[32px] mt-8 mb-8 lg:mb-12">
+            <div className="flex flex-col items-start gap-4 lg:gap-5 max-w-3xl">
+                <div className="flex flex-col items-start gap-3">
+                    <p className="text-[#C62222] text-base font-semibold leading-normal font-poppins">Contact us</p>
+                    <h1 className="text-[#101828] text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight font-poppins">
+                        Chat to our friendly team
+                    </h1>
                 </div>
-                <p className="text-[#667085] text-[20px] leading-[30px] font-poppins">
+                <p className="text-[#667085] text-lg sm:text-xl leading-relaxed font-poppins">
                     We’d love to hear from you. Please fill out this form or shoot us an email.
                 </p>
             </div>
         </div>
 
         {/* Main Content Container */}
-        <div className="flex flex-col lg:flex-row items-start gap-[64px] mt-[24px] lg:ml-[10px] w-full lg:w-[1421px]">
+        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16 px-4 sm:px-6 lg:px-[32px] w-full mb-16">
             {/* Left Content - Contact Information */}
             <div className="flex flex-col grow items-start gap-[48px] w-full">
                 {/* Email and Live Chat Row */}

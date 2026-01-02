@@ -9,23 +9,26 @@ const PromotionalBanner: React.FC = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
           
           {/* Left: Red Blob with Image (Figma exact assets) */}
-          <div className="relative w-full max-w-[723px] h-auto min-h-[300px] lg:h-[467px] mx-auto lg:mx-0">
-            <div className="relative scale-75 lg:scale-85 transform" style={{ transformOrigin: 'center' }}>
-              <img src={blobSvg} alt="red vector" className="relative w-full h-auto max-w-[723px] max-h-[467px] z-0" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="relative">
-                  <img src={bowlPng} alt="bowl" className="w-48 h-48 sm:w-56 sm:h-56 lg:w-[368px] lg:h-[368px] object-contain" />
-                  <div className="absolute text-white font-medium text-center px-4" 
-                       style={{ 
-                         top: '60%', 
-                         left: '50%', 
-                         transform: 'translate(-50%, -50%)',
-                         width: 'auto',
-                         maxWidth: '200px',
-                         fontSize: 'clamp(14px, 2.5vw, 18px)'
-                       }}>
+          <div className="relative w-full max-w-[723px] mx-auto lg:mx-0">
+            <div className="relative w-full">
+              <img src={blobSvg} alt="red vector" className="w-full h-auto" />
+              
+              <div className="absolute inset-0 flex items-center justify-between px-[10%] pb-[5%]">
+                {/* Bowl Container - Left Side */}
+                <div className="relative w-[55%] h-full flex items-center justify-center">
+                  <img 
+                    src={bowlPng} 
+                    alt="bowl" 
+                    className="w-full h-auto object-contain drop-shadow-lg" 
+                  />
+                </div>
+
+                {/* Text Container - Right Side */}
+                <div className="relative w-[40%] flex items-center">
+                  <p className="text-white font-medium leading-snug text-left"
+                     style={{ fontSize: 'clamp(12px, 2.5vw, 20px)' }}>
                     We only offer the best service in town!
-                  </div>
+                  </p>
                 </div>
               </div>
             </div>

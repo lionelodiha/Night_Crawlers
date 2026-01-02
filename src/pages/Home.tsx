@@ -15,6 +15,7 @@ const Home: React.FC = () => {
       
       <main>
         <HeroSection />
+        <div style={{ height: '100px' }} />
         <IntroSection />
         <VendorShowcase />
         <FeaturesSection />

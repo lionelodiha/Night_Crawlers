@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { ShoppingCart, User, Search, MapPin, ChevronDown, ShoppingBasket, Pill, Disc, Utensils, Wine, X, Clock, Heart, Trash2 } from 'lucide-react';
+import { Search, MapPin, ChevronDown, ShoppingBasket, Pill, Disc, Utensils, Wine, X, Clock, Heart, Trash2 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import AddressModal from '../components/modals/AddressModal';
+import { useCart } from '../context/CartContext';
 // import promoBanner from '../assets/signin-image.png'; // Using placeholder for now, ideally would be specific promo image
 
 interface CategoryItemProps {
@@ -70,7 +70,7 @@ const Explore: React.FC = () => {
   const navigate = useNavigate();
   const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
-  const [cartItems, setCartItems] = useState<Array<{ id: number; name: string; quantity: number; price: number; image: string }>>([]);
+  const { cartItems, removeFromCart, clearCart, cartTotal } = useCart();
 
   const handleOpenAddressModal = () => {
     setIsAddressModalOpen(true);
@@ -93,16 +93,6 @@ const Explore: React.FC = () => {
     navigate('/vendor-details');
   };
 
-  const removeFromCart = (id: number) => {
-    setCartItems(prev => prev.filter(item => item.id !== id));
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
-
-  const cartTotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
-
   // Mock data for stores
   const stores = Array(4).fill(null).map(() => ({
     name: 'Amala Central Foods',
@@ -121,15 +111,15 @@ const Explore: React.FC = () => {
             {/* Left Column (Main) */}
             <div className={`flex-grow transition-all duration-300 ${isCartOpen ? 'lg:mr-[400px]' : ''}`}>
                 {/* Search and Address Row */}
-                <div className="flex flex-col md:flex-row items-center justify-between gap-[16px] md:gap-[20px] mb-[40px] md:mb-[60px]">
+                <div className="flex flex-row items-center justify-between gap-[10px] md:gap-[20px] mb-[40px] md:mb-[60px]">
                     {/* Search Bar */}
-                    <div className="flex items-center w-full max-w-[280px] md:max-w-[320px] h-[36px] md:h-[40px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
+                    <div className="flex items-center flex-1 h-[40px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
                         <input
                             type="text"
-                            placeholder="Search here"
-                            className="flex-grow h-full px-[12px] md:px-[16px] text-[12px] md:text-[13px] text-[#667085] bg-transparent outline-none placeholder:text-[#98A2B3]"
+                            placeholder="Search"
+                            className="flex-grow h-full px-[12px] md:px-[16px] text-[12px] md:text-[13px] text-[#667085] bg-transparent outline-none placeholder:text-[#98A2B3] min-w-0"
                         />
-                        <button className="w-[36px] md:w-[40px] h-full bg-[#C62222] flex items-center justify-center text-white hover:bg-[#A01B1B] transition-colors">
+                        <button className="w-[36px] md:w-[40px] h-full bg-[#C62222] flex items-center justify-center text-white hover:bg-[#A01B1B] transition-colors shrink-0">
                             <Search size={16} />
                         </button>
                     </div>
@@ -137,10 +127,11 @@ const Explore: React.FC = () => {
                     {/* Address Selector */}
                     <div 
                         onClick={handleOpenAddressModal}
-                        className="flex items-center gap-[6px] md:gap-[8px] cursor-pointer hover:opacity-80"
+                        className="flex items-center gap-[6px] md:gap-[8px] cursor-pointer hover:opacity-80 shrink-0"
                     >
-                        <MapPin className="text-[#C62222]" size={16} fill="#C62222" />
-                        <span className="text-[#344054] text-[13px] md:text-[15px] font-medium">Select address</span>
+                        <MapPin className="text-[#C62222]" size={18} fill="#C62222" />
+                        <span className="text-[#344054] text-[13px] md:text-[15px] font-medium hidden sm:block">Select address</span>
+                        <span className="text-[#344054] text-[13px] md:text-[15px] font-medium sm:hidden">Address</span>
                         <ChevronDown className="text-[#344054]" size={14} />
                     </div>
                 </div>
@@ -148,50 +139,60 @@ const Explore: React.FC = () => {
                 {/* Explore Categories */}
                 <div className="mb-[40px] md:mb-[60px]">
                     <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">Explore Categories</h2>
-                    <div className="flex flex-wrap items-center justify-center md:justify-between gap-[12px] md:gap-[16px] px-[12px] md:px-[20px]">
-                        <CategoryItem 
-                            name="Groceries" 
-                            icon={<ShoppingBasket />} 
-                            bgColor="bg-[#FEE4E2]" 
-                            blobShape="45% 55% 40% 60% / 55% 45% 55% 45%"
-                            iconColor="text-[#C62222]"
-                        />
-                        <CategoryItem 
-                            name="Pharmacy" 
-                            icon={<Pill />} 
-                            bgColor="bg-[#D1FADF]" 
-                            blobShape="55% 45% 60% 40% / 40% 60% 40% 60%"
-                            iconColor="text-[#039855]"
-                        />
-                        <CategoryItem 
-                            name="Clubs/Lounges" 
-                            icon={<Disc />} 
-                            bgColor="bg-[#D9D6FE]" 
-                            blobShape="40% 60% 55% 45% / 55% 45% 55% 45%"
-                            iconColor="text-[#7A5AF8]"
-                        />
-                        <CategoryItem 
-                            name="Food" 
-                            icon={<Utensils />} 
-                            bgColor="bg-[#FEE4E2]" 
-                            blobShape="60% 40% 45% 55% / 45% 55% 45% 55%"
-                            iconColor="text-[#C62222]"
-                            onClick={handleStoreClick}
-                        />
-                        <CategoryItem 
-                            name="Drinks" 
-                            icon={<Wine />} 
-                            bgColor="bg-[#FEF0C7]" 
-                            blobShape="50% 50% 60% 40% / 50% 60% 40% 60%"
-                            iconColor="text-[#DC6803]"
-                        />
+                    <div className="flex flex-wrap items-start justify-center gap-y-[24px] gap-x-[12px] md:gap-[16px] px-0">
+                        <div className="w-[30%] sm:w-auto flex justify-center">
+                            <CategoryItem 
+                                name="Groceries" 
+                                icon={<ShoppingBasket />} 
+                                bgColor="bg-[#FEE4E2]" 
+                                blobShape="45% 55% 40% 60% / 55% 45% 55% 45%"
+                                iconColor="text-[#C62222]"
+                            />
+                        </div>
+                        <div className="w-[30%] sm:w-auto flex justify-center">
+                            <CategoryItem 
+                                name="Pharmacy" 
+                                icon={<Pill />} 
+                                bgColor="bg-[#D1FADF]" 
+                                blobShape="55% 45% 60% 40% / 40% 60% 40% 60%"
+                                iconColor="text-[#039855]"
+                            />
+                        </div>
+                        <div className="w-[30%] sm:w-auto flex justify-center">
+                            <CategoryItem 
+                                name="Clubs/Lounges" 
+                                icon={<Disc />} 
+                                bgColor="bg-[#D9D6FE]" 
+                                blobShape="40% 60% 55% 45% / 55% 45% 55% 45%"
+                                iconColor="text-[#7A5AF8]"
+                            />
+                        </div>
+                        <div className="w-[30%] sm:w-auto flex justify-center">
+                            <CategoryItem 
+                                name="Food" 
+                                icon={<Utensils />} 
+                                bgColor="bg-[#FEE4E2]" 
+                                blobShape="60% 40% 45% 55% / 45% 55% 45% 55%"
+                                iconColor="text-[#C62222]"
+                                onClick={handleStoreClick}
+                            />
+                        </div>
+                        <div className="w-[30%] sm:w-auto flex justify-center">
+                            <CategoryItem 
+                                name="Drinks" 
+                                icon={<Wine />} 
+                                bgColor="bg-[#FEF0C7]" 
+                                blobShape="50% 50% 60% 40% / 50% 60% 40% 60%"
+                                iconColor="text-[#DC6803]"
+                            />
+                        </div>
                     </div>
                 </div>
 
                 {/* All Stores */}
                 <div className="mb-[40px] md:mb-[60px]">
                     <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">All Stores</h2>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[16px] md:gap-[20px] lg:gap-[24px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[16px] md:gap-[20px] lg:gap-[24px] justify-items-center">
                         {stores.map((store, index) => (
                             <StoreCard 
                                 key={index} 
@@ -205,13 +206,23 @@ const Explore: React.FC = () => {
                 {/* Promos */}
                 <div className="mb-[40px]">
                     <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">Promos</h2>
-                    <div className="flex gap-[16px] md:gap-[20px] lg:gap-[24px] overflow-x-auto pb-4">
-                        <div className="min-w-[280px] sm:min-w-[350px] md:min-w-[450px] lg:min-w-[500px] h-[180px] sm:h-[200px] md:h-[220px] lg:h-[250px] rounded-[12px] md:rounded-[16px] overflow-hidden relative bg-[#C62222]">
-                            <div className="absolute inset-0 flex items-center justify-center text-white text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] font-bold text-center px-4">
-                                50% OFF <br/> ON KFC BUCKETS
-                            </div>
+                    <div className="relative w-full overflow-hidden rounded-[12px] md:rounded-[16px]">
+                        <div className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-4">
+                            {[1, 2, 3].map((_, idx) => (
+                                <div key={idx} className="snap-center shrink-0 w-full md:w-[80%] lg:w-[60%] h-[180px] sm:h-[200px] md:h-[250px] rounded-[12px] md:rounded-[16px] overflow-hidden relative">
+                                    <img 
+                                        src={`https://picsum.photos/seed/promo${idx}/800/400`} 
+                                        alt={`Promo ${idx + 1}`} 
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                        <h3 className="text-white text-2xl md:text-4xl font-bold text-center px-4 drop-shadow-lg">
+                                            {idx === 0 ? '50% OFF KFC BUCKETS' : idx === 1 ? 'FREE DELIVERY' : 'BUY 1 GET 1 FREE'}
+                                        </h3>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                        <div className="min-w-[280px] sm:min-w-[350px] md:min-w-[450px] lg:min-w-[500px] h-[180px] sm:h-[200px] md:h-[220px] lg:h-[250px] rounded-[12px] md:rounded-[16px] overflow-hidden bg-[#FFD700]"></div>
                     </div>
                 </div>
             </div>
