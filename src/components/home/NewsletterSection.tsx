@@ -26,7 +26,7 @@ const NewsletterSection: React.FC = () => {
 
   return (
     <section className="flex justify-center w-full py-12 lg:py-16 px-4">
-      <div className="flex flex-col lg:flex-row items-center w-full max-w-6xl h-auto lg:h-[442px] px-6 lg:px-7 bg-[#f9fafb0d] border border-[#eaecf0] rounded-xl lg:rounded-[10px] shadow-[4px_4px_15px_2px_rgba(168,166,166,0.32)] overflow-hidden gap-8 lg:gap-[392px]">
+      <div className="flex flex-col lg:flex-row items-center w-full max-w-6xl h-auto lg:h-[442px] px-6 py-10 lg:py-0 lg:px-7 bg-[#f9fafb0d] border border-[#eaecf0] rounded-xl lg:rounded-[10px] shadow-[4px_4px_15px_2px_rgba(168,166,166,0.32)] overflow-hidden gap-8 lg:gap-[392px]">
         {/* Left Column: Text & Input */}
         <div className="flex flex-col items-start gap-6 w-full lg:w-[448px] text-center lg:text-left">
           <h2 className="text-[#222222] text-2xl sm:text-3xl lg:text-[48px] font-semibold leading-tight lg:leading-[58px] tracking-[-0.96px] font-poppins m-0">

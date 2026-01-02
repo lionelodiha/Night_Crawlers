@@ -24,7 +24,7 @@ const PromotionalBanner: React.FC = () => {
                 </div>
 
                 {/* Text Container - Right Side */}
-                <div className="relative w-[40%] flex items-center">
+                <div className="relative w-[40%] flex items-center mt-8 sm:mt-12">
                   <p className="text-white font-medium leading-snug text-left"
                      style={{ fontSize: 'clamp(12px, 2.5vw, 20px)' }}>
                     We only offer the best service in town!
@@ -35,7 +35,7 @@ const PromotionalBanner: React.FC = () => {
           </div>
 
           {/* Right: Text Content */}
-          <div className="lg:pl-4 lg:pl-10">
+          <div className="lg:pl-4 lg:pl-10 text-center lg:text-left">
             <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-night-dark-900 mb-4 md:mb-6 leading-tight">
               Redefining Convenience,<br />
               One Delivery at a Time.
