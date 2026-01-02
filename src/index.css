@@ -74,6 +74,22 @@
   .nav-link-wavy.active {
     @apply text-night-dark-900 font-semibold;
   }
+
+  .nav-link-home::after {
+    background-image: url('./assets/nav-underline-home.svg');
+  }
+
+  .nav-link-contact::after {
+    background-image: url('./assets/nav-underline-contact.svg');
+  }
+
+  .nav-link-vendors::after {
+    background-image: url('./assets/nav-underline-vendors.svg');
+  }
+
+  .nav-link-faq::after {
+    background-image: url('./assets/nav-underline-faq.svg');
+  }
 }
 
 /* Utility Classes */

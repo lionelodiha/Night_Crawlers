@@ -18,28 +18,45 @@ const Header: React.FC = () => {
           <div className="flex items-center justify-between h-16 lg:h-20">
             {/* Logo */}
             <div className="relative flex items-center">
-              <Link to="/" className="block relative w-32 sm:w-40 md:w-48 h-12 sm:h-16 overflow-visible">
+              <Link to="/" className="block relative w-40 sm:w-48 md:w-56 h-14 sm:h-16 overflow-visible">
                 <img
                   src={logo}
                   alt="Night Crawlers"
-                  className="absolute left-0 top-[52%] -translate-y-1/2 h-[150px] sm:h-[200px] md:h-[244px] w-auto object-contain select-none drop-shadow-sm"
+                  className="absolute left-0 top-[52%] -translate-y-1/2 h-[180px] sm:h-[200px] md:h-[244px] w-auto object-contain select-none drop-shadow-sm"
                 />
               </Link>
             </div>
 
             {/* Desktop Navigation */}
             <nav className="hidden lg:flex justify-center items-center space-x-8 xl:space-x-12">
-              {NAVIGATION_LINKS.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className={`nav-link-wavy text-base lg:text-lg ${
-                    location.pathname === link.href ? 'active' : ''
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {NAVIGATION_LINKS.map((link) => {
+                const getUnderlineClass = (linkName: string) => {
+                  switch (linkName) {
+                    case 'Home':
+                      return 'nav-link-home';
+                    case 'Contact Us':
+                      return 'nav-link-contact';
+                    case 'Vendors':
+                      return 'nav-link-vendors';
+                    case 'FAQs':
+                      return 'nav-link-faq';
+                    default:
+                      return 'nav-link-home';
+                  }
+                };
+
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className={`nav-link-wavy text-base lg:text-lg ${getUnderlineClass(link.name)} ${
+                      location.pathname === link.href ? 'active' : ''
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
             </nav>
 
             {/* Desktop Action Buttons */}
