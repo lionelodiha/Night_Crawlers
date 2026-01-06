@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 
 interface FormData {
@@ -40,7 +39,6 @@ const VendorSignUp: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins overflow-x-hidden">
-      <Header />
 
       <main className="relative w-full bg-white" style={{ position: 'relative', width: '1440px', height: '1024px' }}>
         {/* Logo */}
@@ -65,7 +63,7 @@ const VendorSignUp: React.FC = () => {
           }}
         >
           <span className="text-[#222222] font-poppins text-[18px] font-normal leading-5">Already a partner?</span>
-          <button onClick={() => navigate('/signin')} className="text-[#C62222] text-[18px] font-normal leading-5 hover:underline ml-2">Log in</button>
+          <button onClick={() => navigate('/vendor-signin')} className="text-[#C62222] text-[18px] font-normal leading-5 hover:underline ml-2">Log in</button>
         </div>
 
         {/* Main content container */}

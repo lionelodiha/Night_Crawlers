@@ -9,7 +9,7 @@ const VendorsHeroSection: React.FC = () => {
   };
 
   const handleContinueShopping = () => {
-    navigate('/');
+    navigate('/vendor-signin');
   };
 
   return (
