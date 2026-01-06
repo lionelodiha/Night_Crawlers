@@ -126,37 +126,27 @@ const AddRestaurantForm: React.FC<AddRestaurantFormProps> = ({ onSubmit }) => {
           />
         </div>
 
-        {/* Cover Image Upload */}
-        <div className="w-full">
-          <label className="block text-sm font-medium text-night-gray-700 mb-1">
-            Cover Image URL *
-          </label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="w-full px-4 py-3 border border-night-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-night-red-500 focus:border-transparent transition-colors duration-200"
-            required
-          />
-          
-          {/* Image Preview */}
-          {imagePreview && (
-            <div className="mt-4 relative w-full h-40 rounded-lg overflow-hidden bg-gray-100">
-              <img
-                src={imagePreview}
-                alt="Preview"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-        </div>
+        {/* Cover Image URL (text) */}
+        <Input
+          label="Cover Image URL *"
+          name="coverImageUrl"
+          type="text"
+          placeholder="https://example.com/cover.jpg"
+          value={(formData as any).coverImageUrl || ''}
+          onChange={(e: any) => setFormData(prev => ({ ...prev, coverImage: e.target.value }))}
+          className="bg-gray-100"
+          required
+        />
 
         {/* Submit Button */}
         <Button
           type="submit"
           variant="primary"
-          className="w-full py-3"
+          className="w-full py-3 flex items-center justify-center gap-2"
         >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v14m7-7H5" />
+          </svg>
           Add Restaurant
         </Button>
       </form>

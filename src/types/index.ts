@@ -55,5 +55,5 @@ export interface AddRestaurantForm {
   categories: string;
   address: string;
   description: string;
-  coverImage?: File;
+  coverImage?: File | string;
 }

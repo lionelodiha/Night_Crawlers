@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Search, MapPin, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
-import AddressModal from '../components/modals/AddressModal';
 import { useCart } from '../context/CartContext';
 
 // Mock Data for Menu Items
@@ -23,19 +22,6 @@ const menuItems = [
 
 const VendorDetails: React.FC = () => {
   const { cartItems, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
-  const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-
-  const handleOpenAddressModal = () => {
-    setIsAddressModalOpen(true);
-  };
-
-  const handleCloseAddressModal = () => {
-    setIsAddressModalOpen(false);
-  };
-
-  const handleSelectAddress = (address: string) => {
-    console.log('Selected address:', address);
-  };
 
   const handleAddToCart = (item: typeof menuItems[0]) => {
     addToCart({
@@ -62,7 +48,6 @@ const VendorDetails: React.FC = () => {
     <div className="min-h-screen bg-white flex flex-col font-poppins relative overflow-x-hidden">
       <Header />
 
-
       {/* Main Content */}
       <main className="flex-grow w-full max-w-[1440px] mx-auto px-[24px] md:px-[60px] pt-[0px] pb-[100px]">
         
@@ -78,10 +63,7 @@ const VendorDetails: React.FC = () => {
                   <Search size={16} className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
-              <div 
-                className="flex items-center gap-[3px] sm:gap-[4px] cursor-pointer hover:opacity-80"
-                onClick={handleOpenAddressModal}
-              >
+              <div className="flex items-center gap-[3px] sm:gap-[4px]">
                 <MapPin className="text-[#C62222]" size={16} fill="#C62222" />
                 <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold hidden sm:inline">Nmdpra HQ</span>
                 <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold sm:hidden">Address</span>
@@ -245,18 +227,9 @@ const VendorDetails: React.FC = () => {
             )}
           </div>
         </div>
-      </div>
-
       </main>
 
       <Footer />
-
-      {/* Address Modal */}
-      <AddressModal 
-        isOpen={isAddressModalOpen}
-        onClose={handleCloseAddressModal}
-        onSelectAddress={handleSelectAddress}
-      />
     </div>
   );
 };

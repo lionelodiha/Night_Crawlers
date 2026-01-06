@@ -37,10 +37,19 @@ const VendorDashboard: React.FC = () => {
   ]);
 
   const handleAddRestaurant = (formData: IAddRestaurantForm) => {
-    // Create image URL from file (in real app, upload to server)
-    const imageUrl = formData.coverImage 
-      ? URL.createObjectURL(formData.coverImage)
-      : 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+    // Create image URL from file or use provided URL (in real app, upload to server)
+    let imageUrl = 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop';
+    if (formData.coverImage) {
+      if (typeof formData.coverImage === 'string') {
+        imageUrl = formData.coverImage;
+      } else {
+        try {
+          imageUrl = URL.createObjectURL(formData.coverImage as File);
+        } catch (e) {
+          // fallback to default
+        }
+      }
+    }
 
     const newRestaurant: Restaurant = {
       id: Date.now().toString(),
@@ -69,16 +78,16 @@ const VendorDashboard: React.FC = () => {
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 bg-night-red-600 rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-[#FEECEC] rounded-md flex items-center justify-center">
                 <svg
-                  className="w-5 h-5 text-white"
+                  className="w-5 h-5 text-night-red-600"
                   fill="currentColor"
                   viewBox="0 0 20 20"
                 >
                   <path d="M10.5 1.5H5.5a2 2 0 00-2 2v13a2 2 0 002 2h9a2 2 0 002-2v-9" />
                 </svg>
               </div>
-              <h1 className="text-3xl font-bold text-gray-900">
+              <h1 className="text-3xl font-bold text-night-red-600">
                 Vendor Dashboard
               </h1>
             </div>

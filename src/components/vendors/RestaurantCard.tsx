@@ -11,9 +11,9 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
   onManage 
 }) => {
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden hover:shadow-lg transition-shadow duration-200">
       {/* Image Container */}
-      <div className="relative h-48 overflow-hidden bg-gray-200">
+      <div className="relative h-56 overflow-hidden bg-gray-200">
         <img
           src={restaurant.coverImage}
           alt={restaurant.altText}
@@ -27,13 +27,13 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           <h3 className="text-lg font-semibold text-gray-900">
             {restaurant.name}
           </h3>
-          <span className="inline-block px-3 py-1 text-xs font-medium text-night-red-600 bg-red-50 rounded-full">
-            Manage
+          <span className="inline-block px-2 py-1 text-[11px] font-medium text-[#E76B6B] bg-[#FFF0F0] rounded-md">
+            {restaurant.categories && restaurant.categories.length > 0 ? restaurant.categories[0] : 'Amala'}
           </span>
         </div>
 
         {/* Address */}
-        <div className="flex items-start gap-2 mb-3">
+        <div className="flex items-start gap-2 mb-3 text-sm text-gray-600">
           <svg
             className="w-4 h-4 mt-0.5 text-gray-500 flex-shrink-0"
             fill="none"
@@ -53,7 +53,7 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
               d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
             />
           </svg>
-          <p className="text-sm text-gray-600">
+          <p>
             {restaurant.address}
           </p>
         </div>
@@ -65,18 +65,6 @@ const RestaurantCard: React.FC<RestaurantCardProps> = ({
           </p>
         )}
       </div>
-
-      {/* Action Button */}
-      {onManage && (
-        <div className="px-4 pb-4">
-          <button
-            onClick={() => onManage(restaurant.id)}
-            className="w-full py-2 px-4 text-sm font-medium text-night-red-600 hover:bg-red-50 rounded-lg transition-colors duration-200"
-          >
-            Manage Restaurant
-          </button>
-        </div>
-      )}
     </div>
   );
 };
