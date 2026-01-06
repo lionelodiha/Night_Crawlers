@@ -31,7 +31,6 @@ const SignUp: React.FC = () => {
     
     setIsSubmitting(true);
     
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       alert('Account created successfully!');
@@ -39,33 +38,32 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-white">
-      {/* Left Side - Image (Fixed width as per design) */}
-      <div className="hidden md:block w-[852px] h-full flex-shrink-0">
-        <img src={signupImage} alt="Sign Up" className="w-full h-full object-cover" />
-      </div>
+    <div className="h-screen w-full overflow-hidden bg-white">
+      <div className="flex h-full">
+        {/* Left Side - Image (Hidden on mobile) */}
+        <div className="hidden lg:block lg:w-1/2 xl:w-[60%] h-full">
+          <img src={signupImage} alt="Sign Up" className="w-full h-full object-cover" />
+        </div>
 
-      {/* Right Side - Form */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden">
-        {/* Main Content Centered */}
-        <div className="flex-1 flex flex-col justify-center px-10 py-6">
-          <div className="w-full max-w-[340px] mx-auto">
-            
+        {/* Right Side - Form */}
+        <div className="flex-1 flex flex-col justify-between p-4 sm:p-6 md:p-8 lg:p-10">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-[320px] sm:max-w-[340px]">
             {/* Header Section */}
-            <div className="flex flex-col items-center text-center mb-3">
-              <Link to="/" className="block">
-                <img src={signupLogo} alt="Night Crawlers" className="w-[200px] h-auto object-contain -mb-12" />
+            <div className="flex flex-col items-center text-center mb-3 sm:mb-4">
+              <Link to="/" className="block mb-2 sm:mb-3">
+                <img src={signupLogo} alt="Night Crawlers" className="w-[120px] sm:w-[140px] md:w-[160px] h-auto object-contain" />
               </Link>
-              <h1 className="text-xl font-bold text-[#222222] mb-1 whitespace-nowrap">
+              <h1 className="text-sm sm:text-base font-bold text-[#222222] mb-1 whitespace-nowrap">
                 Start Your Night Crawlers Journey
               </h1>
-              <p className="text-[#667085] text-xs leading-relaxed max-w-sm">
+              <p className="text-[#667085] text-xs leading-tight max-w-sm">
                 Sign up to enjoy fast delivery, exclusive offers, and a personalized Night Crawlers experience!
               </p>
             </div>
 
             {/* Form Section */}
-            <form onSubmit={handleSubmit} className="space-y-2.5">
+            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
               <div className="space-y-1">
                 <label className="block text-xs font-semibold text-[#344054]">Username*</label>
                 <Input
@@ -74,7 +72,7 @@ const SignUp: React.FC = () => {
                   placeholder="Enter your username"
                   value={formData.username}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-sm focus:ring-1 focus:ring-[#C62222] focus:border-[#C62222]"
+                  className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-xs focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222]"
                   required
                 />
               </div>
@@ -87,7 +85,7 @@ const SignUp: React.FC = () => {
                   placeholder="Enter your phone number"
                   value={formData.phone}
                   onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-sm focus:ring-1 focus:ring-[#C62222] focus:border-[#C62222]"
+                  className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-xs focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222]"
                   required
                 />
               </div>
@@ -101,51 +99,55 @@ const SignUp: React.FC = () => {
                     placeholder="Create a password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-sm focus:ring-1 focus:ring-[#C62222] focus:border-[#C62222] pr-9"
+                    className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-xs focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] pr-8"
                     required
                   />
-                  <img src={helpCircle} alt="help" className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 opacity-60" />
+                  <img src={helpCircle} alt="help" className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-60" />
                 </div>
               </div>
 
               <div className="space-y-1">
                 <label className="block text-xs font-semibold text-[#344054]">Confirm Password*</label>
-                <Input
-                  type="password"
-                  name="confirmPassword"
-                  placeholder="Confirm password"
-                  value={formData.confirmPassword}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-sm focus:ring-1 focus:ring-[#C62222] focus:border-[#C62222]"
-                  required
-                />
-                <p className="text-[11px] text-[#667085] mt-1">Must be at least 8 characters.</p>
+                <div className="relative">
+                  <Input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-xs focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] pr-8"
+                    required
+                  />
+                  <img src={helpCircle} alt="help" className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 opacity-60" />
+                </div>
+                <p className="text-[10px] text-[#98A2B3]">Must be at least 8 characters.</p>
               </div>
 
-              <button 
-                type="submit" 
-                disabled={isSubmitting} 
-                className="w-full h-10 bg-[#C62222] hover:bg-[#a51d1d] text-white text-base font-medium rounded-md shadow-md transition-colors mt-3"
+              {/* Submit Button */}
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
               >
-                Create Account
+                {isSubmitting ? 'Creating Account...' : 'Create Account'}
               </button>
-
-              <div className="text-center mt-3">
-                <span className="text-[#222222] text-xs">Already have an account? </span>
-                <Link to="/signin" className="text-[#C62222] font-medium text-xs hover:underline ml-1">
-                  Log In
-                </Link>
-              </div>
             </form>
-          </div>
-        </div>
 
-        {/* Footer */}
-        <div className="w-full h-16 px-8 pb-4 flex justify-between items-end bg-white mt-auto flex-shrink-0">
-          <p className="text-sm text-[#667085] font-poppins">© Night Crawlers 2026.inc</p>
-          <div className="flex items-center gap-2">
-            <img src={mailIcon} alt="mail" className="w-4 h-4" />
-            <a href="mailto:help@nightcrawlers.com" className="text-sm text-[#667085] font-poppins hover:text-[#344054]">
+            {/* Sign In Link */}
+            <div className="mt-3 text-center">
+              <p className="text-xs text-[#667085]">
+                Already have an account?{' '}
+                <Link to="/signin" className="text-[#C62222] hover:underline font-medium">
+                  Log in
+                </Link>
+              </p>
+            </div>
+          </div>
+          </div>
+          <div className="w-full flex items-center justify-between text-xs text-[#667085] px-1">
+            <span>© Night Crawlers 2026, inc</span>
+            <a href="mailto:help@nightcrawlers.com" className="flex items-center gap-2 hover:text-[#C62222]">
+              <img src={mailIcon} alt="" className="w-3.5 h-3.5" />
               help@nightcrawlers.com
             </a>
           </div>

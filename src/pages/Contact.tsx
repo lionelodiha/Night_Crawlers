@@ -1,122 +1,180 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
-import Input from '../components/ui/Input';
-
-// Assets
-// Removed decorative vector and background logo to avoid duplication
-import iconMail from '../assets/contact/icon-mail.svg';
-import iconChat from '../assets/contact/icon-chat.svg';
-import iconPhone from '../assets/contact/icon-phone.svg';
+import { Mail, MessageCircle, Phone } from 'lucide-react';
 
 const Contact: React.FC = () => {
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    message: ''
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    console.log('Form submitted:', formData);
+  };
+
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins overflow-x-hidden">
       <Header />
       
       <main className="flex-1 w-full max-w-[1440px] mx-auto pt-0 relative flex flex-col items-start">
 
-        {/* AutoWrapper2 - Title Section */}
-        <div className="relative mt-[16px] lg:ml-[9px] w-full lg:w-[1386px] lg:h-[130px] px-4 lg:px-0">
-            <div className="relative flex flex-col items-start lg:pr-[586px] lg:pl-[32px] w-full lg:w-[1386px] gap-[20px]">
-                <div className="flex flex-col items-start self-stretch gap-[12px]">
-                    <p className="text-[#C62222] text-[16px] font-semibold leading-[24px] font-poppins">Contact us</p>
-                    <h1 className="text-[#101828] text-[32px] font-semibold leading-[44px] tracking-[-0.64px] font-poppins">Chat to our friendly team</h1>
+        {/* Title Section */}
+        <div className="w-full px-4 sm:px-6 lg:px-[32px] mt-8 mb-8 lg:mb-12">
+            <div className="flex flex-col items-start gap-4 lg:gap-5 max-w-3xl">
+                <div className="flex flex-col items-start gap-3">
+                    <p className="text-[#C62222] text-base font-semibold leading-normal font-poppins">Contact us</p>
+                    <h1 className="text-[#101828] text-3xl sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight font-poppins">
+                        Chat to our friendly team
+                    </h1>
                 </div>
-                <p className="text-[#667085] text-[20px] leading-[30px] font-poppins">
+                <p className="text-[#667085] text-lg sm:text-xl leading-relaxed font-poppins">
                     We’d love to hear from you. Please fill out this form or shoot us an email.
                 </p>
             </div>
         </div>
 
-        {/* Container - Main Content */}
-        <div className="flex flex-col lg:flex-row items-start gap-[64px] mt-[24px] lg:ml-[10px] p-[32px] w-full lg:w-[1358px]">
-            {/* Left Content */}
+        {/* Main Content Container */}
+        <div className="flex flex-col lg:flex-row items-start gap-12 lg:gap-16 px-4 sm:px-6 lg:px-[32px] w-full mb-16">
+            {/* Left Content - Contact Information */}
             <div className="flex flex-col grow items-start gap-[48px] w-full">
-                {/* Email Row */}
+                {/* Email and Live Chat Row */}
                 <div className="flex flex-col sm:flex-row items-start self-stretch gap-[32px]">
+                    {/* Email Contact */}
                     <div className="flex flex-col grow items-start gap-[16px]">
-                         <img src={iconMail} alt="Email" className="w-[24px] h-[24px]" />
-                         <div className="flex flex-col items-start self-stretch gap-[8px]">
+                        <div className="w-[24px] h-[24px] bg-white rounded-full flex items-center justify-center">
+                            <Mail className="w-[20px] h-[16px] text-[#C62222]" />
+                        </div>
+                        <div className="flex flex-col items-start self-stretch gap-[8px]">
                             <p className="text-[#101828] text-[20px] font-medium leading-[30px] font-poppins">Email</p>
                             <p className="text-[#667085] text-[16px] leading-[24px] font-poppins">Our friendly team is here to help.</p>
-                         </div>
-                         <a href="mailto:help@nightcrawlers.com" className="text-[#C62222] text-[16px] font-medium leading-[24px] font-poppins">help@nightcrawlers.com</a>
+                        </div>
+                        <a href="mailto:help@nightcrawlers.com" className="text-[#C62222] text-[16px] font-medium leading-[24px] font-poppins hover:underline">help@nightcrawlers.com</a>
                     </div>
                     
+                    {/* Live Chat Contact */}
                     <div className="flex flex-col grow items-start gap-[16px]">
-                         <img src={iconChat} alt="Chat" className="w-[24px] h-[24px]" />
-                         <div className="flex flex-col items-start self-stretch gap-[8px]">
+                        <div className="w-[24px] h-[24px] bg-white rounded-full flex items-center justify-center">
+                            <MessageCircle className="w-[18px] h-[18px] text-[#C62222]" />
+                        </div>
+                        <div className="flex flex-col items-start self-stretch gap-[8px]">
                             <p className="text-[#101828] text-[20px] font-medium leading-[30px] font-poppins">Live chat</p>
                             <p className="text-[#667085] text-[16px] leading-[24px] font-poppins">Our friendly team is here to help.</p>
-                         </div>
-                         <a href="#" className="text-[#C62222] text-[16px] font-medium leading-[24px] font-poppins">Start new chat</a>
+                        </div>
+                        <a href="#" className="text-[#C62222] text-[16px] font-medium leading-[24px] font-poppins hover:underline">Start new chat</a>
                     </div>
                 </div>
 
-                {/* Phone Row */}
+                {/* Phone Contact */}
                 <div className="flex flex-col items-start self-stretch gap-[16px]">
-                     <img src={iconPhone} alt="Phone" className="w-[24px] h-[24px]" />
-                     <div className="flex flex-col items-start self-stretch gap-[8px]">
+                    <div className="w-[24px] h-[24px] bg-white rounded-full flex items-center justify-center">
+                        <Phone className="w-[20px] h-[16px] text-[#C62222]" />
+                    </div>
+                    <div className="flex flex-col items-start self-stretch gap-[8px]">
                         <p className="text-[#101828] text-[20px] font-medium leading-[30px] font-poppins">Phone</p>
                         <p className="text-[#667085] text-[16px] leading-[24px] font-poppins">Mon-Fri from 8am to 5pm.</p>
-                     </div>
-                     <a href="tel:+15550000000" className="text-[#C62222] text-[16px] font-medium leading-[24px] font-poppins">+1 (555) 000-0000</a>
+                    </div>
+                    <a href="tel:+15550000000" className="text-[#C62222] text-[16px] font-medium leading-[24px] font-poppins hover:underline">+1 (555) 000-0000</a>
                 </div>
             </div>
 
-            {/* Right Form */}
-            <div className="flex flex-col items-start border border-[#EAECF0] rounded-[10px] shadow-[4px_4px_15px_2px_rgba(168,166,166,0.32)] bg-[#F9FAFB] px-[24px] md:px-[92px] py-[39px] gap-[32px] w-full lg:max-w-[600px] overflow-hidden">
-                <div className="flex flex-col items-start self-stretch gap-[24px]">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
-                        <div className="flex flex-col items-start gap-[6px] w-full">
-                            <p className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">First name</p>
-                            <Input 
-                              type="text"
-                              placeholder="First name"
-                              className="w-full bg-white border border-[#D0D5DD] rounded-[4px] px-[15px] py-[11px] text-[16px] leading-[24px]"
-                            />
+            {/* Right Form - Contact Form */}
+            <div className="flex flex-col items-center border border-[#EAECF0] rounded-[10px] bg-[#F9FAFB] px-[32px] py-[40px] gap-[64px] w-full lg:w-[583px]">
+                <form onSubmit={handleSubmit} className="flex flex-col items-start self-stretch gap-[32px] w-full">
+                    <div className="flex flex-col items-start self-stretch gap-[32px] w-full">
+                        {/* First Name and Last Name Row */}
+                        <div className="flex flex-col sm:flex-row items-start self-stretch gap-[32px] w-full">
+                            {/* First Name */}
+                            <div className="flex flex-col items-start gap-[6px] w-full">
+                                <label htmlFor="firstName" className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">
+                                    First Name
+                                </label>
+                                <div className="flex items-center self-stretch gap-[8px] bg-white border border-[#D0D5DD] rounded-[4px] px-[16px] py-[12px] shadow-sm">
+                                    <input
+                                        type="text"
+                                        id="firstName"
+                                        name="firstName"
+                                        value={formData.firstName}
+                                        onChange={handleInputChange}
+                                        placeholder="First name"
+                                        className="flex-1 outline-none text-[16px] leading-[24px] text-gray-500 placeholder-gray-500 font-poppins"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Last Name */}
+                            <div className="flex flex-col items-start gap-[6px] w-full">
+                                <label htmlFor="lastName" className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">
+                                    Last Name
+                                </label>
+                                <div className="flex items-center self-stretch gap-[8px] bg-white border border-[#D0D5DD] rounded-[4px] px-[16px] py-[12px] shadow-sm">
+                                    <input
+                                        type="text"
+                                        id="lastName"
+                                        name="lastName"
+                                        value={formData.lastName}
+                                        onChange={handleInputChange}
+                                        placeholder="Last name"
+                                        className="flex-1 outline-none text-[16px] leading-[24px] text-gray-500 placeholder-gray-500 font-poppins"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <div className="flex flex-col items-start gap-[6px] w-full">
-                            <p className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">Last name</p>
-                            <Input 
-                              type="text"
-                              placeholder="Last name"
-                              className="w-full bg-white border border-[#D0D5DD] rounded-[4px] px-[15px] py-[11px] text-[16px] leading-[24px]"
-                            />
+                        
+                        {/* Email */}
+                        <div className="flex flex-col items-start self-stretch gap-[6px] w-full">
+                            <label htmlFor="email" className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">
+                                Email
+                            </label>
+                            <div className="flex items-center self-stretch gap-[8px] bg-white border border-[#D0D5DD] rounded-[4px] px-[16px] py-[12px] shadow-sm">
+                                <input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    value={formData.email}
+                                    onChange={handleInputChange}
+                                    placeholder="you@gmail.com"
+                                    className="flex-1 outline-none text-[16px] leading-[24px] text-gray-500 placeholder-gray-500 font-poppins"
+                                />
+                            </div>
                         </div>
-                    </div>
-                    
-                    <div className="flex flex-col items-start self-stretch gap-[6px]">
-                        <p className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">Email</p>
-                        <Input
-                          type="email"
-                          placeholder="you@gmail.com"
-                          className="w-full bg-white border border-[#D0D5DD] rounded-[4px] px-[15px] py-[11px] text-[16px] leading-[24px]"
-                        />
+
+                        {/* Message */}
+                        <div className="flex flex-col items-start self-stretch h-[154px] gap-[6px] w-full">
+                            <label htmlFor="message" className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">
+                                Message
+                            </label>
+                            <div className="flex items-start self-stretch gap-[8px] bg-white border border-[#D0D5DD] rounded-[4px] px-[16px] py-[12px] shadow-sm flex-1">
+                                <textarea
+                                    id="message"
+                                    name="message"
+                                    value={formData.message}
+                                    onChange={handleInputChange}
+                                    placeholder="Your message..."
+                                    className="flex-1 outline-none text-[16px] leading-[24px] text-gray-500 placeholder-gray-500 font-poppins resize-none h-full min-h-[120px]"
+                                />
+                            </div>
+                        </div>
                     </div>
 
-                    <div className="flex flex-col items-start self-stretch h-[154px] gap-[6px]">
-                        <p className="text-[#344054] text-[14px] font-medium leading-[20px] font-poppins">Message</p>
-                        <textarea className="flex grow items-center self-stretch gap-[8px] border border-[#D0D5DD] rounded-[4px] shadow-xs bg-white px-[13px] py-[9px] resize-none outline-none"></textarea>
-                    </div>
-
-                    <div className="flex items-center self-stretch gap-[12px]">
-                        <div className="w-[20px] h-[20px] border border-[#D0D5DD] rounded-[6px] bg-white overflow-hidden flex items-center justify-center relative">
-                            <input type="checkbox" className="absolute w-full h-full opacity-0 cursor-pointer z-10" />
-                            <div className="hidden checked:block w-3 h-3 bg-[#C62222] rounded-[2px]"></div>
-                        </div>
-                        <p className="grow text-[16px] leading-[24px] font-poppins">
-                            <span className="text-[#667085]">You agree to our friendly </span>
-                            <span className="text-[#C62222] underline cursor-pointer">privacy policy</span>
-                            <span className="text-[#667085]">.</span>
-                        </p>
-                    </div>
-                </div>
-
-                <button className="flex items-center self-stretch justify-center gap-[8px] border border-[#C62222] rounded-[4px] shadow-xs bg-[#C62222] px-[19px] py-[11px] cursor-pointer hover:bg-[#a51d1d] transition-colors">
-                    <p className="text-white text-[20px] font-medium leading-[24px] font-poppins">Send message</p>
-                </button>
+                    {/* Submit Button */}
+                    <button
+                        type="submit"
+                        className="flex items-center self-stretch justify-center gap-[8px] border border-[#C62222] rounded-[4px] bg-[#C62222] shadow-sm px-[19px] py-[11px] hover:bg-[#a51d1d] transition-colors"
+                    >
+                        <p className="text-white text-[20px] font-medium leading-[24px] font-poppins">Send message</p>
+                    </button>
+                </form>
             </div>
         </div>
       </main>

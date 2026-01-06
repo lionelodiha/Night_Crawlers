@@ -7,8 +7,11 @@ import Contact from './pages/Contact';
 import FAQ from './pages/FAQ';
 import Vendors from './pages/Vendors';
 import VendorSignUp from './pages/VendorSignUp';
-import VendorDashboard from './pages/VendorDashboard';
 import VendorSignIn from './pages/VendorSignIn';
+import VendorDashboard from './pages/VendorDashboard';
+// Optional pages from other branch
+import Explore from './pages/Explore';
+import VendorDetails from './pages/VendorDetails';
 
 function App() {
   return (
@@ -23,6 +26,8 @@ function App() {
         <Route path="/vendor-signup" element={<VendorSignUp />} />
         <Route path="/vendor-signin" element={<VendorSignIn />} />
         <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+        <Route path="/explore" element={<Explore />} />
+        <Route path="/vendor-details" element={<VendorDetails />} />
       </Routes>
     </Router>
   );
