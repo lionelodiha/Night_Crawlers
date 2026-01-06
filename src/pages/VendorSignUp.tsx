@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import Header from '../components/layout/Header';
+import { useNavigate } from 'react-router-dom';
+import Footer from '../components/layout/Footer';
 import vendorSignUpImage from '../assets/signin-image.png';
 
 interface FormData {
@@ -13,6 +14,7 @@ interface FormData {
 }
 
 const VendorSignUp: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -33,125 +35,115 @@ const VendorSignUp: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: submit vendor sign up
+    navigate('/vendor-signin');
   };
 
   return (
-    <div className="min-h-screen bg-white font-poppins overflow-x-hidden">
-      <Header />
-      <main className="relative w-full max-w-[1440px] mx-auto min-h-[600px]">
+    <div className="min-h-screen bg-white font-poppins overflow-x-hidden flex flex-col">
+      <main className="w-full max-w-[1200px] mx-auto flex-1 px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <div className="bg-[#F7F7F7] border border-[#EAECF0] rounded-lg p-6 md:p-8">
+            <h1 className="text-[#C62222] font-semibold text-2xl mb-4">Become a Partner</h1>
 
-        <div className="absolute left-[20px] sm:left-[30px] md:left-[66px] right-[20px] sm:right-[30px] md:right-auto top-[80px] sm:top-[100px] md:top-[130px] flex flex-col lg:flex-row items-start gap-[32px] lg:gap-[64px]">
-          <div className="w-full lg:w-[520px] bg-[#F7F7F7] border border-[#EAECF0] rounded-[8px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-[20px] sm:px-[24px] md:px-[32px] py-[20px] sm:py-[24px] md:py-[28px]">
-            <h1 className="text-[#C62222] font-semibold text-[18px] sm:text-[20px] md:text-[22px] leading-[22px] sm:leading-[25px] md:leading-[28px]">Become a Partner</h1>
-
-            <form onSubmit={handleSubmit} className="mt-[20px] sm:mt-[22px] md:mt-[24px] flex flex-col gap-[14px] sm:gap-[16px]">
-              <div className="flex flex-col sm:flex-row items-start gap-[16px] sm:gap-[20px]">
-                <div className="flex flex-col gap-[6px] w-full sm:w-[240px]">
-                  <label className="text-[#344054] text-[12px] font-medium leading-[18px]">First Name</label>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-[#344054] mb-1">First Name</label>
                   <input
                     type="text"
                     name="firstName"
                     value={formData.firstName}
                     onChange={handleInputChange}
-                    placeholder="First name"
-                    className="w-full h-[38px] sm:h-[40px] px-[12px] sm:px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                    style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
+                    className="w-full h-10 px-3 border border-[#D0D5DD] rounded-md"
+                    required
                   />
                 </div>
-                <div className="flex flex-col gap-[6px] w-full sm:w-[240px]">
-                  <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Last Name</label>
+                <div>
+                  <label className="block text-sm text-[#344054] mb-1">Last Name</label>
                   <input
                     type="text"
                     name="lastName"
                     value={formData.lastName}
                     onChange={handleInputChange}
-                    placeholder="Last name"
-                    className="w-full h-[38px] sm:h-[40px] px-[12px] sm:px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                    style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
+                    className="w-full h-10 px-3 border border-[#D0D5DD] rounded-md"
+                    required
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Business Type</label>
+              <div>
+                <label className="block text-sm text-[#344054] mb-1">Business Type</label>
                 <input
                   type="text"
                   name="businessType"
                   value={formData.businessType}
                   onChange={handleInputChange}
-                  className="w-full h-[38px] sm:h-[40px] px-[12px] sm:px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                  style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
+                  className="w-full h-10 px-3 border border-[#D0D5DD] rounded-md"
                 />
               </div>
 
-              <div className="flex flex-col sm:flex-row items-start gap-[16px] sm:gap-[20px]">
-                <div className="flex flex-col gap-[6px] w-full sm:w-[240px]">
-                  <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Phone Number</label>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm text-[#344054] mb-1">Phone Number</label>
                   <input
                     type="tel"
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    placeholder="Phone number"
-                    className="w-full h-[38px] sm:h-[40px] px-[12px] sm:px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                    style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
+                    className="w-full h-10 px-3 border border-[#D0D5DD] rounded-md"
                   />
                 </div>
-                <div className="flex flex-col gap-[6px] w-full sm:w-[240px]">
-                  <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Email</label>
+                <div>
+                  <label className="block text-sm text-[#344054] mb-1">Email</label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="you@gmail.com"
-                    className="w-full h-[38px] sm:h-[40px] px-[12px] sm:px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                    style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
+                    className="w-full h-10 px-3 border border-[#D0D5DD] rounded-md"
+                    required
                   />
                 </div>
               </div>
 
-              <div className="flex flex-col gap-[6px]">
-                <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Location</label>
+              <div>
+                <label className="block text-sm text-[#344054] mb-1">Location</label>
                 <input
                   type="text"
                   name="location"
                   value={formData.location}
                   onChange={handleInputChange}
-                  className="w-full h-[38px] sm:h-[40px] px-[12px] sm:px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                  style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
+                  className="w-full h-10 px-3 border border-[#D0D5DD] rounded-md"
                 />
               </div>
 
-              <div className="mt-[4px] flex items-center gap-[8px] sm:gap-[10px]">
+              <label className="inline-flex items-center gap-2">
                 <input
                   type="checkbox"
                   name="agreeToPolicy"
                   checked={formData.agreeToPolicy}
                   onChange={handleInputChange}
-                  className="cursor-pointer accent-[#C62222] w-[12px] h-[12px] sm:w-[14px] sm:h-[14px]"
+                  className="w-4 h-4"
                 />
-                <div className="text-[#667085] text-[11px] sm:text-[12px] font-normal leading-[16px] sm:leading-[18px]">
-                  You agree to our friendly{' '}
-                  <a href="/privacy-policy" className="text-[#C62222] underline">
-                    privacy policy
-                  </a>
-                </div>
-              </div>
+                <span className="text-sm text-[#667085]">You agree to our friendly <a href="/privacy-policy" className="text-[#C62222] underline">privacy policy</a></span>
+              </label>
 
-              <button type="submit" className="mt-[10px] sm:mt-[12px] w-full h-[40px] sm:h-[44px] bg-[#C62222] rounded-[4px] text-white text-[14px] font-medium leading-[21px]">
-                Get Started
-              </button>
+              <button type="submit" className="w-full h-11 bg-[#C62222] text-white rounded-md">Get Started</button>
             </form>
           </div>
 
-          <img src={vendorSignUpImage} alt="Vendor Sign Up" className="w-full lg:w-[760px] h-[280px] sm:h-[380px] md:h-[460px] lg:h-[540px] object-cover rounded-[8px]" />
+          <div className="hidden lg:block">
+            <img src={vendorSignUpImage} alt="Vendor sign up" className="w-full h-full object-cover rounded-lg" />
+          </div>
         </div>
 
-        <a href="/terms-of-service" className="absolute right-[20px] sm:right-[30px] md:right-[56px] bottom-[20px] sm:bottom-[28px] md:bottom-[36px] text-[#C62222] text-[10px] font-normal leading-[14px] underline">
-          Terms of Service
-        </a>
+        <div className="mt-6 text-right">
+          <a href="/terms-of-service" className="text-[#C62222] text-sm underline">Terms of Service</a>
+        </div>
       </main>
+
+      <Footer />
     </div>
   );
 };

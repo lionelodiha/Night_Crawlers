@@ -1,110 +1,79 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import Header from '../components/layout/Header';
-
-interface SignInForm {
-  email: string;
-  password: string;
-  remember: boolean;
-}
+import { useNavigate, Link } from 'react-router-dom';
+import Input from '../components/ui/Input';
+import Button from '../components/ui/Button';
 
 const VendorSignIn: React.FC = () => {
   const navigate = useNavigate();
-  const [form, setForm] = useState<SignInForm>({
-    email: '',
-    password: '',
-    remember: false,
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setForm(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value,
-    }));
-  };
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    // Simulated sign-in (replace with real auth call)
+    // Immediately navigate to dashboard for now
     navigate('/vendor-dashboard');
   };
 
   return (
-    <div className="min-h-screen bg-white font-poppins overflow-x-hidden">
-      <Header />
-      <main className="relative w-full max-w-[1440px] mx-auto min-h-[768px]">
-
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px]">
-          <div className="w-full bg-[#F7F7F7] border border-[#EAECF0] rounded-[8px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-[32px] py-[28px]">
-            <div className="flex flex-col items-center gap-[6px]">
-              <h1 className="text-[#C62222] font-semibold text-[22px] leading-[28px]">Our Partners</h1>
+    <div className="min-h-screen flex flex-col relative">
+      <main className="flex-grow flex items-center justify-center bg-white py-16 px-4 sm:px-6 lg:px-8">
+        <div className="w-full max-w-[720px]">
+          <div className="bg-[#fbfbfb] border border-gray-100 shadow-md rounded-3xl p-10 sm:p-14">
+            <div className="flex flex-col items-center">
+              <div className="w-12 h-12 rounded-md bg-night-red-50 flex items-center justify-center mb-3">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+                  <path d="M6 7H18V20H6V7Z" stroke="#C62222" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M9 7V5a3 3 0 0 1 6 0v2" stroke="#C62222" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <h2 className="text-3xl sm:text-[34px] font-semibold text-night-red-600 mb-1">Our Partners</h2>
+              <p className="text-base text-night-gray-500 mb-8">Sign in to manage your restaurants</p>
             </div>
 
-            <form onSubmit={handleSubmit} className="mt-[24px] flex flex-col gap-[16px]">
-              <div className="flex flex-col gap-[6px]">
-                <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Email</label>
-                <input
-                  type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="w-full h-[40px] px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                  style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
-                />
-              </div>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Input
+                label="Email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
 
-              <div className="flex flex-col gap-[6px]">
-                <label className="text-[#344054] text-[12px] font-medium leading-[18px]">Password</label>
-                <input
-                  type="password"
-                  name="password"
-                  value={form.password}
-                  onChange={handleChange}
-                  className="w-full h-[40px] px-[14px] bg-white border border-[#D0D5DD] rounded-[4px] text-[#667085] text-[12px] font-normal leading-[18px] focus:outline-none"
-                  style={{ boxShadow: '0px 1px 2px rgba(16, 24, 40, 0.05)' }}
-                />
-              </div>
+              <Input
+                label="Password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
 
-              <div className="flex items-center justify-between mt-[4px]">
-                <label className="flex items-center gap-[10px] text-[#667085] text-[12px] font-normal leading-[18px]">
-                  <input
-                    type="checkbox"
-                    name="remember"
-                    checked={form.remember}
-                    onChange={handleChange}
-                    className="cursor-pointer accent-[#C62222] w-[14px] h-[14px]"
-                  />
+              <div className="flex items-center justify-between text-sm text-night-gray-600">
+                <label className="flex items-center gap-2">
+                  <input type="checkbox" className="w-4 h-4" />
                   <span>Remember for 30 days</span>
                 </label>
-                <a href="/forgot-password" className="text-[#C62222] text-[12px] font-normal leading-[18px] underline">
-                  Forgot password
-                </a>
+                <Link to="/forgot-password" className="text-night-red-600 hover:underline">Forgot password?</Link>
               </div>
 
-              <button
-                type="submit"
-                className="mt-[12px] w-full h-[44px] bg-[#C62222] rounded-[4px] text-white text-[14px] font-medium leading-[21px]"
-              >
-                Log In
-              </button>
+              <div className="pt-4">
+                <Button type="submit" variant="primary" className="w-full py-4 text-base" disabled={loading}>
+                  {loading ? 'Signing in...' : 'Log In'}
+                </Button>
+              </div>
             </form>
-          </div>
 
-          <div className="mt-[16px] flex items-center justify-center gap-[6px]">
-            <span className="text-[#667085] text-[12px] font-normal leading-[18px]">Not a partner?</span>
-            <button
-              onClick={() => navigate('/vendor-signup')}
-              className="text-[#C62222] text-[12px] font-normal leading-[18px] underline"
-            >
-              Sign up
-            </button>
+            <p className="text-center text-sm text-night-gray-500 mt-8">
+              Not a partner?{' '}
+              <Link to="/vendor-signup" className="text-night-red-600 font-medium hover:underline">Sign up</Link>
+            </p>
           </div>
         </div>
-
-        <a href="/terms-of-service" className="absolute right-[56px] bottom-[36px] text-[#C62222] text-[10px] font-normal leading-[14px] underline">
-          Terms of Service
-        </a>
       </main>
+
+      <Link to="/terms" className="text-sm text-night-red-600 absolute right-8 bottom-8">Terms of Service</Link>
     </div>
   );
 };

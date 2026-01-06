@@ -39,3 +39,21 @@ export interface SignUpForm {
   password: string;
   confirmPassword: string;
 }
+
+export interface Restaurant {
+  id: string;
+  name: string;
+  address: string;
+  coverImage: string;
+  altText: string;
+  description?: string;
+  categories?: string[];
+}
+
+export interface AddRestaurantForm {
+  name: string;
+  categories: string;
+  address: string;
+  description: string;
+  coverImage?: File | string;
+}
