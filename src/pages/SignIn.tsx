@@ -40,7 +40,7 @@ const SignIn: React.FC = () => {
 
         {/* Right Side - Form */}
         <div className="flex-1 flex flex-col justify-between p-4 sm:p-6 md:p-8 lg:p-10">
-          <div className="flex-1 flex items-start justify-center pt-6 sm:pt-8 md:pt-10">
+          <div className="flex-1 flex items-center md:items-start justify-center -mt-4 md:mt-0 pt-6 sm:pt-8 md:pt-10">
             <div className="w-full max-w-[320px] sm:max-w-[340px]">
             {/* Header Section */}
             <div className="flex flex-col items-center text-center mb-3 sm:mb-4">
