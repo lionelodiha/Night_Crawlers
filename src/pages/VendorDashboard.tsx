@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import Header from '../components/layout/Header';
+import { useNavigate } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
-import { MapPin, Image as ImageIcon, Upload } from 'lucide-react';
+import { MapPin, Store, Upload, X } from 'lucide-react';
 
 type Restaurant = {
   id: number;
   name: string;
-  cuisine: string;
+  cuisine?: string;
+  openingTime?: string;
+  closingTime?: string;
   categories?: string;
   address: string;
   description: string;
@@ -14,6 +16,7 @@ type Restaurant = {
 };
 
 const VendorDashboard: React.FC = () => {
+  const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState<Restaurant[]>([
     {
       id: 1,
@@ -46,12 +49,15 @@ const VendorDashboard: React.FC = () => {
 
   const [form, setForm] = useState<Omit<Restaurant, 'id'>>({
     name: '',
-    cuisine: '',
+    openingTime: '',
+    closingTime: '',
     categories: '',
     address: '',
     description: '',
     imageUrl: ''
   });
+  const [categoryTags, setCategoryTags] = useState<string[]>([]);
+  const [categoryInput, setCategoryInput] = useState<string>('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -60,28 +66,43 @@ const VendorDashboard: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.cuisine) return;
-    const next: Restaurant = { id: Date.now(), ...form };
+    if (!form.name || !form.openingTime || !form.closingTime) return;
+    const categoriesStr = categoryTags.join(', ');
+    const next: Restaurant = { id: Date.now(), ...form, categories: categoriesStr };
     setRestaurants(prev => [...prev, next]);
-    setForm({ name: '', cuisine: '', categories: '', address: '', description: '', imageUrl: '' });
+    setForm({ name: '', openingTime: '', closingTime: '', categories: '', address: '', description: '', imageUrl: '' });
+    setCategoryTags([]);
+    setCategoryInput('');
+    navigate(`/vendor-dashboard/restaurant/${next.id}`, { state: next });
   };
 
-  const handleManage = (id: number) => {
-    console.log('Manage restaurant:', id);
-    // TODO: Navigate to restaurant management page
+  const addCategoryTag = () => {
+    const val = categoryInput.trim();
+    if (!val) return;
+    setCategoryTags(prev => [...prev, val]);
+    setCategoryInput('');
+  };
+
+  const removeCategoryTag = (idx: number) => {
+    setCategoryTags(prev => prev.filter((_, i) => i !== idx));
+  };
+
+  const handleCategoryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      addCategoryTag();
+    }
   };
 
   return (
     <div className="min-h-screen bg-[#F9FAFB] flex flex-col font-poppins">
-      <Header />
-
       <main className="flex-grow w-full">
         {/* Dashboard Header */}
         <div className="bg-white border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="max-w-full px-4 sm:px-6 md:px-8 py-6">
             <div className="flex items-center gap-3 mb-4">
               <div className="w-10 h-10 bg-[#FEECEC] rounded-md flex items-center justify-center">
-                <ImageIcon className="w-5 h-5 text-[#C62222]" />
+                <Store className="w-5 h-5 text-[#C62222]" />
               </div>
               <h1 className="text-3xl font-bold text-[#C62222]">
                 Vendor Dashboard
@@ -91,7 +112,7 @@ const VendorDashboard: React.FC = () => {
         </div>
 
         {/* Dashboard Content */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-full px-4 sm:px-6 md:px-8 py-8">
           {/* Your Restaurants Section */}
           <section className="mb-16">
             <div className="mb-8">
@@ -99,7 +120,7 @@ const VendorDashboard: React.FC = () => {
                 Your Restaurants
               </h2>
               <p className="text-gray-600">
-                Select a restaurant to manage its menus, add items and more
+                Select a restaurant to manage its menus, or add a new one.
               </p>
             </div>
 
@@ -119,13 +140,7 @@ const VendorDashboard: React.FC = () => {
                         <MapPin className="w-4 h-4 text-[#C62222]" />
                         <span>{r.address}</span>
                       </div>
-                      <p className="text-gray-600 text-sm mb-4">{r.description}</p>
-                      <button 
-                        onClick={() => handleManage(r.id)}
-                        className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors text-sm font-medium"
-                      >
-                        Manage
-                      </button>
+                      <p className="text-gray-600 text-sm">{r.description}</p>
                     </div>
                   </div>
                 ))}
@@ -147,31 +162,56 @@ const VendorDashboard: React.FC = () => {
                   name="name"
                   value={form.name}
                   onChange={handleChange}
-                  className="w-full h-10 px-3 bg-white border border-gray-300 rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                  className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
                   placeholder="Restaurant name"
                 />
               </div>
 
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-1">Cuisine Type *</label>
-                <input
-                  name="cuisine"
-                  value={form.cuisine}
-                  onChange={handleChange}
-                  className="w-full h-10 px-3 bg-white border border-gray-300 rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
-                  placeholder="e.g. Amala"
-                />
+                <label className="block text-gray-700 text-sm font-medium mb-1">Opening & Closing Time *</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <input
+                    name="openingTime"
+                    value={form.openingTime}
+                    onChange={handleChange}
+                    className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="e.g. 8:00 am"
+                  />
+                  <input
+                    name="closingTime"
+                    value={form.closingTime}
+                    onChange={handleChange}
+                    className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="e.g. 8:00 pm"
+                  />
+                </div>
               </div>
 
               <div>
                 <label className="block text-gray-700 text-sm font-medium mb-1">Food Categories</label>
-                <input
-                  name="categories"
-                  value={form.categories}
-                  onChange={handleChange}
-                  className="w-full h-10 px-3 bg-white border border-gray-300 rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
-                  placeholder="e.g. Local, Grill, Vegan"
-                />
+                <div className="w-full min-h-10 px-2 py-2 bg-[#F7F7F7] border border-[#EAECF0] rounded-md flex flex-wrap items-center gap-2">
+                  {categoryTags.map((tag, idx) => (
+                    <span key={`${tag}-${idx}`} className="inline-flex items-center gap-2 bg-white border border-[#EAECF0] text-[#344054] text-xs sm:text-sm rounded-md px-2 py-1">
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => removeCategoryTag(idx)}
+                        className="text-[#C62222] hover:text-[#A01B1B]"
+                        aria-label={`Remove ${tag}`}
+                      >
+                        <X className="w-3.5 h-3.5" />
+                      </button>
+                    </span>
+                  ))}
+                  <input
+                    value={categoryInput}
+                    onChange={(e) => setCategoryInput(e.target.value)}
+                    onKeyDown={handleCategoryKeyDown}
+                    onBlur={addCategoryTag}
+                    className="flex-1 min-w-[120px] h-8 px-2 bg-transparent outline-none text-sm text-[#344054] placeholder:text-[#98A2B3]"
+                    placeholder="Type and press Enter"
+                  />
+                </div>
               </div>
 
               <div>
@@ -180,7 +220,7 @@ const VendorDashboard: React.FC = () => {
                   name="address"
                   value={form.address}
                   onChange={handleChange}
-                  className="w-full h-10 px-3 bg-white border border-gray-300 rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                  className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
                   placeholder="123 Main Street, Downtown"
                 />
               </div>
@@ -191,7 +231,7 @@ const VendorDashboard: React.FC = () => {
                   name="description"
                   value={form.description}
                   onChange={handleChange}
-                  className="w-full min-h-[90px] px-3 py-2 bg-white border border-gray-300 rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                  className="w-full min-h-[90px] px-3 py-2 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
                   placeholder="Short description about the restaurant"
                 />
               </div>
@@ -202,7 +242,7 @@ const VendorDashboard: React.FC = () => {
                   name="imageUrl"
                   value={form.imageUrl}
                   onChange={handleChange}
-                  className="w-full h-10 px-3 bg-white border border-gray-300 rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                  className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
                   placeholder="https://example.com/cover.jpg"
                 />
               </div>
