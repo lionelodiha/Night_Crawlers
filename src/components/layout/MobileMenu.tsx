@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { X, ShoppingCart, User } from 'lucide-react';
 import { NAVIGATION_LINKS } from '../../utils/constants';

@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
 import Header from '../components/layout/Header';
 import vendorSignUpImage from '../assets/signin-image.png';
 
@@ -15,7 +13,6 @@ interface FormData {
 }
 
 const VendorSignUp: React.FC = () => {
-  const navigate = useNavigate();
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
@@ -43,7 +40,7 @@ const VendorSignUp: React.FC = () => {
       <Header />
       <main className="relative w-full max-w-[1440px] mx-auto min-h-[600px]">
 
-        <div className="absolute left-[20px] sm:left-[30px] md:left-[66px] right-[20px] sm:right-[30px] md:right-auto top-[120px] sm:top-[150px] md:top-[190px] flex flex-col lg:flex-row items-start gap-[32px] lg:gap-[64px]">
+        <div className="absolute left-[20px] sm:left-[30px] md:left-[66px] right-[20px] sm:right-[30px] md:right-auto top-[80px] sm:top-[100px] md:top-[130px] flex flex-col lg:flex-row items-start gap-[32px] lg:gap-[64px]">
           <div className="w-full lg:w-[520px] bg-[#F7F7F7] border border-[#EAECF0] rounded-[8px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] px-[20px] sm:px-[24px] md:px-[32px] py-[20px] sm:py-[24px] md:py-[28px]">
             <h1 className="text-[#C62222] font-semibold text-[18px] sm:text-[20px] md:text-[22px] leading-[22px] sm:leading-[25px] md:leading-[28px]">Become a Partner</h1>
 

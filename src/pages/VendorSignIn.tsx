@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../assets/logo.png';
 import Header from '../components/layout/Header';
 
 interface SignInForm {
@@ -27,6 +26,7 @@ const VendorSignIn: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    navigate('/vendor-dashboard');
   };
 
   return (
