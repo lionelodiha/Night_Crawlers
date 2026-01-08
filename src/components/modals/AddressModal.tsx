@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { X, MapPin } from 'lucide-react';
+import { X } from 'lucide-react';
+import pinIcon from '../../assets/location-pin-red.svg';
 
 interface AddressModalProps {
   isOpen: boolean;
@@ -22,6 +23,18 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
     addr.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredAddresses.length > 0) {
+        onSelectAddress(filteredAddresses[0]);
+      } else {
+        onSelectAddress('');
+      }
+      onClose();
+    }
+  };
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 backdrop-blur-sm">
       <div className="bg-white rounded-[16px] w-[500px] p-[24px] shadow-xl relative animate-in fade-in zoom-in duration-200">
@@ -40,13 +53,14 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
         {/* Search Input */}
         <div className="relative mb-[16px]">
           <div className="absolute left-[16px] top-1/2 -translate-y-1/2 text-[#C62222]">
-            <MapPin size={20} fill="#C62222" />
+            <img src={pinIcon} alt="" className="w-5 h-5" />
           </div>
           <input
             type="text"
             placeholder="Nmdp..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="w-full h-[48px] pl-[48px] pr-[16px] bg-[#F9FAFB] border border-[#EAECF0] rounded-[8px] text-[16px] text-[#222222] placeholder:text-[#667085] outline-none focus:border-[#C62222] transition-colors"
           />
         </div>

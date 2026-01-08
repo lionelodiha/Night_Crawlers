@@ -1,8 +1,9 @@
-import React from 'react';
-import { Search, MapPin, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft } from 'lucide-react';
+import React, { useState } from 'react';
+import { Search, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft, X } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useCart } from '../context/CartContext';
+import pinIcon from '../assets/location-pin-red.svg';
 
 // Mock Data for Menu Items
 const menuItems = [
@@ -22,6 +23,7 @@ const menuItems = [
 
 const VendorDetails: React.FC = () => {
   const { cartItems, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
 
   const handleAddToCart = (item: typeof menuItems[0]) => {
     addToCart({
@@ -46,7 +48,7 @@ const VendorDetails: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins relative overflow-x-hidden">
-      <Header />
+      <Header onCartClick={() => setIsMobileCartOpen(true)} />
 
       {/* Main Content */}
       <main className="flex-grow w-full max-w-[1440px] mx-auto px-[24px] md:px-[60px] pt-[0px] pb-[100px]">
@@ -63,8 +65,8 @@ const VendorDetails: React.FC = () => {
                   <Search size={16} className="w-4 h-4 sm:w-[18px] sm:h-[18px]" />
                 </button>
               </div>
-              <div className="flex items-center gap-[3px] sm:gap-[4px]">
-                <MapPin className="text-[#C62222]" size={16} fill="#C62222" />
+             <div className="flex items-center gap-[3px] sm:gap-[4px]">
+                <img src={pinIcon} alt="Location" className="w-4 h-4" />
                 <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold hidden sm:inline">Nmdpra HQ</span>
                 <span className="text-[#222222] text-[13px] sm:text-[15px] font-semibold sm:hidden">Address</span>
                 <ChevronDown className="text-[#222222]" size={14} />
@@ -150,7 +152,7 @@ const VendorDetails: React.FC = () => {
           </div>
 
           {/* Right Column: Your Order (Persistent) */}
-          <div className="w-full lg:w-1/4 min-w-[280px] sm:min-w-[320px]">
+          <div className="hidden lg:block w-full lg:w-1/4 min-w-[280px] sm:min-w-[320px]">
             <div className="bg-[#FAFAFA] rounded-[12px] sm:rounded-[16px] p-[16px] sm:p-[24px] sticky top-[100px] sm:top-[120px] flex flex-col min-h-[280px] sm:min-h-[300px] border border-[#EAECF0]">
               <div className="mb-[16px] sm:mb-[24px]">
               <h2 className="text-[16px] sm:text-[18px] md:text-[20px] font-bold text-[#222222]">Your Order</h2>
@@ -160,9 +162,9 @@ const VendorDetails: React.FC = () => {
             </div>
             
             {cartItems.length === 0 ? (
-              <div className="flex flex-col items-center justify-center w-full py-6 sm:py-8">
-                <ShoppingBasket size={36} className="text-[#C62222] mb-[12px] sm:mb-[16px]" />
-                <p className="text-[#667085] text-[12px] sm:text-[14px]">Your Cart is empty</p>
+              <div className="flex flex-col items-center justify-start w-full text-center pt-4 pb-4">
+                <ShoppingBasket size={42} className="text-[#C62222] mb-[10px]" />
+                <p className="text-[#667085] text-[12px] sm:text-[13px]">Your Cart is empty</p>
               </div>
             ) : (
               <div className="w-full flex flex-col gap-[16px] sm:gap-[20px] md:gap-[24px]">
@@ -231,6 +233,86 @@ const VendorDetails: React.FC = () => {
       </main>
 
       <Footer />
+
+      {/* Mobile Cart Drawer */}
+      {isMobileCartOpen && (
+        <div className="fixed inset-0 z-[80] bg-black/20 backdrop-blur-sm lg:hidden">
+          <div className="absolute inset-y-0 right-0 w-full max-w-[360px] sm:max-w-[420px] bg-white shadow-[-6px_0_18px_rgba(0,0,0,0.12)]">
+            <div className="flex items-center justify-between px-4 py-3 border-b border-[#EAECF0]">
+              <div className="flex items-center gap-2 text-[#C62222] text-[15px] font-semibold">
+                Cart
+                <div className="w-[18px] h-[18px] bg-[#C62222] text-white text-[11px] rounded-full flex items-center justify-center">
+                  {cartItems.length}
+                </div>
+              </div>
+              <button onClick={() => setIsMobileCartOpen(false)} className="text-[#667085] hover:text-[#222222]">
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="flex flex-col h-[calc(100%-52px)] px-4 py-4 overflow-y-auto">
+              {cartItems.length === 0 ? (
+                <div className="flex flex-col items-center justify-start h-full text-center pt-6">
+                  <ShoppingBasket size={48} className="text-[#C62222] mb-2" />
+                  <p className="text-[#667085] text-[12px]">Your Cart is empty</p>
+                </div>
+              ) : (
+                <>
+                  <div className="flex flex-col gap-4">
+                    {cartItems.map((item) => (
+                      <div key={item.id} className="flex gap-3 border border-[#EAECF0] rounded-[8px] p-3">
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-[52px] h-[52px] object-cover rounded-[6px]"
+                        />
+                        <div className="flex-1 flex flex-col gap-2">
+                          <div className="flex justify-between items-start">
+                            <h3 className="text-[13px] font-semibold text-[#222222] leading-tight">{item.name}</h3>
+                            <button
+                              onClick={() => removeFromCart(item.id)}
+                              className="text-[#C62222] hover:text-[#A01B1B]"
+                            >
+                              <Trash2 size={14} />
+                            </button>
+                          </div>
+                          <p className="text-[#667085] text-[11px]">ƒ,İ {item.price.toLocaleString()}</p>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <button
+                                onClick={() => decrementItem(item.id)}
+                                className="w-[22px] h-[22px] bg-[#F2F4F7] rounded-[4px] flex items-center justify-center text-[#667085] hover:bg-[#EAECF0]"
+                              >
+                                <Minus size={10} />
+                              </button>
+                              <span className="text-[12px] font-medium text-[#222222]">{item.quantity}</span>
+                              <button
+                                onClick={() => incrementCartItem(item.id)}
+                                className="w-[22px] h-[22px] bg-[#F2F4F7] rounded-[4px] flex items-center justify-center text-[#667085] hover:bg-[#EAECF0]"
+                              >
+                                <Plus size={10} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="mt-5 border-t border-[#EAECF0] pt-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[#667085] text-[13px]">Total:</span>
+                      <span className="text-[#222222] text-[16px] font-bold">ƒ,İ{cartTotal.toLocaleString()}</span>
+                    </div>
+                    <button className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors">
+                      Proceed to Checkout
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

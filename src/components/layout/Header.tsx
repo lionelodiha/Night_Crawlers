@@ -6,7 +6,11 @@ import logo from '../../assets/logo.png';
 import MobileMenu from './MobileMenu';
 import { useCart } from '../../context/CartContext';
 
-const Header: React.FC = () => {
+type HeaderProps = {
+  onCartClick?: () => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { itemCount } = useCart();
@@ -61,7 +65,11 @@ const Header: React.FC = () => {
 
             {/* Desktop Action Buttons */}
             <div className="hidden md:flex items-center justify-end space-x-3 lg:space-x-4">
-              <button className="relative w-10 h-10 rounded-full bg-night-red-600 text-white flex items-center justify-center hover:bg-night-red-700 transition-colors">
+              <button
+                className="relative w-10 h-10 rounded-full bg-night-red-600 text-white flex items-center justify-center hover:bg-night-red-700 transition-colors"
+                onClick={onCartClick}
+                aria-label="Open cart"
+              >
                 <ShoppingCart className="w-5 h-5" />
                 {itemCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-white text-night-red-600 text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-night-red-600">
@@ -79,7 +87,11 @@ const Header: React.FC = () => {
 
             {/* Mobile Menu Button */}
             <div className="flex md:hidden items-center space-x-2">
-              <button className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-night-red-600 text-white flex items-center justify-center hover:bg-night-red-700 transition-colors">
+              <button
+                className="relative w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-night-red-600 text-white flex items-center justify-center hover:bg-night-red-700 transition-colors"
+                onClick={onCartClick}
+                aria-label="Open cart"
+              >
                 <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                 {itemCount > 0 && (
                   <span className="absolute -top-1 -right-1 bg-white text-night-red-600 text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center border border-night-red-600">

@@ -1,0 +1,11 @@
+<svg width="234" height="120" viewBox="0 0 234 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g transform="translate(48 22)">
+    <g transform="translate(-14 -10) rotate(-12 14 14)">
+      <rect x="0" y="0" width="28" height="28" rx="6" fill="#C62222"/>
+      <path d="M7.5 7.2c0-3.6 2.7-6.2 7.5-6.2s7.5 2.6 7.5 6.2v1.6H20V8.1c0-1.8-1.7-3.2-5-3.2s-5 1.4-5 3.2v0.7H7.5V7.2z" fill="#FEE4E2"/>
+      <rect x="6" y="11" width="16" height="1.6" rx="0.8" fill="#F7D3D3"/>
+      <path d="M7.5 16h13" stroke="#FEE4E2" stroke-width="1.6" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="140" y="100" text-anchor="middle" fill="#C62222" font-family="Poppins, 'Segoe UI', Arial, sans-serif" font-size="36" font-weight="700">Our Partners</text>
+</svg>

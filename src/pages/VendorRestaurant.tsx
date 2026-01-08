@@ -54,58 +54,62 @@ const VendorRestaurant: React.FC = () => {
   }, [id, location.state]);
  
   return (
-    <div className="min-h-screen bg-[#F9FAFB] flex flex-col font-poppins">
-      <main className="flex-grow w-full">
-        <div className="bg-white border-b border-gray-200">
-          <div className="max-w-full px-4 sm:px-6 md:px-8 py-10">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 bg-[#FEECEC] rounded-md flex items-center justify-center">
-                <Store className="w-5 h-5 text-[#C62222]" />
-              </div>
-              <h1 className="text-3xl font-bold text-[#C62222]">Vendor Dashboard</h1>
+    <div className="min-h-screen bg-white flex flex-col font-poppins">
+      <main className="flex-grow w-full max-w-[1240px] mx-auto px-4 sm:px-6 md:px-8">
+        <div className="pt-6 pb-0">
+          <div className="flex items-center gap-3 mb-10">
+            <div className="w-9 h-9 flex items-center justify-center text-[#C62222]">
+              <Store className="w-6 h-6" />
             </div>
-            <Link
-              to="/vendor-dashboard"
-              className="inline-flex items-center gap-2 text-[#667085] hover:text-[#C62222] text-sm mt-6 mb-0"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Back to Restaurant
-            </Link>
+            <h1 className="text-2xl font-semibold text-[#C62222] leading-tight">Vendor Dashboard</h1>
           </div>
+          <Link
+            to="/vendor-dashboard"
+            className="inline-flex items-center gap-2 text-[#475467] hover:text-[#C62222] text-sm mb-1"
+          >
+            <ChevronLeft className="w-4 h-4" />
+            Back to Restaurant
+          </Link>
         </div>
- 
-        <div className="max-w-full px-4 sm:px-6 md:px-8 pt-8 pb-10">
-          <div className="rounded-lg overflow-hidden border border-[#EAECF0] mb-8">
-            <div className="w-full h-[280px] sm:h-[360px] md:h-[440px]">
+
+        <div className="pt-2 pb-10">
+          <div className="rounded-lg overflow-hidden mb-8">
+            <div className="w-full h-[300px] sm:h-[380px] md:h-[460px]">
               <img
                 src={restaurant.imageUrl}
                 alt={restaurant.name}
                 className="w-full h-full object-cover"
               />
             </div>
-            <div className="px-5 pt-6 pb-6 sm:px-7 sm:pt-7 sm:pb-7">
-              <h2 className="text-2xl sm:text-3xl font-semibold text-[#222222] mb-1">
+            <div className="pt-5 px-1">
+              <h2 className="text-xl sm:text-2xl font-semibold text-[#222222] mb-1">
                 {restaurant.name}
               </h2>
-              <p className="text-[#667085] text-sm sm:text-base mb-2">
+              <p className="text-[#667085] text-sm sm:text-base mb-3">
                 {restaurant.description}
               </p>
-              <div className="text-[#667085] text-sm">
-                <span className="block">Opening time</span>
-                <span className="text-[#222222] font-medium">
-                  {restaurant.openingTime}
-                </span>
+              <div className="text-[#667085] text-sm mb-10">
+                <span className="block text-[#111827] font-medium">Opening Time</span>
+                <span>{restaurant.openingTime}</span>
               </div>
-              <div className="mt-4 inline-flex items-center rounded-md bg-[#FEE4E2] p-1">
+              <div className="inline-flex items-center rounded-sm bg-[#F2F4F7] p-1">
                 <button
                   onClick={() => setViewMode('menu')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${viewMode === 'menu' ? 'bg-[#C62222] text-white' : 'text-[#C62222]'}`}
+                  className={`px-4 py-2 text-xs font-medium rounded-sm ${
+                    viewMode === 'menu'
+                      ? 'bg-[#C62222] text-white'
+                      : 'text-[#4B5563] hover:text-[#111827]'
+                  }`}
                 >
                   View Menu
                 </button>
                 <button
                   onClick={() => setViewMode('add')}
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${viewMode === 'add' ? 'bg-[#C62222] text-white' : 'text-[#C62222]'}`}
+                  className={`px-4 py-2 text-xs font-medium rounded-sm ${
+                    viewMode === 'add'
+                      ? 'bg-[#C62222] text-white'
+                      : 'text-[#4B5563] hover:text-[#111827]'
+                  }`}
                 >
                   Add Menu Item
                 </button>
@@ -115,40 +119,40 @@ const VendorRestaurant: React.FC = () => {
  
           {viewMode === 'menu' && (
             <>
-              <div className="flex items-center gap-6 border-b border-[#EAECF0] mb-8 pb-3 overflow-x-auto">
+              <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-6 border-b border-[#EAECF0] mb-8 pb-3">
                 {categories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={
+                    className={`min-w-[70px] text-center text-sm px-3 py-1 rounded ${
                       activeCategory === cat
-                        ? 'text-[#C62222] bg-[#FEE4E2] px-3 py-1 rounded text-sm font-medium'
-                        : 'text-[#667085] hover:text-[#222222] text-sm'
-                    }
+                        ? 'text-[#C62222] bg-[#FEE4E2] font-medium'
+                        : 'text-[#667085] hover:text-[#222222]'
+                    }`}
                   >
                     {cat}
                   </button>
                 ))}
               </div>
  
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-7">
-                {sampleItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="flex gap-4 p-4 border border-[#EAECF0] rounded-lg bg-white"
-                  >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {sampleItems.map((item) => (
+                    <div
+                      key={item.id}
+                      className="flex gap-3 p-4 border border-[#EAECF0] rounded-lg bg-white shadow-sm"
+                    >
                     <img
                       src={item.image}
                       alt={item.name}
-                      className="w-[90px] h-[90px] object-cover rounded-md"
+                      className="w-[80px] h-[80px] object-cover rounded-md"
                     />
                     <div className="flex-1">
                       <div className="flex justify-between">
-                        <h3 className="text-[#222222] text-sm sm:text-base font-semibold">
+                        <h3 className="text-[#222222] text-sm sm:text-base font-semibold leading-snug">
                           {item.name}
                         </h3>
-                        <span className="text-[#222222] text-sm sm:text-base font-semibold">
-                          ₦ {item.price.toLocaleString()}
+                        <span className="text-[#222222] text-sm sm:text-base font-semibold whitespace-nowrap">
+                          ƒ,İ {item.price.toLocaleString()}
                         </span>
                       </div>
                       <p className="text-[#667085] text-xs sm:text-sm mt-1 line-clamp-2">
