@@ -1,36 +1,41 @@
 import React from 'react';
 import { Vendor, Feature } from '../types';
 import { Phone, Clock, Award } from 'lucide-react';
+import kfcLogo from '../assets/vendors/kfc-logo.svg';
+import chickenRepublicLogo from '../assets/vendors/chicken-republic-logo.svg';
+import dominosLogo from '../assets/vendors/dominos-logo.svg';
+import kilimanjaroLogo from '../assets/vendors/kilimanjaro-logo.svg';
+import haansaLogo from '../assets/vendors/haansa-logo.svg';
 
 export const VENDORS: Vendor[] = [
   {
     id: '1',
     name: 'KFC',
-    logo: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=KFC%20restaurant%20logo%2C%20red%20and%20white%20colors%2C%20circular%20format%2C%20professional%20food%20delivery%20app%20style&image_size=square',
+    logo: kfcLogo,
     altText: 'KFC restaurant logo'
   },
   {
     id: '2',
     name: 'Chicken Republic',
-    logo: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Chicken%20Republic%20restaurant%20logo%2C%20warm%20colors%2C%20circular%20format%2C%20professional%20food%20delivery%20app%20style&image_size=square',
+    logo: chickenRepublicLogo,
     altText: 'Chicken Republic restaurant logo'
   },
   {
     id: '3',
     name: 'Dominos Pizza',
-    logo: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Domino%27s%20Pizza%20restaurant%20logo%2C%20blue%20and%20red%20colors%2C%20circular%20format%2C%20professional%20food%20delivery%20app%20style&image_size=square',
+    logo: dominosLogo,
     altText: 'Dominos Pizza restaurant logo'
   },
   {
     id: '4',
     name: 'Kilimanjaro',
-    logo: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Kilimanjaro%20restaurant%20logo%2C%20African%20inspired%20design%2C%20earth%20tones%2C%20circular%20format%2C%20professional%20food%20delivery%20app%20style&image_size=square',
+    logo: kilimanjaroLogo,
     altText: 'Kilimanjaro restaurant logo'
   },
   {
     id: '5',
     name: 'Haansa',
-    logo: 'https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=Haansa%20restaurant%20logo%2C%20modern%20design%2C%20appetizing%20colors%2C%20circular%20format%2C%20professional%20food%20delivery%20app%20style&image_size=square',
+    logo: haansaLogo,
     altText: 'Haansa restaurant logo'
   }
 ];

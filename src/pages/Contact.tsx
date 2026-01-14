@@ -39,7 +39,7 @@ const Contact: React.FC = () => {
                     </h1>
                 </div>
                 <p className="text-[#667085] text-lg sm:text-xl leading-relaxed font-poppins">
-                    We’d love to hear from you. Please fill out this form or shoot us an email.
+                    Weƒ?Td love to hear from you. Please fill out this form or shoot us an email.
                 </p>
             </div>
         </div>

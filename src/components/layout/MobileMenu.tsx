@@ -7,9 +7,10 @@ import logo from '../../assets/logo.png';
 interface MobileMenuProps {
   isOpen: boolean;
   onClose: () => void;
+  onCartClick?: () => void;
 }
 
-const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
+const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose, onCartClick }) => {
   const location = useLocation();
 
   if (!isOpen) return null;
@@ -65,7 +66,15 @@ const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           {/* Action Buttons */}
           <div className="p-4 border-t border-gray-100">
             <div className="space-y-3">
-              <button className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-night-red-600 text-white rounded-lg hover:bg-night-red-700 transition-colors">
+              <button
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-night-red-600 text-white rounded-lg hover:bg-night-red-700 transition-colors"
+                onClick={() => {
+                  if (onCartClick) {
+                    onCartClick();
+                  }
+                  onClose();
+                }}
+              >
                 <ShoppingCart className="w-5 h-5" />
                 <span>Cart</span>
               </button>

@@ -15,7 +15,7 @@ const NewsletterSection: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
@@ -26,31 +26,29 @@ const NewsletterSection: React.FC = () => {
 
   return (
     <section className="flex justify-center w-full py-10 px-4">
-      <div className="flex flex-col lg:flex-row items-center lg:justify-between w-full max-w-[1200px] bg-white border border-[#e5e7eb] rounded-xl shadow-md px-6 md:px-8 py-8 gap-8 md:gap-10">
-        {/* Left Column: Text & Input */}
-        <div className="flex flex-col items-start gap-4 w-full lg:w-[420px] text-left">
-          <h2 className="text-[#222222] text-2xl sm:text-3xl font-semibold leading-tight tracking-[-0.5px] font-poppins m-0">
+      <div className="flex flex-col lg:flex-row items-center lg:justify-between w-full max-w-[1362px] min-h-[442px] bg-[rgba(249,250,251,0.05)] border border-[#EAECF0] rounded-[10px] shadow-[4px_4px_15px_2px_rgba(168,166,166,0.32)] px-6 md:px-8 lg:px-[29px] py-8 gap-8 lg:gap-[80px]">
+        <div className="flex flex-col items-start gap-4 w-full lg:w-[470px] text-left">
+          <h2 className="text-[#222222] text-[28px] sm:text-[36px] lg:text-[48px] font-semibold leading-[36px] sm:leading-[44px] lg:leading-[58px] tracking-[-0.02em] font-poppins m-0">
             Exclusive Menus & Promotions
           </h2>
-          <p className="text-[#222222] text-sm sm:text-base leading-relaxed font-poppins m-0">
-            Join the Night Crawlers tribe! Be the first to know about fresh deals, new
-            food spots, and exclusive night-time treats.
+          <p className="text-[#222222] text-[14px] sm:text-[16px] leading-[18px] sm:leading-[19px] tracking-[-0.02em] font-poppins m-0">
+            Join the Night Crawlers tribe! Be the first to know about fresh deals, new food spots, and exclusive night-time treats.
           </p>
-          
-          <form onSubmit={handleSubmit} className="w-full max-w-md">
-            <div className="flex items-center w-full h-11 bg-white border border-[#d0d5dd] rounded-md shadow-[0px_1px_2px_rgba(16,24,40,0.05)] overflow-hidden">
+
+          <form onSubmit={handleSubmit} className="w-full max-w-[470px]">
+            <div className="flex items-center w-full">
               <input
                 type="email"
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="flex-1 h-full px-3 bg-transparent border-none outline-none text-[#667085] text-sm sm:text-base font-poppins placeholder:text-[#667085]"
+                className="h-[34px] flex-1 px-4 bg-white border border-[#D0D5DD] rounded-l-[4px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] outline-none text-[#667085] text-[14px] sm:text-[16px] font-poppins placeholder:text-[#667085]"
               />
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={isSubmitting}
-                className="h-full px-4 sm:px-5 bg-[#c62222] text-white text-sm sm:text-base font-medium font-poppins hover:bg-[#a51d1d] transition-colors disabled:opacity-70"
+                className="h-[40px] w-[103px] -ml-px bg-[#C62222] text-white text-[14px] sm:text-[16px] font-medium font-poppins rounded-r-[4px] hover:bg-[#A01B1B] transition-colors disabled:opacity-70"
               >
                 {isSubmitting ? '...' : 'Subscribe'}
               </button>
@@ -58,11 +56,10 @@ const NewsletterSection: React.FC = () => {
           </form>
         </div>
 
-        {/* Right Column: Image */}
-        <img 
-           src={subscribeImage}
-           alt="Delivery Person"
-           className="w-full max-w-[220px] sm:max-w-[260px] lg:max-w-[320px] h-auto object-contain self-end lg:ml-auto"
+        <img
+          src={subscribeImage}
+          alt="Delivery person"
+          className="w-full max-w-[320px] sm:max-w-[360px] lg:max-w-[442px] h-auto lg:h-[442px] object-contain"
         />
       </div>
     </section>

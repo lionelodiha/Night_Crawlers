@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Search, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft, X } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useCart } from '../context/CartContext';
 import pinIcon from '../assets/location-pin-red.svg';
+import { VendorStore } from '../lib/mockBackend';
 
 // Mock Data for Menu Items
 const menuItems = [
@@ -22,8 +24,23 @@ const menuItems = [
 ];
 
 const VendorDetails: React.FC = () => {
+  const location = useLocation();
   const { cartItems, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
+  const storeState = location.state as VendorStore | undefined;
+  const store: VendorStore = storeState || {
+    id: 'default-store',
+    vendorId: 'default-vendor',
+    name: 'Amala Central Foods',
+    description: 'Authentic african cuisine with a modern twist',
+    address: '123 Main Street, Downtown',
+    openingTime: '8:00 am - 8:00 pm',
+    imageUrl: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop',
+    businessType: 'Food',
+    categories: [],
+    createdAt: new Date().toISOString(),
+    closingTime: '',
+  };
 
   const handleAddToCart = (item: typeof menuItems[0]) => {
     addToCart({
@@ -76,7 +93,7 @@ const VendorDetails: React.FC = () => {
         {/* Breadcrumb */}
         <div className="flex items-center gap-[3px] sm:gap-[4px] text-[#667085] text-[12px] sm:text-[14px] mb-[20px] sm:mb-[24px]">
             <ChevronLeft size={12} />
-            <span className="text-[#667085] font-medium cursor-pointer hover:text-[#C62222]">Food</span>
+            <span className="text-[#667085] font-medium cursor-pointer hover:text-[#C62222]">{store.businessType}</span>
         </div>
 
         <div className="flex flex-col lg:flex-row gap-[40px]">
@@ -86,8 +103,8 @@ const VendorDetails: React.FC = () => {
             {/* Vendor Banner */}
             <div className="w-full h-[200px] sm:h-[240px] md:h-[280px] rounded-[12px] sm:rounded-[16px] overflow-hidden mb-[20px] sm:mb-[24px] relative">
               <img 
-                src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop" 
-                alt="Amala Central Foods" 
+                src={store.imageUrl} 
+                alt={store.name} 
                 className="w-full h-full object-cover"
               />
             </div>
@@ -95,7 +112,8 @@ const VendorDetails: React.FC = () => {
             {/* Vendor Info */}
             <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-[16px] mb-[32px] sm:mb-[40px]">
             <div>
-              <h1 className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#222222] mb-[12px] sm:mb-[16px]">Amala Central Foods</h1>
+              <h1 className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#222222] mb-[8px] sm:mb-[12px]">{store.name}</h1>
+              <p className="text-[#667085] text-[12px] sm:text-[14px] mb-[12px] sm:mb-[16px]">{store.address}</p>
               <div className="flex items-center gap-[20px] sm:gap-[32px]">
                 <div className="flex flex-col items-center gap-[3px] sm:gap-[4px]">
                   <Clock size={16} className="text-[#C62222]" />
@@ -109,7 +127,7 @@ const VendorDetails: React.FC = () => {
             </div>
             <div className="text-right sm:text-left">
               <span className="text-[#667085] text-[12px] sm:text-[14px]">Opening Time</span>
-              <p className="text-[#222222] text-[12px] sm:text-[14px] font-medium">8:00 am - 8:00 pm</p>
+              <p className="text-[#222222] text-[12px] sm:text-[14px] font-medium">{store.openingTime}</p>
             </div>
           </div>
 

@@ -2,15 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
 import { Store, ChevronLeft, Upload } from 'lucide-react';
- 
-type Restaurant = {
-  id: number;
-  name: string;
-  description: string;
-  address: string;
-  openingTime: string;
-  imageUrl: string;
-};
+import {
+  getBusinessTypeMeta,
+  getCurrentVendor,
+  getStoreById,
+  VendorStore,
+} from '../lib/mockBackend';
  
 type MenuItem = {
   id: number;
@@ -20,7 +17,7 @@ type MenuItem = {
   image: string;
 };
  
-const categories = ['Rice', 'Pasta', 'Soup', 'Swallow', 'Protein'];
+const defaultCategories = ['Rice', 'Pasta', 'Soup', 'Swallow', 'Protein'];
  
 const sampleItems: MenuItem[] = Array.from({ length: 8 }).map((_, i) => ({
   id: i + 1,
@@ -37,21 +34,36 @@ const VendorRestaurant: React.FC = () => {
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState<string>('Rice');
   const [viewMode, setViewMode] = useState<'menu' | 'add'>('menu');
- 
-  const restaurant: Restaurant = useMemo(() => {
-    const state = location.state as Partial<Restaurant> | undefined;
+
+  const storeState = location.state as Partial<VendorStore> | undefined;
+  const storeId = id || (storeState?.id ? String(storeState.id) : undefined);
+
+  const store: VendorStore = useMemo(() => {
+    const fromStore = storeId ? getStoreById(storeId) : null;
+    if (fromStore) return fromStore;
+
+    const currentVendor = getCurrentVendor();
+    const businessType = storeState?.businessType || currentVendor?.businessType || 'Food';
+
     return {
-      id: Number(id) || state?.id || Date.now(),
-      name: state?.name || 'Amala Central Foods',
-      description:
-        state?.description || 'Authentic african cuisine with a modern twist',
-      address: state?.address || '123 Main Street, Downtown',
-      openingTime: '8:00 am - 8:00 pm',
+      id: storeId || `${Date.now()}`,
+      vendorId: currentVendor?.id || 'unknown',
+      name: storeState?.name || 'Sample Store',
+      description: storeState?.description || 'Store description goes here.',
+      address: storeState?.address || '123 Main Street, Downtown',
+      openingTime: storeState?.openingTime || '8:00 am - 8:00 pm',
       imageUrl:
-        state?.imageUrl ||
+        storeState?.imageUrl ||
         'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop',
+      businessType,
+      categories: storeState?.categories || [],
+      createdAt: storeState?.createdAt || new Date().toISOString(),
+      closingTime: storeState?.closingTime || '',
     };
-  }, [id, location.state]);
+  }, [storeId, storeState]);
+
+  const typeMeta = getBusinessTypeMeta(store.businessType);
+  const menuCategories = store.categories.length > 0 ? store.categories : defaultCategories;
  
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins">
@@ -68,7 +80,7 @@ const VendorRestaurant: React.FC = () => {
             className="inline-flex items-center gap-2 text-[#475467] hover:text-[#C62222] text-sm mb-1"
           >
             <ChevronLeft className="w-4 h-4" />
-            Back to Restaurant
+            Back to Dashboard
           </Link>
         </div>
 
@@ -76,21 +88,21 @@ const VendorRestaurant: React.FC = () => {
           <div className="rounded-lg overflow-hidden mb-8">
             <div className="w-full h-[300px] sm:h-[380px] md:h-[460px]">
               <img
-                src={restaurant.imageUrl}
-                alt={restaurant.name}
+                src={store.imageUrl}
+                alt={store.name}
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="pt-5 px-1">
               <h2 className="text-xl sm:text-2xl font-semibold text-[#222222] mb-1">
-                {restaurant.name}
+                {store.name}
               </h2>
               <p className="text-[#667085] text-sm sm:text-base mb-3">
-                {restaurant.description}
+                {store.description}
               </p>
               <div className="text-[#667085] text-sm mb-10">
                 <span className="block text-[#111827] font-medium">Opening Time</span>
-                <span>{restaurant.openingTime}</span>
+                <span>{store.openingTime}</span>
               </div>
               <div className="inline-flex items-center rounded-sm bg-[#F2F4F7] p-1">
                 <button
@@ -101,7 +113,7 @@ const VendorRestaurant: React.FC = () => {
                       : 'text-[#4B5563] hover:text-[#111827]'
                   }`}
                 >
-                  View Menu
+                  View {typeMeta.itemPlural}
                 </button>
                 <button
                   onClick={() => setViewMode('add')}
@@ -111,7 +123,7 @@ const VendorRestaurant: React.FC = () => {
                       : 'text-[#4B5563] hover:text-[#111827]'
                   }`}
                 >
-                  Add Menu Item
+                  Add {typeMeta.itemSingular}
                 </button>
               </div>
             </div>
@@ -120,7 +132,7 @@ const VendorRestaurant: React.FC = () => {
           {viewMode === 'menu' && (
             <>
               <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-6 border-b border-[#EAECF0] mb-8 pb-3">
-                {categories.map((cat) => (
+                {menuCategories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
@@ -168,8 +180,8 @@ const VendorRestaurant: React.FC = () => {
           {viewMode === 'add' && (
             <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-900 mb-1">Add Menu Items</h2>
-                <p className="text-sm text-gray-600">Add items to your restaurant menu</p>
+                <h2 className="text-xl font-semibold text-gray-900 mb-1">Add {typeMeta.itemPlural}</h2>
+                <p className="text-sm text-gray-600">Add items to your store catalog</p>
               </div>
  
               <form
@@ -180,7 +192,7 @@ const VendorRestaurant: React.FC = () => {
                 className="space-y-4"
               >
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Item Name *</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">{typeMeta.itemSingular} Name *</label>
                   <input
                     name="name"
                     className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
@@ -189,7 +201,7 @@ const VendorRestaurant: React.FC = () => {
                 </div>
  
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Food Categories</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Item Categories</label>
                   <input
                     name="category"
                     className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
@@ -207,7 +219,7 @@ const VendorRestaurant: React.FC = () => {
                 </div>
  
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Food Description</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Item Description</label>
                   <textarea
                     name="description"
                     className="w-full min-h-[90px] px-3 py-2 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
@@ -216,7 +228,7 @@ const VendorRestaurant: React.FC = () => {
                 </div>
  
                 <div>
-                  <label className="block text-gray-700 text-sm font-medium mb-1">Food Cover Image URL *</label>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Item Cover Image URL *</label>
                   <input
                     name="imageUrl"
                     className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
@@ -229,7 +241,7 @@ const VendorRestaurant: React.FC = () => {
                   className="inline-flex items-center justify-center gap-2 w-full h-10 px-4 bg-[#C62222] text-white text-sm font-medium rounded-md hover:bg-[#A01B1B] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C62222]"
                 >
                   <Upload className="w-4 h-4" />
-                  Add Menu Item
+                  Add {typeMeta.itemSingular}
                 </button>
               </form>
             </section>

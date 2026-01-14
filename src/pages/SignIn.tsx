@@ -40,15 +40,15 @@ const SignIn: React.FC = () => {
 
         {/* Right Side - Form */}
         <div className="flex-1 flex flex-col justify-between p-4 sm:p-6 md:p-8 lg:p-10">
-          <div className="flex-1 flex items-center md:items-start justify-center -mt-4 md:mt-0 pt-6 sm:pt-8 md:pt-10">
-            <div className="w-full max-w-[320px] sm:max-w-[340px]">
+          <div className="flex-1 flex items-center justify-center">
+            <div className="w-full max-w-[320px] sm:max-w-[340px] mx-auto">
             {/* Header Section */}
             <div className="flex flex-col items-center text-center mb-3 sm:mb-4">
-              <Link to="/" className="block translate-y-6 sm:translate-y-4 mb-0">
+              <Link to="/" className="block p-0 m-0 mb-2">
                 <img
                   src={signupLogo}
                   alt="Night Crawlers"
-                  className="w-[120px] sm:w-[140px] md:w-[160px] h-auto object-contain"
+                  className="block w-[120px] sm:w-[140px] md:w-[160px] h-auto object-contain"
                 />
               </Link>
               <h1 className="text-sm sm:text-base font-bold text-[#222222] mb-1">

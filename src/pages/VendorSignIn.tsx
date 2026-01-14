@@ -3,18 +3,39 @@ import { useNavigate, Link } from 'react-router-dom';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import partnerLogo from '../assets/vendor-partner-logo.svg';
+import { signInVendor } from '../lib/mockBackend';
 
 const VendorSignIn: React.FC = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
     setLoading(true);
-    // Simulated sign-in (replace with real auth call)
-    // Immediately navigate to dashboard for now
+
+    if (!email.trim()) {
+      setErrorMessage('Please enter your email.');
+      setLoading(false);
+      return;
+    }
+
+    if (!password.trim()) {
+      setErrorMessage('Please enter your password.');
+      setLoading(false);
+      return;
+    }
+
+    const vendor = signInVendor(email, password);
+    if (!vendor) {
+      setErrorMessage('Incorrect email or password.');
+      setLoading(false);
+      return;
+    }
+
     navigate('/vendor-dashboard');
   };
 
@@ -30,6 +51,11 @@ const VendorSignIn: React.FC = () => {
                 className="h-14 sm:h-16 w-auto"
               />
             </div>
+            {errorMessage && (
+              <p className="text-xs text-[#C62222] mb-4 text-center" role="alert">
+                {errorMessage}
+              </p>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1">

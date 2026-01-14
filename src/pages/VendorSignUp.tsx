@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import vendorSignUpImage from '../assets/signin-image.png';
+import { BUSINESS_TYPES, createVendorAccount } from '../lib/mockBackend';
 
 interface FormData {
   firstName: string;
@@ -10,6 +11,7 @@ interface FormData {
   phoneNumber: string;
   email: string;
   location: string;
+  password: string;
   agreeToPolicy: boolean;
 }
 
@@ -22,9 +24,11 @@ const VendorSignUp: React.FC = () => {
     phoneNumber: '',
     email: '',
     location: '',
+    password: '',
     agreeToPolicy: false,
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -36,12 +40,35 @@ const VendorSignUp: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+
+    if (!formData.businessType.trim()) {
+      setErrorMessage('Please enter a business type.');
+      return;
+    }
+
+    if (!formData.location.trim()) {
+      setErrorMessage('Please enter your business location.');
+      return;
+    }
+
+    if (!formData.password.trim()) {
+      setErrorMessage('Please enter a password.');
+      return;
+    }
+
     setIsSubmitting(true);
-    // TODO: replace with real sign up request
-    setTimeout(() => {
-      setIsSubmitting(false);
-      navigate('/vendor-signin');
-    }, 400);
+    createVendorAccount({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      businessType: formData.businessType,
+      phoneNumber: formData.phoneNumber,
+      email: formData.email,
+      location: formData.location,
+      password: formData.password,
+    });
+    setIsSubmitting(false);
+    navigate('/vendor-dashboard');
   };
 
   return (
@@ -104,8 +131,15 @@ const VendorSignUp: React.FC = () => {
                   value={formData.businessType}
                   onChange={handleInputChange}
                   placeholder="Business type"
+                  list="businessTypeOptions"
                   className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
+                  required
                 />
+                <datalist id="businessTypeOptions">
+                  {BUSINESS_TYPES.map((type) => (
+                    <option key={type} value={type} />
+                  ))}
+                </datalist>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -132,6 +166,18 @@ const VendorSignUp: React.FC = () => {
                     required
                   />
                 </div>
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-night-gray-700">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    placeholder="Create a password"
+                    className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
+                    required
+                  />
+                </div>
               </div>
 
               <div className="space-y-1">
@@ -143,6 +189,7 @@ const VendorSignUp: React.FC = () => {
                   onChange={handleInputChange}
                   placeholder="Location"
                   className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
+                  required
                 />
               </div>
 
@@ -169,6 +216,11 @@ const VendorSignUp: React.FC = () => {
               >
                 {isSubmitting ? 'Creating account...' : 'Get Started'}
               </button>
+              {errorMessage && (
+                <p className="text-xs text-[#C62222]" role="alert">
+                  {errorMessage}
+                </p>
+              )}
             </form>
           </div>
 

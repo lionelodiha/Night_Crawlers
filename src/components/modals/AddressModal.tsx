@@ -28,6 +28,8 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
       e.preventDefault();
       if (filteredAddresses.length > 0) {
         onSelectAddress(filteredAddresses[0]);
+      } else if (searchTerm.trim()) {
+        onSelectAddress(searchTerm.trim());
       } else {
         onSelectAddress('');
       }

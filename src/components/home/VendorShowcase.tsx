@@ -12,12 +12,12 @@ const VendorShowcase: React.FC = () => {
   return (
     <section className="flex flex-col items-center w-full max-w-[1386px] mx-auto h-auto min-h-[500px] lg:min-h-[753px] gap-16 lg:gap-[120px] py-12 lg:py-16 px-4">
       <div className="flex flex-col sm:flex-row items-center justify-between w-full px-4 lg:px-8 gap-4">
-        <h2 className="text-[#222222] text-2xl sm:text-3xl lg:text-[32px] font-semibold leading-tight sm:leading-[40px] tracking-normal font-poppins w-full sm:w-auto text-center sm:text-left">
+        <h2 className="text-[#222222] text-2xl sm:text-3xl lg:text-[32px] font-semibold leading-[32px] sm:leading-[40px] lg:leading-[40px] tracking-normal font-poppins w-full sm:w-auto text-center sm:text-left">
           Order Tasty Meals through us
         </h2>
         <Link 
           to="/explore" 
-          className="flex items-center gap-2 text-[#c62222] text-base sm:text-lg lg:text-[20px] font-semibold tracking-normal font-poppins hover:underline whitespace-nowrap"
+          className="flex items-center gap-2 text-[#c62222] text-[16px] sm:text-[18px] lg:text-[20px] font-semibold leading-[24px] lg:leading-[30px] tracking-normal font-poppins hover:underline whitespace-nowrap"
         >
           Explore all Restaurants
           <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={3} />

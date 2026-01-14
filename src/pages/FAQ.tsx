@@ -52,7 +52,7 @@ const FAQ: React.FC = () => {
     <div className="min-h-screen bg-white flex flex-col font-poppins overflow-x-hidden">
       <Header />
 
-      <main className="flex-grow w-full bg-white px-4 sm:px-6 md:px-[40px] py-[60px] sm:py-[80px]">
+      <main className="flex-grow w-full bg-white px-4 sm:px-6 md:px-[40px] pt-[1%] pb-[60px] sm:pb-[80px]">
         <div className="max-w-[1440px] mx-auto">
           {/* FAQ Title Section */}
           <div className="flex flex-col items-center justify-center gap-[20px] sm:gap-[25px] md:gap-[30px] text-center mb-[60px] sm:mb-[80px]">

@@ -6,6 +6,7 @@ import Footer from '../components/layout/Footer';
 import AddressModal from '../components/modals/AddressModal';
 import { useCart } from '../context/CartContext';
 import pinIcon from '../assets/location-pin-red.svg';
+import { BusinessType, VendorStore, getStoresForExplore } from '../lib/mockBackend';
 // import promoBanner from '../assets/signin-image.png'; // Using placeholder for now, ideally would be specific promo image
 
 interface CategoryItemProps {
@@ -95,76 +96,29 @@ const Explore: React.FC = () => {
     setIsCartOpen(!isCartOpen);
   };
 
-  const handleStoreClick = () => {
-    navigate('/vendor-details');
+  const handleStoreClick = (store: VendorStore) => {
+    navigate('/vendor-details', { state: store });
   };
 
-  // Mock data for stores
-  const stores = [
-    {
-      name: 'Amala Central Foods',
-      rating: 4.5,
-      time: '10-15 mins',
-      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop',
-      type: 'Food'
-    },
-    {
-      name: 'Midtown Grocers',
-      rating: 4.3,
-      time: '20-30 mins',
-      image: 'https://images.unsplash.com/photo-1580910051074-3eb694886505?q=80&w=1200&auto=format&fit=crop',
-      type: 'Groceries'
-    },
-    {
-      name: 'City Pharmacy',
-      rating: 4.7,
-      time: '15-20 mins',
-      image: 'https://images.unsplash.com/photo-1582719478248-54e9f2af76ae?q=80&w=1200&auto=format&fit=crop',
-      type: 'Pharmacy'
-    },
-    {
-      name: 'Club Aurora',
-      rating: 4.6,
-      time: '25-35 mins',
-      image: 'https://images.unsplash.com/photo-1519677100203-a0e668c92439?q=80&w=1200&auto=format&fit=crop',
-      type: 'Clubs/Lounges'
-    },
-    {
-      name: 'Chill & Sip Drinks',
-      rating: 4.4,
-      time: '15-25 mins',
-      image: 'https://images.unsplash.com/photo-1514361892635-6e122620e4d1?q=80&w=1200&auto=format&fit=crop',
-      type: 'Drinks'
-    },
-    {
-      name: 'Fresh Basket Market',
-      rating: 4.2,
-      time: '18-28 mins',
-      image: 'https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop',
-      type: 'Groceries'
-    },
-    {
-      name: 'Night Owl Lounge',
-      rating: 4.1,
-      time: '30-40 mins',
-      image: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=1200&auto=format&fit=crop',
-      type: 'Clubs/Lounges'
-    }
-  ];
-
-  const displayedStores = selectedCategory === 'All'
-    ? stores
-    : stores.filter((s) => s.type === selectedCategory);
+  const filteredStores = getStoresForExplore(
+    selectedAddress,
+    selectedCategory === 'All' ? undefined : (selectedCategory as BusinessType),
+  );
+  const fallbackStores = getStoresForExplore(
+    null,
+    selectedCategory === 'All' ? undefined : (selectedCategory as BusinessType),
+  );
+  const shouldUseFallback = Boolean(selectedAddress) && filteredStores.length === 0;
+  const displayedStores = shouldUseFallback ? fallbackStores : filteredStores;
 
   const handleCategoryClick = (name: string) => {
     setSelectedCategory(name);
-    if (selectedAddress && storesSectionRef.current) {
+    if (storesSectionRef.current) {
       storesSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   };
 
   useEffect(() => {
-    if (!selectedAddress) return;
     const container = promoContainerRef.current;
     if (!container) return;
     const slides = container.querySelectorAll<HTMLElement>('.promo-slide');
@@ -283,68 +237,67 @@ const Explore: React.FC = () => {
                     </div>
                 </div>
 
-                {selectedAddress ? (
-                  <>
-                    {/* All Stores */}
-                    <div className="mb-[40px] md:mb-[60px]" ref={storesSectionRef}>
-                        <div className="flex items-center justify-between">
-                          <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">
-                            {selectedCategory === 'All' ? 'All Stores' : `${selectedCategory} Stores`}
-                          </h2>
-                        </div>
-                        {displayedStores.length > 0 ? (
-                          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[16px] md:gap-[20px] lg:gap-[24px] justify-items-center">
-                              {displayedStores.map((store, index) => (
-                                  <StoreCard 
-                                      key={`${store.name}-${index}`} 
-                                      {...store} 
-                                      onClick={handleStoreClick}
-                                  />
-                              ))}
-                          </div>
-                        ) : (
-                          <div className="text-center text-[#667085] text-sm mt-6">
-                            No stores available for {selectedCategory}.
-                          </div>
+                <>
+                  {/* All Stores */}
+                  <div className="mb-[40px] md:mb-[60px]" ref={storesSectionRef}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+                        <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[16px] sm:mb-[24px] md:mb-[32px]">
+                          {selectedCategory === 'All' ? 'All Stores' : `${selectedCategory} Stores`}
+                        </h2>
+                        {!selectedAddress && (
+                          <p className="text-[12px] sm:text-[13px] text-[#667085]">
+                            Showing all stores. Select an address to filter by delivery area.
+                          </p>
                         )}
-                    </div>
-
-                    {/* Promos */}
-                    <div className="mb-[40px]">
-                        <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">Promos</h2>
-                        <div className="relative w-full overflow-hidden rounded-[12px] md:rounded-[16px]">
-                          <div ref={promoContainerRef} className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-4">
-                              {[1, 2, 3].map((_, idx) => (
-                                  <div key={idx} className="promo-slide snap-center shrink-0 w-full md:w-[80%] lg:w-[60%] h-[180px] sm:h-[200px] md:h-[250px] rounded-[12px] md:rounded-[16px] overflow-hidden relative">
-                                      <img 
-                                          src={`https://picsum.photos/seed/promo${idx}/800/400`} 
-                                          alt={`Promo ${idx + 1}`} 
-                                          className="w-full h-full object-cover"
-                                      />
-                                      <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
-                                          <h3 className="text-white text-2xl md:text-4xl font-bold text-center px-4 drop-shadow-lg">
-                                              {idx === 0 ? '50% OFF KFC BUCKETS' : idx === 1 ? 'FREE DELIVERY' : 'BUY 1 GET 1 FREE'}
-                                          </h3>
-                                      </div>
-                                  </div>
-                              ))}
-                          </div>
+                        {selectedAddress && shouldUseFallback && (
+                          <p className="text-[12px] sm:text-[13px] text-[#667085]">
+                            No exact matches for this address yet. Showing all stores.
+                          </p>
+                        )}
+                      </div>
+                      {displayedStores.length > 0 ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[16px] md:gap-[20px] lg:gap-[24px] justify-items-center">
+                            {displayedStores.map((store) => (
+                                <StoreCard 
+                                    key={store.id} 
+                                    name={store.name}
+                                    rating={4.5}
+                                    time="15-25 mins"
+                                    image={store.imageUrl}
+                                    onClick={() => handleStoreClick(store)}
+                                />
+                            ))}
                         </div>
-                    </div>
-                  </>
-                ) : (
-                    <div className="flex flex-col items-center justify-center py-[80px] sm:py-[120px] text-center">
-                    <div className="w-[82px] h-[82px] rounded-full bg-[#FEE4E2] flex items-center justify-center mb-3 relative">
-                      <span className="absolute w-[6px] h-[6px] bg-[#FEE4E2] rounded-full left-[6px] top-[10px]" />
-                      <span className="absolute w-[8px] h-[8px] bg-[#FEE4E2] rounded-full right-[10px] bottom-[8px]" />
-                      <img src={pinIcon} alt="" className="w-[26px] h-[26px]" />
-                    </div>
-                    <p className="text-sm font-semibold text-[#222222] mb-1">No address found</p>
-                    <p className="text-[13px] text-[#667085] max-w-[320px]">
-                      Your search did not match any address. Please try again.
-                    </p>
+                      ) : (
+                        <div className="text-center text-[#667085] text-sm mt-6">
+                          No stores available for {selectedCategory}.
+                        </div>
+                      )}
                   </div>
-                )}
+
+                  {/* Promos */}
+                  <div className="mb-[40px]">
+                      <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">Promos</h2>
+                      <div className="relative w-full overflow-hidden rounded-[12px] md:rounded-[16px]">
+                        <div ref={promoContainerRef} className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide gap-4 pb-4">
+                            {[1, 2, 3].map((_, idx) => (
+                                <div key={idx} className="promo-slide snap-center shrink-0 w-full md:w-[80%] lg:w-[60%] h-[180px] sm:h-[200px] md:h-[250px] rounded-[12px] md:rounded-[16px] overflow-hidden relative">
+                                    <img 
+                                        src={`https://picsum.photos/seed/promo${idx}/800/400`} 
+                                        alt={`Promo ${idx + 1}`} 
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-black/20 flex items-center justify-center">
+                                        <h3 className="text-white text-2xl md:text-4xl font-bold text-center px-4 drop-shadow-lg">
+                                            {idx === 0 ? '50% OFF KFC BUCKETS' : idx === 1 ? 'FREE DELIVERY' : 'BUY 1 GET 1 FREE'}
+                                        </h3>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                      </div>
+                  </div>
+                </>
             </div>
 
             {/* Right Cart Drawer */}

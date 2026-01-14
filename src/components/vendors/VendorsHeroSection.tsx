@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import vendorsHeroImage from '../../assets/vendors-hero.png';
 
 const VendorsHeroSection: React.FC = () => {
   const navigate = useNavigate();
@@ -65,13 +66,15 @@ const VendorsHeroSection: React.FC = () => {
         </div>
 
         {/* Right Image */}
-        <div className="flex-1 max-w-[590px] w-full">
-          <div
-            className="w-full h-[280px] sm:h-[350px] md:h-[420px] lg:h-[515px] bg-cover bg-center rounded-lg shadow-lg"
-            style={{
-              backgroundImage: `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 590 515"><rect fill="%23f0f0f0" width="590" height="515"/><text x="50%" y="50%" font-family="Arial" font-size="24" fill="%23999" text-anchor="middle" dy=".3em">Indian Butter Chicken</text></svg>')`,
-            }}
-          />
+        <div className="relative flex-1 max-w-[590px] w-full">
+          <div className="relative w-full h-[280px] sm:h-[350px] md:h-[420px] lg:h-[515px] overflow-hidden">
+            <img
+              src={vendorsHeroImage}
+              alt="Butter chicken bowl"
+              className="w-full h-full object-cover object-left"
+            />
+            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-[48px] sm:h-[64px] md:h-[80px] bg-white" />
+          </div>
         </div>
       </div>
 
