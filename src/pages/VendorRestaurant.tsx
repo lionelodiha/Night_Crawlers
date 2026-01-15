@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
 import { Store, ChevronLeft, Upload } from 'lucide-react';
@@ -6,8 +6,10 @@ import {
   getBusinessTypeMeta,
   getCurrentVendor,
   getStoreById,
+  updateStore,
   VendorStore,
 } from '../lib/mockBackend';
+import { resolveImageUrl } from '../lib/imageUtils';
  
 type MenuItem = {
   id: number;
@@ -33,12 +35,12 @@ const VendorRestaurant: React.FC = () => {
   const { id } = useParams();
   const location = useLocation();
   const [activeCategory, setActiveCategory] = useState<string>('Rice');
-  const [viewMode, setViewMode] = useState<'menu' | 'add'>('menu');
-
+  const [viewMode, setViewMode] = useState<'menu' | 'add' | 'edit'>('menu');
+ 
   const storeState = location.state as Partial<VendorStore> | undefined;
   const storeId = id || (storeState?.id ? String(storeState.id) : undefined);
 
-  const store: VendorStore = useMemo(() => {
+  const resolveStore = () => {
     const fromStore = storeId ? getStoreById(storeId) : null;
     if (fromStore) return fromStore;
 
@@ -60,10 +62,120 @@ const VendorRestaurant: React.FC = () => {
       createdAt: storeState?.createdAt || new Date().toISOString(),
       closingTime: storeState?.closingTime || '',
     };
+  };
+
+  const [store, setStore] = useState<VendorStore>(resolveStore);
+
+  useEffect(() => {
+    setStore(resolveStore());
   }, [storeId, storeState]);
 
   const typeMeta = getBusinessTypeMeta(store.businessType);
   const menuCategories = store.categories.length > 0 ? store.categories : defaultCategories;
+
+  const [editForm, setEditForm] = useState({
+    name: store.name,
+    categories: store.categories.join(', '),
+    address: store.address,
+    description: store.description,
+    openingTime: store.openingTime,
+    closingTime: store.closingTime || '',
+    imageUrl: store.imageUrl,
+  });
+  const [editImageFile, setEditImageFile] = useState<File | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [editMessage, setEditMessage] = useState('');
+  const [editError, setEditError] = useState('');
+
+  useEffect(() => {
+    setEditForm({
+      name: store.name,
+      categories: store.categories.join(', '),
+      address: store.address,
+      description: store.description,
+      openingTime: store.openingTime,
+      closingTime: store.closingTime || '',
+      imageUrl: store.imageUrl,
+    });
+    setEditImageFile(null);
+    setEditMessage('');
+    setEditError('');
+  }, [store.id, store.name, store.address, store.description, store.imageUrl, store.openingTime, store.closingTime, store.categories]);
+
+  const parseCategories = (value: string) =>
+    value
+      .split(',')
+      .map((category) => category.trim())
+      .filter(Boolean);
+
+  const readFileAsDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error('Unable to read image file.'));
+      reader.readAsDataURL(file);
+    });
+
+  const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEditError('');
+    setEditMessage('');
+
+    if (!editForm.name.trim()) {
+      setEditError('Please enter a name.');
+      return;
+    }
+
+    if (!editForm.address.trim()) {
+      setEditError('Please enter an address.');
+      return;
+    }
+
+    if (!editForm.imageUrl.trim() && !editImageFile) {
+      setEditError('Please add a cover image URL or upload a file.');
+      return;
+    }
+
+    setIsSaving(true);
+    let imageUrl = editForm.imageUrl.trim();
+    if (editImageFile) {
+      try {
+        imageUrl = await readFileAsDataUrl(editImageFile);
+      } catch (error) {
+        setIsSaving(false);
+        setEditError('Unable to upload the image. Please try again.');
+        return;
+      }
+    } else {
+      const resolvedUrl = await resolveImageUrl(imageUrl);
+      if (!resolvedUrl) {
+        setIsSaving(false);
+        setEditError('Please use a direct image URL or upload a file.');
+        return;
+      }
+      imageUrl = resolvedUrl;
+    }
+
+    const updated = updateStore(store.id, {
+      name: editForm.name.trim(),
+      categories: parseCategories(editForm.categories),
+      address: editForm.address.trim(),
+      description: editForm.description.trim(),
+      imageUrl,
+      openingTime: editForm.openingTime.trim() || store.openingTime,
+      closingTime: editForm.closingTime.trim(),
+    });
+
+    setStore(updated);
+    setEditImageFile(null);
+    setIsSaving(false);
+    setEditMessage('Details updated.');
+  };
  
   return (
     <div className="min-h-screen bg-white flex flex-col font-poppins">
@@ -124,6 +236,16 @@ const VendorRestaurant: React.FC = () => {
                   }`}
                 >
                   Add {typeMeta.itemSingular}
+                </button>
+                <button
+                  onClick={() => setViewMode('edit')}
+                  className={`px-4 py-2 text-xs font-medium rounded-sm ${
+                    viewMode === 'edit'
+                      ? 'bg-[#C62222] text-white'
+                      : 'text-[#4B5563] hover:text-[#111827]'
+                  }`}
+                >
+                  Edit Details
                 </button>
               </div>
             </div>
@@ -243,6 +365,125 @@ const VendorRestaurant: React.FC = () => {
                   <Upload className="w-4 h-4" />
                   Add {typeMeta.itemSingular}
                 </button>
+              </form>
+            </section>
+          )}
+
+          {viewMode === 'edit' && (
+            <section className="bg-white rounded-xl shadow-sm border border-gray-100 p-8">
+              <div className="mb-6">
+                <h2 className="text-xl font-semibold text-gray-900 mb-1">Edit Store Details</h2>
+                <p className="text-sm text-gray-600">Update your store information.</p>
+              </div>
+
+              <form onSubmit={handleEditSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Store Name *</label>
+                  <input
+                    name="name"
+                    value={editForm.name}
+                    onChange={handleEditChange}
+                    className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="Store name"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Categories</label>
+                  <input
+                    name="categories"
+                    value={editForm.categories}
+                    onChange={handleEditChange}
+                    className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="e.g. Local, Premium"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Address *</label>
+                  <input
+                    name="address"
+                    value={editForm.address}
+                    onChange={handleEditChange}
+                    className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="123 Main Street, Downtown"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Description</label>
+                  <textarea
+                    name="description"
+                    value={editForm.description}
+                    onChange={handleEditChange}
+                    className="w-full min-h-[90px] px-3 py-2 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="Short description about the store"
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-1">Opening Time</label>
+                    <input
+                      name="openingTime"
+                      value={editForm.openingTime}
+                      onChange={handleEditChange}
+                      className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                      placeholder="8:00 am - 8:00 pm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-gray-700 text-sm font-medium mb-1">Closing Time</label>
+                    <input
+                      name="closingTime"
+                      value={editForm.closingTime}
+                      onChange={handleEditChange}
+                      className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                      placeholder="Optional"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Cover Image URL *</label>
+                  <input
+                    name="imageUrl"
+                    value={editForm.imageUrl}
+                    onChange={handleEditChange}
+                    className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
+                    placeholder="https://example.com/cover.jpg"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Or Upload Cover Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => setEditImageFile(event.target.files?.[0] ?? null)}
+                    className="w-full text-sm text-gray-700"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSaving}
+                  className="inline-flex items-center justify-center gap-2 w-full h-10 px-4 bg-[#C62222] text-white text-sm font-medium rounded-md hover:bg-[#A01B1B] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C62222] disabled:opacity-70"
+                >
+                  <Upload className="w-4 h-4" />
+                  {isSaving ? 'Saving...' : 'Save Changes'}
+                </button>
+
+                {editError && (
+                  <p className="text-xs text-[#C62222]" role="alert">
+                    {editError}
+                  </p>
+                )}
+                {editMessage && (
+                  <p className="text-xs text-[#16A34A]" role="status">
+                    {editMessage}
+                  </p>
+                )}
               </form>
             </section>
           )}

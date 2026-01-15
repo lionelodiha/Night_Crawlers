@@ -133,6 +133,16 @@ export type CreateStoreInput = {
   closingTime?: string;
 };
 
+export type UpdateStoreInput = {
+  name?: string;
+  categories?: string[];
+  address?: string;
+  description?: string;
+  imageUrl?: string;
+  openingTime?: string;
+  closingTime?: string;
+};
+
 const STORAGE_KEY = 'night-crawlers-mock-backend';
 
 type StoredState = {
@@ -286,6 +296,27 @@ export const createStore = (input: CreateStoreInput): VendorStore => {
   };
 
   stores.push(store);
+  saveState();
+  return store;
+};
+
+export const updateStore = (storeId: string, updates: UpdateStoreInput): VendorStore => {
+  const vendor = getCurrentVendor();
+  const store = stores.find((item) => item.id === storeId);
+  if (!store) {
+    throw new Error('Store not found.');
+  }
+  if (vendor && store.vendorId !== vendor.id) {
+    throw new Error('Not authorized to edit this store.');
+  }
+
+  const next: VendorStore = {
+    ...store,
+    ...updates,
+    categories: updates.categories ?? store.categories,
+  };
+
+  Object.assign(store, next);
   saveState();
   return store;
 };

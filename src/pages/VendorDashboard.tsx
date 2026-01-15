@@ -11,6 +11,7 @@ import {
   VendorAccount,
   VendorStore,
 } from '../lib/mockBackend';
+import { resolveImageUrl } from '../lib/imageUtils';
 
 type StoreForm = {
   name: string;
@@ -26,6 +27,9 @@ const VendorDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [vendor, setVendor] = useState<VendorAccount | null>(null);
   const [stores, setStores] = useState<VendorStore[]>([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [form, setForm] = useState<StoreForm>({
     name: '',
     openingTime: '',
@@ -67,16 +71,56 @@ const VendorDashboard: React.FC = () => {
       .map((category) => category.trim())
       .filter(Boolean);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const readFileAsDataUrl = (file: File) =>
+    new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = () => reject(new Error('Unable to read image file.'));
+      reader.readAsDataURL(file);
+    });
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
     if (!form.name.trim()) return;
+
+    if (!form.address.trim()) {
+      setErrorMessage('Please enter an address.');
+      return;
+    }
+
+    if (!form.imageUrl.trim() && !imageFile) {
+      setErrorMessage('Please add a cover image URL or upload a file.');
+      return;
+    }
+
+    setIsSaving(true);
+
+    let imageUrl = form.imageUrl.trim();
+    if (imageFile) {
+      try {
+        imageUrl = await readFileAsDataUrl(imageFile);
+      } catch (error) {
+        setIsSaving(false);
+        setErrorMessage('Unable to upload the image. Please try again.');
+        return;
+      }
+    } else {
+      const resolvedUrl = await resolveImageUrl(imageUrl);
+      if (!resolvedUrl) {
+        setIsSaving(false);
+        setErrorMessage('Please use a direct image URL or upload a file.');
+        return;
+      }
+      imageUrl = resolvedUrl;
+    }
 
     const created = createStore({
       name: form.name,
       categories: parseCategories(form.categories),
       address: form.address,
       description: form.description,
-      imageUrl: form.imageUrl,
+      imageUrl,
       openingTime: form.openingTime,
       closingTime: form.closingTime,
     });
@@ -91,6 +135,8 @@ const VendorDashboard: React.FC = () => {
       description: '',
       imageUrl: '',
     });
+    setImageFile(null);
+    setIsSaving(false);
 
     navigate(`/vendor-dashboard/restaurant/${created.id}`, { state: created });
   };
@@ -227,17 +273,32 @@ const VendorDashboard: React.FC = () => {
                 onChange={handleChange}
                 className="w-full h-11 px-3 bg-[#F7F7F7] border border-[#E5E7EB] rounded-sm text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#C62222]"
                 placeholder="https://example.com/cover.jpg"
-                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-[#374151] mb-1">Or Upload Cover Image</label>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => setImageFile(event.target.files?.[0] ?? null)}
+                className="w-full text-sm text-[#111827]"
               />
             </div>
 
             <button
               type="submit"
-              className="inline-flex items-center justify-center gap-2 w-full h-11 px-4 bg-[#C62222] text-white text-sm font-medium rounded-sm hover:bg-[#A01B1B] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C62222]"
+              disabled={isSaving}
+              className="inline-flex items-center justify-center gap-2 w-full h-11 px-4 bg-[#C62222] text-white text-sm font-medium rounded-sm hover:bg-[#A01B1B] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C62222] disabled:opacity-70"
             >
               <Upload className="w-4 h-4" />
-              Add {typeMeta.singular}
+              {isSaving ? 'Saving...' : `Add ${typeMeta.singular}`}
             </button>
+            {errorMessage && (
+              <p className="text-xs text-[#C62222]" role="alert">
+                {errorMessage}
+              </p>
+            )}
           </form>
         </section>
       </main>
