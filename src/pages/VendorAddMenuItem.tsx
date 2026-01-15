@@ -1,7 +1,8 @@
 import React, { useMemo, useState } from 'react';
-import { Link, useLocation, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams, useNavigate } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
-import { Store, ChevronLeft, Upload } from 'lucide-react';
+import { Store, ChevronLeft, Upload, X } from 'lucide-react';
+import { createMenuItem } from '../lib/mockBackend';
 
 type Restaurant = {
   id: number;
@@ -15,6 +16,7 @@ type Restaurant = {
 const VendorAddMenuItem: React.FC = () => {
   const { id } = useParams();
   const location = useLocation();
+  const navigate = useNavigate();
   const restaurantState = location.state as Partial<Restaurant> | undefined;
 
   const restaurant: Restaurant = useMemo(() => {
@@ -30,20 +32,55 @@ const VendorAddMenuItem: React.FC = () => {
 
   const [form, setForm] = useState({
     name: '',
-    category: '',
+    categoryInput: '',
     price: '',
     description: '',
     imageUrl: ''
   });
+
+  const [categories, setCategories] = useState<string[]>([]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
   };
 
+  const handleCategoryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      const newCategory = form.categoryInput.trim();
+      if (newCategory && !categories.includes(newCategory)) {
+        setCategories(prev => [...prev, newCategory]);
+        setForm(prev => ({ ...prev, categoryInput: '' }));
+      }
+    }
+  };
+
+  const removeCategory = (categoryToRemove: string) => {
+    setCategories(prev => prev.filter(cat => cat !== categoryToRemove));
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setForm({ name: '', category: '', price: '', description: '', imageUrl: '' });
+    if (!form.name || !form.price) {
+      alert('Please fill in required fields (Name and Price)');
+      return;
+    }
+    try {
+      createMenuItem({
+        storeId: String(id),
+        name: form.name,
+        categories: categories,
+        price: Number(form.price) || 0,
+        description: form.description,
+        imageUrl: form.imageUrl || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop',
+      });
+      setForm({ name: '', categoryInput: '', price: '', description: '', imageUrl: '' });
+      setCategories([]);
+      alert('Menu item added successfully!');
+    } catch (error) {
+      alert('Failed to add menu item. Please try again.');
+    }
   };
 
   return (
@@ -113,13 +150,34 @@ const VendorAddMenuItem: React.FC = () => {
 
               <div>
                 <label className="block text-gray-700 text-sm font-medium mb-1">Food Categories</label>
-                <input
-                  name="category"
-                  value={form.category}
-                  onChange={handleChange}
-                  className="w-full h-10 px-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md text-gray-700 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-transparent"
-                  placeholder="e.g. Rice"
-                />
+                <div className="w-full min-h-[48px] px-4 py-3 bg-[#F7F7F7] border border-[#EAECF0] rounded-md focus-within:ring-2 focus-within:ring-[#C62222] focus-within:border-transparent">
+                  <div className="flex flex-wrap gap-3 items-center">
+                    {categories.map((category) => (
+                      <span
+                        key={category}
+                        className="inline-flex items-center gap-2 px-3 py-1.5 bg-[#C62222] text-white text-sm font-medium rounded-full"
+                      >
+                        {category}
+                        <button
+                          type="button"
+                          onClick={() => removeCategory(category)}
+                          className="w-5 h-5 flex items-center justify-center hover:bg-white/20 rounded-full transition-colors"
+                        >
+                          <X size={14} />
+                        </button>
+                      </span>
+                    ))}
+                    <input
+                      name="categoryInput"
+                      value={form.categoryInput}
+                      onChange={handleChange}
+                      onKeyDown={handleCategoryKeyDown}
+                      className="flex-1 min-w-[140px] h-8 bg-transparent text-gray-700 text-sm outline-none placeholder:text-gray-400"
+                      placeholder={categories.length === 0 ? "Type a category and press Enter" : "Add more..."}
+                    />
+                  </div>
+                </div>
+                <p className="text-xs text-gray-500 mt-1">Press Enter or comma to add a category</p>
               </div>
 
               <div>

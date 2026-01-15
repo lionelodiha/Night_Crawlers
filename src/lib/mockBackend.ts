@@ -143,11 +143,32 @@ export type UpdateStoreInput = {
   closingTime?: string;
 };
 
+export type MenuItem = {
+  id: string;
+  storeId: string;
+  name: string;
+  categories: string[];
+  price: number;
+  description: string;
+  imageUrl: string;
+  createdAt: string;
+};
+
+export type CreateMenuItemInput = {
+  storeId: string;
+  name: string;
+  categories: string[];
+  price: number;
+  description: string;
+  imageUrl: string;
+};
+
 const STORAGE_KEY = 'night-crawlers-mock-backend';
 
 type StoredState = {
   vendors: VendorAccount[];
   stores: VendorStore[];
+  menuItems: MenuItem[];
   currentVendorId: string | null;
 };
 
@@ -158,31 +179,32 @@ const normalizeVendor = (vendor: VendorAccount): VendorAccount => ({
 
 const loadState = (): StoredState => {
   if (typeof window === 'undefined') {
-    return { vendors: [], stores: [], currentVendorId: null };
+    return { vendors: [], stores: [], menuItems: [], currentVendorId: null };
   }
   const raw = window.localStorage.getItem(STORAGE_KEY);
   if (!raw) {
-    return { vendors: [], stores: [], currentVendorId: null };
+    return { vendors: [], stores: [], menuItems: [], currentVendorId: null };
   }
   try {
     const parsed = JSON.parse(raw) as StoredState;
     return {
       vendors: Array.isArray(parsed.vendors) ? parsed.vendors.map(normalizeVendor) : [],
       stores: Array.isArray(parsed.stores) ? parsed.stores : [],
+      menuItems: Array.isArray(parsed.menuItems) ? parsed.menuItems : [],
       currentVendorId: parsed.currentVendorId ?? null,
     };
   } catch {
-    return { vendors: [], stores: [], currentVendorId: null };
+    return { vendors: [], stores: [], menuItems: [], currentVendorId: null };
   }
 };
 
 const saveState = () => {
   if (typeof window === 'undefined') return;
-  const payload: StoredState = { vendors, stores, currentVendorId };
+  const payload: StoredState = { vendors, stores, menuItems, currentVendorId };
   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
 };
 
-const { vendors, stores, currentVendorId: initialVendorId } = loadState();
+const { vendors, stores, menuItems, currentVendorId: initialVendorId } = loadState();
 let currentVendorId: string | null = initialVendorId;
 
 const generateId = () => `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
@@ -344,9 +366,42 @@ export const getStoresForExplore = (
       matchesAddressLoose(store.address, normalizedAddress);
     const matchesVendor = vendor
       ? matchesAddress(vendor.location, normalizedAddress) ||
-        matchesAddressLoose(vendor.location, normalizedAddress)
+      matchesAddressLoose(vendor.location, normalizedAddress)
       : false;
 
     return matchesStore || matchesVendor;
   });
+};
+
+export const createMenuItem = (input: CreateMenuItemInput): MenuItem => {
+  const store = stores.find((s) => s.id === input.storeId);
+  if (!store) {
+    throw new Error('Store not found.');
+  }
+
+  const menuItem: MenuItem = {
+    id: generateId(),
+    storeId: input.storeId,
+    name: input.name.trim(),
+    categories: input.categories.map((c) => c.trim()).filter(Boolean),
+    price: input.price,
+    description: input.description.trim(),
+    imageUrl: input.imageUrl.trim(),
+    createdAt: new Date().toISOString(),
+  };
+
+  menuItems.push(menuItem);
+  saveState();
+  return menuItem;
+};
+
+export const getMenuItemsForStore = (storeId: string): MenuItem[] =>
+  menuItems.filter((item) => item.storeId === storeId);
+
+export const deleteMenuItem = (menuItemId: string): void => {
+  const index = menuItems.findIndex((item) => item.id === menuItemId);
+  if (index !== -1) {
+    menuItems.splice(index, 1);
+    saveState();
+  }
 };
