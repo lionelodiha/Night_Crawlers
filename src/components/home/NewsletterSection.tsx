@@ -43,7 +43,7 @@ const NewsletterSection: React.FC = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="h-[34px] flex-1 px-4 bg-white border border-[#D0D5DD] rounded-l-[4px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] outline-none text-[#667085] text-[14px] sm:text-[16px] font-poppins placeholder:text-[#667085]"
+                className="h-[40px] flex-1 px-4 bg-white border border-[#D0D5DD] rounded-l-[4px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] outline-none text-[#667085] text-[14px] sm:text-[16px] font-poppins placeholder:text-[#667085]"
               />
               <button
                 type="submit"
