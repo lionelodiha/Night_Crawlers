@@ -1,12 +1,41 @@
 const IMAGE_EXTENSIONS = /\.(png|jpe?g|webp|gif|svg)$/i;
 
+// Known image CDN hosts that serve images without file extensions
+const IMAGE_CDN_HOSTS = [
+  'images.unsplash.com',
+  'source.unsplash.com',
+  'picsum.photos',
+  'images.pexels.com',
+  'cdn.pixabay.com',
+  'cloudinary.com',
+  'imgur.com',
+  'i.imgur.com',
+  'res.cloudinary.com',
+  'imagekit.io',
+  'ik.imagekit.io',
+];
+
 export const isLikelyImageUrl = (url: string) => {
   const trimmed = url.trim();
   if (!trimmed) return false;
   if (trimmed.startsWith('data:image/')) return true;
   if (trimmed.startsWith('blob:')) return true;
+
+  // Check if URL has image extension
   const clean = trimmed.split('?')[0];
-  return IMAGE_EXTENSIONS.test(clean);
+  if (IMAGE_EXTENSIONS.test(clean)) return true;
+
+  // Check if URL is from a known image CDN
+  try {
+    const urlObj = new URL(trimmed);
+    if (IMAGE_CDN_HOSTS.some(host => urlObj.hostname.includes(host))) {
+      return true;
+    }
+  } catch {
+    // Invalid URL, not an image
+  }
+
+  return false;
 };
 
 const extractMetaImage = (html: string) => {
@@ -44,7 +73,17 @@ const resolveViaProxy = async (sourceUrl: string) => {
 export const resolveImageUrl = async (url: string) => {
   const trimmed = url.trim();
   if (!trimmed) return '';
+
+  // If it's already recognized as an image URL, return it directly
   if (isLikelyImageUrl(trimmed)) return trimmed;
+
+  // If URL starts with http/https, accept it and let the browser handle it
+  // This allows URLs from any source (Google Images, direct links, etc.)
+  if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+    return trimmed;
+  }
+
+  // For non-http URLs, try to resolve via proxy
   try {
     const resolved = await resolveViaProxy(trimmed);
     if (resolved && isLikelyImageUrl(resolved)) {

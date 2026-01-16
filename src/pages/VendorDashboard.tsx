@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
-import { Store, Upload } from 'lucide-react';
+import { Store, Upload, X } from 'lucide-react';
 import pinIcon from '../assets/location-pin-red.svg';
 import {
   createStore,
@@ -17,7 +17,7 @@ type StoreForm = {
   name: string;
   openingTime: string;
   closingTime: string;
-  categories: string;
+  categoryInput: string;
   address: string;
   description: string;
   imageUrl: string;
@@ -34,11 +34,12 @@ const VendorDashboard: React.FC = () => {
     name: '',
     openingTime: '',
     closingTime: '',
-    categories: '',
+    categoryInput: '',
     address: '',
     description: '',
     imageUrl: '',
   });
+  const [categoryTags, setCategoryTags] = useState<string[]>([]);
 
   useEffect(() => {
     const currentVendor = getCurrentVendor();
@@ -65,11 +66,20 @@ const VendorDashboard: React.FC = () => {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const parseCategories = (value: string) =>
-    value
-      .split(',')
-      .map((category) => category.trim())
-      .filter(Boolean);
+  const handleCategoryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const newTag = form.categoryInput.trim();
+      if (newTag && !categoryTags.includes(newTag)) {
+        setCategoryTags((prev) => [...prev, newTag]);
+        setForm((prev) => ({ ...prev, categoryInput: '' }));
+      }
+    }
+  };
+
+  const removeCategory = (tagToRemove: string) => {
+    setCategoryTags((prev) => prev.filter((tag) => tag !== tagToRemove));
+  };
 
   const readFileAsDataUrl = (file: File) =>
     new Promise<string>((resolve, reject) => {
@@ -117,7 +127,7 @@ const VendorDashboard: React.FC = () => {
 
     const created = createStore({
       name: form.name,
-      categories: parseCategories(form.categories),
+      categories: categoryTags,
       address: form.address,
       description: form.description,
       imageUrl,
@@ -130,11 +140,12 @@ const VendorDashboard: React.FC = () => {
       name: '',
       openingTime: '',
       closingTime: '',
-      categories: '',
+      categoryInput: '',
       address: '',
       description: '',
       imageUrl: '',
     });
+    setCategoryTags([]);
     setImageFile(null);
     setIsSaving(false);
 
@@ -233,13 +244,34 @@ const VendorDashboard: React.FC = () => {
 
             <div>
               <label className="block text-xs font-medium text-[#374151] mb-1">{typeMeta.categoryLabel}</label>
-              <input
-                name="categories"
-                value={form.categories || ''}
-                onChange={handleChange}
-                className="w-full h-11 px-3 bg-[#F7F7F7] border border-[#E5E7EB] rounded-sm text-sm text-[#111827] focus:outline-none focus:ring-2 focus:ring-[#C62222]"
-                placeholder="e.g. Local, Premium"
-              />
+              <div className="w-full min-h-[48px] px-3 py-2 bg-[#F7F7F7] border border-[#E5E7EB] rounded-sm focus-within:ring-2 focus-within:ring-[#C62222]">
+                <div className="flex flex-wrap gap-2 items-center">
+                  {categoryTags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-[#C62222] text-white text-xs font-medium rounded-sm"
+                    >
+                      {tag}
+                      <button
+                        type="button"
+                        onClick={() => removeCategory(tag)}
+                        className="w-4 h-4 flex items-center justify-center hover:bg-white/30 rounded-sm transition-colors"
+                      >
+                        <X size={12} strokeWidth={2.5} />
+                      </button>
+                    </span>
+                  ))}
+                  <input
+                    name="categoryInput"
+                    value={form.categoryInput}
+                    onChange={handleChange}
+                    onKeyDown={handleCategoryKeyDown}
+                    className="flex-1 min-w-[120px] h-7 bg-transparent text-sm text-[#111827] outline-none placeholder:text-[#9CA3AF]"
+                    placeholder={categoryTags.length === 0 ? "Type and press Enter to add" : "Add more..."}
+                  />
+                </div>
+              </div>
+              <p className="text-[10px] text-[#6B7280] mt-1">Press Enter to add a category</p>
             </div>
 
             <div>

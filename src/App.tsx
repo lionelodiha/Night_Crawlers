@@ -14,6 +14,7 @@ import VendorAddMenuItem from './pages/VendorAddMenuItem';
 
 import Explore from './pages/Explore';
 import VendorDetails from './pages/VendorDetails';
+import OrderSummary from './pages/OrderSummary';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/vendor-dashboard/restaurant/:id/add-item" element={<VendorAddMenuItem />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/vendor-details" element={<VendorDetails />} />
+        <Route path="/order-summary" element={<OrderSummary />} />
       </Routes>
     </Router>
   );

@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Search, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft, X } from 'lucide-react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { Search, ChevronDown, Clock, Plus, Trash2, ShoppingBasket, Minus, ChevronLeft, X, UtensilsCrossed } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useCart } from '../context/CartContext';
@@ -11,6 +11,7 @@ import { VendorStore, getMenuItemsForStore, MenuItem } from '../lib/mockBackend'
 
 const VendorDetails: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { cartItems, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('All');
@@ -114,36 +115,52 @@ const VendorDetails: React.FC = () => {
             </div>
 
             {/* Vendor Info */}
-            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start gap-[16px] mb-[32px] sm:mb-[40px]">
-              <div>
-                <h1 className="text-[24px] sm:text-[28px] md:text-[32px] font-bold text-[#222222] mb-[8px] sm:mb-[12px]">{store.name}</h1>
-                <p className="text-[#667085] text-[12px] sm:text-[14px] mb-[12px] sm:mb-[16px]">{store.address}</p>
-                <div className="flex items-center gap-[20px] sm:gap-[32px]">
-                  <div className="flex flex-col items-center gap-[3px] sm:gap-[4px]">
-                    <Clock size={16} className="text-[#C62222]" />
-                    <span className="text-[#667085] text-[10px] sm:text-[12px]">10-15 mins</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-[3px] sm:gap-[4px]">
-                    <span className="text-[#222222] font-medium text-[12px] sm:text-[14px]">{store.openingTime}</span>
-                    <span className="text-[#667085] text-[10px] sm:text-[12px]">Opening Time</span>
-                  </div>
-                  <div className="flex flex-col items-center gap-[3px] sm:gap-[4px]">
-                    <span className="text-[#C62222] font-medium text-[12px] sm:text-[14px]">₦ 800</span>
-                    <span className="text-[#667085] text-[10px] sm:text-[12px]">Delivery</span>
-                  </div>
+            {/* Vendor Info */}
+            <div className="flex flex-col gap-4 mb-[24px] sm:mb-[32px]">
+              {/* Top Row: Name and Opening Time */}
+              <div className="flex justify-between items-start">
+                <div>
+                  <h1 className="text-[20px] sm:text-[24px] md:text-[28px] font-bold text-[#222222] leading-tight">{store.name}</h1>
+                  <p className="text-[#667085] text-[12px] sm:text-[13px] mt-1">{store.address}</p>
+                </div>
+                <div className="text-right flex-shrink-0">
+                  <span className="block text-[#667085] text-[10px] sm:text-[12px] mb-0.5">Opening & Closing Time</span>
+                  <span className="block text-[#222222] text-[11px] sm:text-[13px] font-medium">
+                    {store.closingTime ? `${store.openingTime} - ${store.closingTime}` : store.openingTime}
+                  </span>
                 </div>
               </div>
 
+              {/* Bottom Row: Icons */}
+              <div className="flex items-center gap-[32px] sm:gap-[40px]">
+                <div className="flex flex-col items-center gap-1">
+                  <Clock size={20} className="text-[#C62222] stroke-[1.5]" />
+                  <span className="text-[#667085] text-[10px] sm:text-[12px]">30-45 mins</span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  {/* Using a custom SVG for the scooter if possible, or a Lucide icon as fallback */}
+                  <div className="text-[#C62222]">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5.5 17a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm13 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z" />
+                      <path d="M8 14.5h8" />
+                      <path d="M16.5 14.5 14 5h-3" />
+                      <path d="M6 10h1.5" />
+                      <path d="M2.5 14.5H5" />
+                    </svg>
+                  </div>
+                  <span className="text-[#667085] text-[10px] sm:text-[12px]">₦ 800</span>
+                </div>
+              </div>
             </div>
 
             {/* Menu Categories */}
             {displayCategories.length > 1 && (
-              <div className="flex flex-wrap items-center gap-[12px] sm:gap-[20px] md:gap-[32px] border-b border-[#EAECF0] mb-[32px] sm:mb-[40px] pb-[12px] sm:pb-[16px]">
+              <div className="flex flex-nowrap overflow-x-auto sm:flex-wrap items-center justify-between gap-[16px] border-b border-[#EAECF0] mb-[32px] sm:mb-[40px] pb-[12px] sm:pb-[16px] scrollbar-hide">
                 {displayCategories.map((cat) => (
                   <button
                     key={cat}
                     onClick={() => setActiveCategory(cat)}
-                    className={`text-[12px] sm:text-[14px] font-medium transition-colors px-[12px] sm:px-[16px] py-[4px] sm:py-[6px] rounded-[4px] min-w-[70px] text-center ${activeCategory === cat ? 'text-[#C62222] bg-[#FEE4E2]' : 'text-[#667085] hover:text-[#222222]'}`}
+                    className={`text-[12px] sm:text-[14px] font-medium transition-colors px-[12px] sm:px-[16px] py-[4px] sm:py-[6px] rounded-[4px] whitespace-nowrap min-w-fit text-center flex-shrink-0 ${activeCategory === cat ? 'text-[#C62222] bg-[#FEE4E2]' : 'text-[#667085] hover:text-[#222222]'}`}
                   >
                     {cat}
                   </button>
@@ -154,8 +171,8 @@ const VendorDetails: React.FC = () => {
             {/* Menu Grid */}
             {filteredMenuItems.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-[60px] px-[24px] text-center">
-                <div className="w-[80px] h-[80px] bg-[#F9FAFB] rounded-full flex items-center justify-center mb-[16px]">
-                  <ShoppingBasket size={32} className="text-[#667085]" />
+                <div className="w-[80px] h-[80px] bg-[#FEECEC] rounded-full flex items-center justify-center mb-[16px]">
+                  <UtensilsCrossed size={32} className="text-[#C62222]" />
                 </div>
                 <h3 className="text-[18px] font-semibold text-[#222222] mb-[8px]">
                   {menuItems.length === 0 ? 'No menu items yet' : 'No items in this category'}
@@ -259,10 +276,13 @@ const VendorDetails: React.FC = () => {
                   <div className="mt-[20px] sm:mt-[24px] pt-[16px] sm:pt-[24px] border-t border-[#EAECF0] w-full">
                     <div className="flex items-center justify-between">
                       <div className="flex flex-col">
-                        <span className="text-[#667085] text-[12px] sm:text-[14px]">Total:</span>
-                        <span className="text-[#222222] text-[14px] sm:text-[16px] md:text-[18px] font-bold">₦{cartTotal.toLocaleString()}</span>
+                        <span className="text-[#667085] text-[10px] sm:text-[11px]">Total:</span>
+                        <span className="text-[#222222] text-[12px] sm:text-[14px] font-bold">₦{cartTotal.toLocaleString()}</span>
                       </div>
-                      <button className="h-[36px] sm:h-[40px] md:h-[44px] px-[16px] sm:px-[20px] md:px-[24px] bg-[#C62222] text-white text-[12px] sm:text-[14px] font-medium rounded-[4px] hover:bg-[#A01B1B] transition-colors">
+                      <button
+                        onClick={() => navigate('/order-summary')}
+                        className="h-[28px] sm:h-[32px] px-[12px] sm:px-[16px] bg-[#C62222] text-white text-[10px] sm:text-[12px] font-medium rounded-[3px] hover:bg-[#A01B1B] transition-colors"
+                      >
                         Proceed to Checkout
                       </button>
                     </div>
@@ -345,7 +365,10 @@ const VendorDetails: React.FC = () => {
                       <span className="text-[#667085] text-[13px]">Total:</span>
                       <span className="text-[#222222] text-[16px] font-bold">ƒ,İ{cartTotal.toLocaleString()}</span>
                     </div>
-                    <button className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors">
+                    <button
+                      onClick={() => navigate('/order-summary')}
+                      className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors"
+                    >
                       Proceed to Checkout
                     </button>
                   </div>
