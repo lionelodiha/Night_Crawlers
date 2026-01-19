@@ -252,11 +252,7 @@ const Explore: React.FC = () => {
                   {selectedCategory === 'All' ? 'All Stores' : `${selectedCategory} Stores`}
                 </h2>
 
-                {selectedAddress && shouldUseFallback && (
-                  <p className="text-[12px] sm:text-[13px] text-[#667085]">
-                    No exact matches for this address yet. Showing all stores.
-                  </p>
-                )}
+
               </div>
               {displayedStores.length > 0 ? (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-[16px] md:gap-[20px] lg:gap-[24px] justify-items-center">

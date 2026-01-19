@@ -26,10 +26,10 @@ const VendorsHeroSection: React.FC = () => {
 
       {/* Main Hero Content */}
       <div className="flex flex-col lg:flex-row items-center justify-between gap-[60px] md:gap-[100px] lg:gap-[171px] max-w-[1440px] mx-auto px-[20px] sm:px-[30px] md:px-[37px] mb-[60px] sm:mb-[80px] md:mb-[100px]">
-        
+
         {/* Left Content */}
         <div className="flex flex-col items-start gap-[32px] sm:gap-[40px] md:gap-[48px] flex-1 max-w-[570px]">
-          
+
           {/* Heading */}
           <h1 className="font-poppins font-semibold text-[28px] sm:text-[36px] md:text-[48px] leading-[120%] tracking-[-0.02em] text-[#222222]">
             Partner with us and Become a Vendor
@@ -42,7 +42,7 @@ const VendorsHeroSection: React.FC = () => {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row items-center gap-[24px] sm:gap-[32px] md:gap-[40px] w-full">
-            
+
             {/* Primary CTA */}
             <button
               onClick={handleSignUp}
@@ -56,11 +56,9 @@ const VendorsHeroSection: React.FC = () => {
             {/* Secondary CTA */}
             <button
               onClick={handleContinueShopping}
-              className="flex items-center justify-center px-[10px] py-[10px] gap-[10px] w-full sm:w-[138px] h-[40px] sm:h-[41px] border-[1px] border-[#C62222] rounded-[4px] hover:bg-[#C62222] hover:text-white transition-all duration-200"
+              className="flex items-center justify-center w-full sm:w-[138px] h-[40px] sm:h-[41px] bg-white border border-[#C62222] rounded-[4px] text-[#C62222] font-poppins font-medium text-[14px] leading-[21px] transition-all duration-200 hover:bg-red-700 hover:border-red-700 hover:text-white"
             >
-              <span className="font-poppins font-medium text-[14px] leading-[21px] text-[#C62222] hover:text-white">
-                Log In
-              </span>
+              Log In
             </button>
           </div>
         </div>
