@@ -163,7 +163,7 @@ const Explore: React.FC = () => {
           {/* Search and Address Row */}
           <div className="flex flex-row items-center justify-between gap-[10px] md:gap-[20px] mb-[40px] md:mb-[60px]">
             {/* Search Bar */}
-            <div className="flex items-center w-[60%] md:w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
+            <div className="flex items-center w-[40%] md:w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
               <input
                 type="text"
                 placeholder="Search"
@@ -194,8 +194,8 @@ const Explore: React.FC = () => {
           {/* Explore Categories */}
           <div className="mb-[40px] md:mb-[60px]">
             <h2 className="text-[18px] md:text-[20px] font-medium text-[#222222] mb-[24px] md:mb-[32px]">Explore Categories</h2>
-            <div className="grid grid-cols-2 w-full gap-y-[26px] lg:gap-y-[34px] gap-x-[12px] sm:gap-x-[14px] md:flex md:flex-row md:flex-nowrap md:justify-between md:gap-0">
-              <div className="w-full min-w-0 flex justify-center md:flex-1 md:justify-center">
+            <div className="flex flex-row flex-nowrap overflow-x-auto snap-x snap-mandatory scrollbar-hide w-full gap-12 px-4 pb-4 -mx-4 md:pb-0 md:px-0 md:mx-0 md:justify-between md:gap-0">
+              <div className="shrink-0 snap-center flex justify-center md:flex-1 md:justify-center">
                 <CategoryItem
                   name="Groceries"
                   imageSrc={groceriesIcon}
@@ -204,7 +204,7 @@ const Explore: React.FC = () => {
                   onClick={() => handleCategoryClick('Groceries')}
                 />
               </div>
-              <div className="w-full min-w-0 flex justify-center md:flex-1 md:justify-center">
+              <div className="shrink-0 snap-center flex justify-center md:flex-1 md:justify-center">
                 <CategoryItem
                   name="Pharmacy"
                   imageSrc={pharmacyIcon}
@@ -213,7 +213,7 @@ const Explore: React.FC = () => {
                   onClick={() => handleCategoryClick('Pharmacy')}
                 />
               </div>
-              <div className="w-full min-w-0 flex justify-center md:flex-1 md:justify-center">
+              <div className="shrink-0 snap-center flex justify-center md:flex-1 md:justify-center">
                 <CategoryItem
                   name="Clubs/Lounges"
                   imageSrc={clubsIcon}
@@ -222,7 +222,7 @@ const Explore: React.FC = () => {
                   onClick={() => handleCategoryClick('Clubs/Lounges')}
                 />
               </div>
-              <div className="w-full min-w-0 flex justify-center md:flex-1 md:justify-center">
+              <div className="shrink-0 snap-center flex justify-center md:flex-1 md:justify-center">
                 <CategoryItem
                   name="Food"
                   imageSrc={foodIcon}
@@ -231,7 +231,7 @@ const Explore: React.FC = () => {
                   onClick={() => handleCategoryClick('Food')}
                 />
               </div>
-              <div className="w-full min-w-0 flex justify-center md:flex-1 md:justify-center">
+              <div className="shrink-0 snap-center flex justify-center md:flex-1 md:justify-center">
                 <CategoryItem
                   name="Drinks"
                   imageSrc={drinksIcon}

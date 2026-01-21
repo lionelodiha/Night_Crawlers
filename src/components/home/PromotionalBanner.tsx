@@ -18,7 +18,7 @@ const PromotionalBanner: React.FC = () => {
                   className="w-full h-auto object-contain drop-shadow-lg"
                 />
               </div>
-              <div className="relative w-[40%] flex items-center translate-y-4 sm:translate-y-6 lg:translate-y-12">
+              <div className="relative w-[40%] flex items-center translate-y-8 sm:translate-y-10 lg:translate-y-20">
                 <p className="text-white font-medium leading-[18px] sm:leading-[22px] lg:leading-[26px] text-[12px] sm:text-[16px] lg:text-[20px] tracking-[-0.02em] font-poppins m-0">
                   We only offer the best service in town!
                 </p>

@@ -36,19 +36,19 @@ const NewsletterSection: React.FC = () => {
           </p>
 
           <form onSubmit={handleSubmit} className="w-full max-w-[470px]">
-            <div className="flex items-center w-full">
+            <div className="flex items-center w-full h-[44px] pl-2 pr-1 bg-white border border-[#D0D5DD] rounded-[4px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)]">
               <input
                 type="email"
                 placeholder="Email"
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="h-[40px] flex-1 px-4 bg-white border border-[#D0D5DD] rounded-l-[4px] shadow-[0px_1px_2px_rgba(16,24,40,0.05)] outline-none text-[#667085] text-[14px] sm:text-[16px] font-poppins placeholder:text-[#667085]"
+                className="flex-1 h-full px-2 bg-transparent outline-none text-[#667085] text-[14px] sm:text-[16px] font-poppins placeholder:text-[#667085]"
               />
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-[40px] w-[103px] -ml-px bg-[#C62222] text-white text-[14px] sm:text-[16px] font-medium font-poppins rounded-r-[4px] hover:bg-[#A01B1B] transition-colors disabled:opacity-70"
+                className="h-[36px] px-4 bg-[#C62222] text-white text-[13px] sm:text-[14px] font-medium font-poppins rounded-[4px] hover:bg-[#A01B1B] transition-colors disabled:opacity-70 shrink-0"
               >
                 {isSubmitting ? '...' : 'Subscribe'}
               </button>
