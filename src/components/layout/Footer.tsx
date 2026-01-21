@@ -9,12 +9,14 @@ const Footer: React.FC = () => {
   return (
     <footer className="flex flex-col items-center bg-[#222222] w-full min-h-[272px] overflow-hidden pb-0">
       <div className="flex flex-col lg:flex-row items-start justify-between w-full max-w-[1467px] px-4 sm:px-6 md:px-[26px] lg:px-[26px] xl:pr-[48px] pt-8 lg:pt-10">
-        <div className="flex flex-col items-start gap-4 mb-8 lg:mb-0 lg:w-[281px]">
-          <img
-            src={logo}
-            alt="Night Crawlers"
-            className="w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] h-auto object-contain"
-          />
+        <div className="flex flex-col items-start gap-2 mb-8 lg:mb-0 lg:w-[281px]">
+          <div className="overflow-hidden h-[100px] sm:h-[110px] md:h-[120px] lg:h-[130px]">
+            <img
+              src={logo}
+              alt="Night Crawlers"
+              className="w-[180px] sm:w-[200px] md:w-[220px] lg:w-[240px] h-auto object-contain -mt-8"
+            />
+          </div>
           <p className="text-[14px] leading-[20px] tracking-normal text-white font-poppins max-w-[280px]">
             Get your favorite meals delivered fast, fresh, and right to your door.
           </p>
