@@ -8,7 +8,7 @@ import facebookIcon from '../../../.figma/image/mje8iqzx-1n4d3p5.png';
 const Footer: React.FC = () => {
   return (
     <footer className="flex flex-col items-center bg-[#222222] w-full min-h-[272px] overflow-hidden pb-0">
-      <div className="flex flex-col lg:flex-row items-start justify-between w-full max-w-[1467px] px-4 sm:px-6 md:px-[26px] lg:px-[26px] xl:pr-[48px] pt-8 lg:pt-0">
+      <div className="flex flex-col lg:flex-row items-start justify-between w-full max-w-[1467px] px-4 sm:px-6 md:px-[26px] lg:px-[26px] xl:pr-[48px] pt-8 lg:pt-10">
         <div className="flex flex-col items-start gap-4 mb-8 lg:mb-0 lg:w-[281px]">
           <img
             src={logo}
@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex flex-col sm:flex-row items-start gap-8 sm:gap-12 md:gap-16 lg:gap-[32px] w-full lg:w-[681px] lg:mt-[56px]">
+        <div className="flex flex-col sm:flex-row items-start gap-8 sm:gap-12 md:gap-16 lg:gap-[32px] w-full lg:w-[681px]">
           <div className="flex flex-col flex-grow items-start gap-[10px] lg:w-[205px]">
             <p className="text-[#98A2B3] text-[14px] leading-[20px] font-semibold tracking-normal font-night-sans m-0 w-full">Product</p>
             <div className="flex flex-col items-start gap-[6px] w-full">

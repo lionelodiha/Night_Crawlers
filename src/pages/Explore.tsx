@@ -163,7 +163,7 @@ const Explore: React.FC = () => {
           {/* Search and Address Row */}
           <div className="flex flex-row items-center justify-between gap-[10px] md:gap-[20px] mb-[40px] md:mb-[60px]">
             {/* Search Bar */}
-            <div className="flex items-center w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
+            <div className="flex items-center w-[60%] md:w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
               <input
                 type="text"
                 placeholder="Search"
@@ -185,7 +185,7 @@ const Explore: React.FC = () => {
                 {selectedAddress || 'Select address'}
               </span>
               <span className="text-[#344054] text-[14px] md:text-[16px] font-medium sm:hidden">
-                {selectedAddress ? 'Address set' : 'Address'}
+                {selectedAddress ? 'Address' : 'Address'}
               </span>
               <ChevronDown className="text-[#344054]" size={16} />
             </button>

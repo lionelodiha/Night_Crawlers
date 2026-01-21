@@ -20,7 +20,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
   if (!isOpen) return null;
 
   const filteredAddresses = searchTerm
-    ? addresses.filter(addr => addr.toLowerCase().includes(searchTerm.toLowerCase()))
+    ? addresses.filter(addr => addr.toLowerCase().startsWith(searchTerm.toLowerCase()))
     : [];
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -39,7 +39,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 backdrop-blur-sm">
-      <div className="bg-white rounded-[16px] w-[500px] p-[24px] shadow-xl relative animate-in fade-in zoom-in duration-200">
+      <div className="bg-white rounded-[16px] w-[90%] max-w-[500px] p-[24px] shadow-xl relative animate-in fade-in zoom-in duration-200">
 
         {/* Header */}
         <div className="flex items-center justify-between mb-[24px]">
