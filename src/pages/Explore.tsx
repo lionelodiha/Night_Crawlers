@@ -163,7 +163,7 @@ const Explore: React.FC = () => {
           {/* Search and Address Row */}
           <div className="flex flex-row items-center justify-between gap-[10px] md:gap-[20px] mb-[40px] md:mb-[60px]">
             {/* Search Bar */}
-            <div className="flex items-center w-[40%] md:w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
+            <div className="flex items-center w-[50%] md:w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
               <input
                 type="text"
                 placeholder="Search"
