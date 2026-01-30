@@ -3,10 +3,13 @@ import { useNavigate, Link } from 'react-router-dom';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import partnerLogo from '../assets/vendor-partner-logo.svg';
-import { signInVendor } from '../lib/mockBackend';
+import { signInVendor, signInRider } from '../lib/mockBackend';
+
+type LoginType = 'partner' | 'rider';
 
 const VendorSignIn: React.FC = () => {
   const navigate = useNavigate();
+  const [loginType, setLoginType] = useState<LoginType>('partner');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -29,14 +32,23 @@ const VendorSignIn: React.FC = () => {
       return;
     }
 
-    const vendor = signInVendor(email, password);
-    if (!vendor) {
-      setErrorMessage('Incorrect email or password.');
-      setLoading(false);
-      return;
+    if (loginType === 'partner') {
+      const vendor = signInVendor(email, password);
+      if (!vendor) {
+        setErrorMessage('Incorrect email or password.');
+        setLoading(false);
+        return;
+      }
+      navigate('/vendor-dashboard');
+    } else {
+      const rider = signInRider(email, password);
+      if (!rider) {
+        setErrorMessage('Incorrect email or password.');
+        setLoading(false);
+        return;
+      }
+      navigate('/rider-dashboard');
     }
-
-    navigate('/vendor-dashboard');
   };
 
   return (
@@ -44,13 +56,45 @@ const VendorSignIn: React.FC = () => {
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-[560px]">
           <div className="bg-[#f7f7f7] border border-[#e8e8e8] rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.05)] px-8 py-10 md:px-10 md:py-12">
-            <div className="flex flex-col items-center gap-2 mb-8">
+            <div className="flex flex-col items-center gap-2 mb-6">
               <img
                 src={partnerLogo}
                 alt="Our Partners"
                 className="h-14 sm:h-16 w-auto"
               />
+              <div className="flex p-1 bg-white border border-gray-200 rounded-lg mt-4 w-full max-w-[300px]">
+                <button
+                  type="button"
+                  onClick={() => setLoginType('partner')}
+                  className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${loginType === 'partner'
+                      ? 'bg-night-red-600 text-white shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900'
+                    }`}
+                >
+                  Partner
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setLoginType('rider')}
+                  className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${loginType === 'rider'
+                      ? 'bg-night-red-600 text-white shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900'
+                    }`}
+                >
+                  Rider
+                </button>
+              </div>
             </div>
+
+            <div className="text-center mb-6">
+              <h2 className="text-xl font-bold text-gray-900">
+                {loginType === 'partner' ? 'Partner Login' : 'Rider Login'}
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Sign in to manage your {loginType === 'partner' ? 'restaurant/store' : 'deliveries'}
+              </p>
+            </div>
+
             {errorMessage && (
               <p className="text-xs text-[#C62222] mb-4 text-center" role="alert">
                 {errorMessage}
@@ -96,8 +140,10 @@ const VendorSignIn: React.FC = () => {
             </form>
 
             <p className="text-center text-sm text-night-gray-600 mt-7">
-              Not a partner?{' '}
-              <Link to="/vendor-signup" className="text-night-red-600 font-semibold hover:underline">Sign up</Link>
+              Not a {loginType}?{' '}
+              <Link to="/vendor-signup" className="text-night-red-600 font-semibold hover:underline">
+                Sign up as a {loginType === 'partner' ? 'Partner' : 'Rider'}
+              </Link>
             </p>
           </div>
         </div>

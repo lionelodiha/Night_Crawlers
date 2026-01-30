@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
-import { Store, Upload, X } from 'lucide-react';
+import { Store, Upload, X, Clock, LogOut, ShieldCheck } from 'lucide-react';
 import pinIcon from '../assets/location-pin-red.svg';
 import {
   createStore,
@@ -10,6 +10,8 @@ import {
   getStoresForVendor,
   VendorAccount,
   VendorStore,
+  clearCurrentVendor,
+  reloadFromStorage,
 } from '../lib/mockBackend';
 import { resolveImageUrl } from '../lib/imageUtils';
 
@@ -55,6 +57,59 @@ const VendorDashboard: React.FC = () => {
     return (
       <div className="min-h-screen bg-white flex items-center justify-center font-poppins">
         <p className="text-sm text-[#667085]">Loading...</p>
+      </div>
+    );
+  }
+
+  // Check if vendor is verified
+  if (!vendor.verified) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white flex flex-col items-center justify-center font-poppins p-6">
+        <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 max-w-md w-full text-center">
+          <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <Clock className="w-10 h-10 text-orange-500" />
+          </div>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">Account Pending Verification</h1>
+          <p className="text-gray-500 mb-6">
+            Your vendor account is currently under review by our admin team.
+            You'll be able to access your dashboard once approved.
+          </p>
+
+          <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+            <div className="flex items-center gap-2 text-orange-700 text-sm font-medium">
+              <ShieldCheck size={18} />
+              <span>Verification typically takes 24-48 hours</span>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <button
+              onClick={() => {
+                // Reload from localStorage to get latest verification status
+                reloadFromStorage();
+                const currentVendor = getCurrentVendor();
+                if (currentVendor) setVendor(currentVendor);
+              }}
+              className="w-full py-3 bg-[#C62222] text-white font-semibold rounded-xl hover:bg-[#a01b1b] transition-colors"
+            >
+              Check Status
+            </button>
+            <button
+              onClick={() => {
+                clearCurrentVendor();
+                navigate('/vendor-signin');
+              }}
+              className="w-full py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+            >
+              <LogOut size={18} />
+              Sign Out
+            </button>
+          </div>
+
+          <p className="text-xs text-gray-400 mt-6">
+            Need help? Contact support@nightcrawlers.ng
+          </p>
+        </div>
       </div>
     );
   }

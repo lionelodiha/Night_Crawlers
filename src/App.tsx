@@ -11,6 +11,10 @@ import VendorSignIn from './pages/VendorSignIn';
 import VendorDashboard from './pages/VendorDashboard';
 import VendorRestaurant from './pages/VendorRestaurant';
 import VendorAddMenuItem from './pages/VendorAddMenuItem';
+import RiderDashboard from './pages/RiderDashboard';
+import AdminLogin from './pages/AdminLogin';
+import AdminDashboard from './pages/AdminDashboard';
+import UserProfile from './pages/UserProfile';
 
 import Explore from './pages/Explore';
 import VendorDetails from './pages/VendorDetails';
@@ -31,6 +35,13 @@ function App() {
         <Route path="/vendor-dashboard" element={<VendorDashboard />} />
         <Route path="/vendor-dashboard/restaurant/:id" element={<VendorRestaurant />} />
         <Route path="/vendor-dashboard/restaurant/:id/add-item" element={<VendorAddMenuItem />} />
+
+        {/* New Pages */}
+        <Route path="/rider-dashboard" element={<RiderDashboard />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/user-profile" element={<UserProfile />} />
+
         <Route path="/explore" element={<Explore />} />
         <Route path="/vendor-details" element={<VendorDetails />} />
         <Route path="/order-summary" element={<OrderSummary />} />

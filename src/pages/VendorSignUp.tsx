@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import vendorSignUpImage from '../assets/signin-image.png';
-import { BUSINESS_TYPES, createVendorAccount } from '../lib/mockBackend';
+import { BUSINESS_TYPES, createVendorAccount, createRiderAccount } from '../lib/mockBackend';
+
+type SignUpType = 'partner' | 'rider';
 
 interface FormData {
   firstName: string;
   lastName: string;
   businessType: string;
+  vehicleType: string;
   phoneNumber: string;
   email: string;
   location: string;
@@ -15,12 +18,16 @@ interface FormData {
   agreeToPolicy: boolean;
 }
 
+const VEHICLE_TYPES = ['Bicycle', 'Bike', 'Car', 'Van'];
+
 const VendorSignUp: React.FC = () => {
   const navigate = useNavigate();
+  const [signUpType, setSignUpType] = useState<SignUpType>('partner');
   const [formData, setFormData] = useState<FormData>({
     firstName: '',
     lastName: '',
     businessType: '',
+    vehicleType: '',
     phoneNumber: '',
     email: '',
     location: '',
@@ -42,13 +49,18 @@ const VendorSignUp: React.FC = () => {
     e.preventDefault();
     setErrorMessage('');
 
-    if (!formData.businessType.trim()) {
+    if (signUpType === 'partner' && !formData.businessType.trim()) {
       setErrorMessage('Please enter a business type.');
       return;
     }
 
+    if (signUpType === 'rider' && !formData.vehicleType.trim()) {
+      setErrorMessage('Please select a vehicle type.');
+      return;
+    }
+
     if (!formData.location.trim()) {
-      setErrorMessage('Please enter your business location.');
+      setErrorMessage('Please enter your location.');
       return;
     }
 
@@ -58,17 +70,32 @@ const VendorSignUp: React.FC = () => {
     }
 
     setIsSubmitting(true);
-    createVendorAccount({
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      businessType: formData.businessType,
-      phoneNumber: formData.phoneNumber,
-      email: formData.email,
-      location: formData.location,
-      password: formData.password,
-    });
-    setIsSubmitting(false);
-    navigate('/vendor-dashboard');
+
+    if (signUpType === 'partner') {
+      createVendorAccount({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        businessType: formData.businessType,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        location: formData.location,
+        password: formData.password,
+      });
+      setIsSubmitting(false);
+      navigate('/vendor-dashboard');
+    } else {
+      createRiderAccount({
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        vehicleType: formData.vehicleType,
+        phoneNumber: formData.phoneNumber,
+        email: formData.email,
+        location: formData.location,
+        password: formData.password,
+      });
+      setIsSubmitting(false);
+      navigate('/rider-dashboard');
+    }
   };
 
   return (
@@ -83,7 +110,7 @@ const VendorSignUp: React.FC = () => {
           />
         </Link>
         <p className="text-sm text-night-gray-700">
-          Already a partner?{' '}
+          Already {signUpType === 'partner' ? 'a partner' : 'a rider'}?{' '}
           <Link to="/vendor-signin" className="text-[#C62222] font-semibold hover:underline">
             Log In
           </Link>
@@ -93,7 +120,35 @@ const VendorSignUp: React.FC = () => {
       <main className="w-full max-w-[1400px] mx-auto flex-1 px-3 sm:px-5 md:px-6 pb-10">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-5 md:gap-8 items-start">
           <div className="bg-[#f7f7f7] border border-[#e8e8e8] rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.05)] px-6 sm:px-7 md:px-8 py-8 md:py-9 h-full">
-            <h1 className="text-2xl font-semibold text-[#C62222] mb-6">Become a Partner</h1>
+
+            <div className="flex flex-col gap-4 mb-6">
+              <h1 className="text-2xl font-semibold text-[#C62222]">
+                {signUpType === 'partner' ? 'Become a Partner' : 'Become a Rider'}
+              </h1>
+
+              <div className="flex p-1 bg-white border border-gray-200 rounded-lg w-full max-w-[300px]">
+                <button
+                  type="button"
+                  onClick={() => setSignUpType('partner')}
+                  className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${signUpType === 'partner'
+                      ? 'bg-night-red-600 text-white shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900'
+                    }`}
+                >
+                  Partner
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setSignUpType('rider')}
+                  className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${signUpType === 'rider'
+                      ? 'bg-night-red-600 text-white shadow-sm'
+                      : 'text-gray-500 hover:text-gray-900'
+                    }`}
+                >
+                  Rider
+                </button>
+              </div>
+            </div>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -123,24 +178,45 @@ const VendorSignUp: React.FC = () => {
                 </div>
               </div>
 
-              <div className="space-y-1">
-                <label className="block text-xs font-medium text-night-gray-700">Business Type</label>
-                <input
-                  type="text"
-                  name="businessType"
-                  value={formData.businessType}
-                  onChange={handleInputChange}
-                  placeholder="Business type"
-                  list="businessTypeOptions"
-                  className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
-                  required
-                />
-                <datalist id="businessTypeOptions">
-                  {BUSINESS_TYPES.map((type) => (
-                    <option key={type} value={type} />
-                  ))}
-                </datalist>
-              </div>
+              {signUpType === 'partner' ? (
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-night-gray-700">Business Type</label>
+                  <input
+                    type="text"
+                    name="businessType"
+                    value={formData.businessType}
+                    onChange={handleInputChange}
+                    placeholder="Business type"
+                    list="businessTypeOptions"
+                    className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
+                    required
+                  />
+                  <datalist id="businessTypeOptions">
+                    {BUSINESS_TYPES.map((type) => (
+                      <option key={type} value={type} />
+                    ))}
+                  </datalist>
+                </div>
+              ) : (
+                <div className="space-y-1">
+                  <label className="block text-xs font-medium text-night-gray-700">Vehicle Type</label>
+                  <input
+                    type="text"
+                    name="vehicleType"
+                    value={formData.vehicleType}
+                    onChange={handleInputChange}
+                    placeholder="Select vehicle type"
+                    list="vehicleTypeOptions"
+                    className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
+                    required
+                  />
+                  <datalist id="vehicleTypeOptions">
+                    {VEHICLE_TYPES.map((type) => (
+                      <option key={type} value={type} />
+                    ))}
+                  </datalist>
+                </div>
+              )}
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
@@ -150,7 +226,7 @@ const VendorSignUp: React.FC = () => {
                     name="phoneNumber"
                     value={formData.phoneNumber}
                     onChange={handleInputChange}
-                    placeholder="First name"
+                    placeholder="Phone Number"
                     className="w-full h-11 px-3 border border-[#d8d8d8] rounded-sm text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222] transition"
                   />
                 </div>

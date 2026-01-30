@@ -1,13 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Trash2, Plus, Minus, CreditCard, MapPin, Clock } from 'lucide-react';
+import { ChevronLeft, Trash2, Plus, Minus, CreditCard, MapPin, Clock, CheckCircle, Loader2 } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useCart } from '../context/CartContext';
+import { createOrder } from '../lib/mockBackend';
 
 const OrderSummary: React.FC = () => {
     const navigate = useNavigate();
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [orderPlaced, setOrderPlaced] = useState(false);
+    const [orderId, setOrderId] = useState<string | null>(null);
+    const [deliveryAddress, setDeliveryAddress] = useState('Nmdpra HQ, 123 Main Street, Downtown');
+    const [customerName, setCustomerName] = useState('Customer');
+    const [customerPhone, setCustomerPhone] = useState('+234 801 234 5678');
 
     const deliveryFee = 800; // Mock delivery fee
     const serviceFee = Math.round(cartTotal * 0.05); // 5% service fee
@@ -24,6 +31,72 @@ const OrderSummary: React.FC = () => {
             updateQuantity(id, item.quantity - 1);
         }
     };
+
+    const handlePlaceOrder = () => {
+        if (cartItems.length === 0) return;
+
+        setIsSubmitting(true);
+
+        // Simulate payment processing delay
+        setTimeout(() => {
+            // Get store info from first cart item (assuming all items from same store)
+            const storeId = cartItems[0]?.storeId || 'store-1';
+            const storeName = cartItems[0]?.storeName || 'Restaurant';
+
+            const order = createOrder({
+                storeId,
+                storeName,
+                customerName,
+                customerPhone,
+                customerLocation: 'Lagos',
+                customerAddress: deliveryAddress,
+                items: cartItems.map(item => ({
+                    name: item.name,
+                    quantity: item.quantity,
+                    price: item.price
+                })),
+                deliveryFee,
+            });
+
+            setOrderId(order.id);
+            setOrderPlaced(true);
+            setIsSubmitting(false);
+            clearCart();
+        }, 1500);
+    };
+
+    // Order Success Screen
+    if (orderPlaced && orderId) {
+        return (
+            <div className="min-h-screen bg-[#F9FAFB] flex flex-col font-poppins">
+                <Header />
+                <main className="flex-grow flex flex-col items-center justify-center p-4">
+                    <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 text-center max-w-md w-full">
+                        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <CheckCircle className="w-10 h-10 text-green-600" />
+                        </div>
+                        <h1 className="text-2xl font-bold text-[#222222] mb-2">Order Placed!</h1>
+                        <p className="text-[#667085] mb-2">Your order has been sent to nearby riders.</p>
+                        <p className="text-sm text-gray-500 mb-6">Order ID: <span className="font-mono font-bold">{orderId.slice(-8).toUpperCase()}</span></p>
+
+                        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+                            <p className="text-sm text-orange-800 font-medium">
+                                🚴 A rider will accept your order soon. You'll be able to track your delivery once accepted.
+                            </p>
+                        </div>
+
+                        <button
+                            onClick={() => navigate('/explore')}
+                            className="w-full py-3 bg-[#C62222] text-white font-medium rounded-lg hover:bg-[#A01B1B] transition-colors"
+                        >
+                            Continue Shopping
+                        </button>
+                    </div>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
 
     if (cartItems.length === 0) {
         return (
@@ -195,9 +268,22 @@ const OrderSummary: React.FC = () => {
                                 <span className="text-[#C62222] font-bold text-xl">₦ {finalTotal.toLocaleString()}</span>
                             </div>
 
-                            <button className="w-full h-12 bg-[#222222] text-white font-semibold rounded-lg hover:bg-black transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mb-4 group">
-                                Pay Securely
-                                <ChevronLeft size={16} className="rotate-180 group-hover:translate-x-1 transition-transform" />
+                            <button
+                                onClick={handlePlaceOrder}
+                                disabled={isSubmitting}
+                                className="w-full h-12 bg-[#222222] text-white font-semibold rounded-lg hover:bg-black transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mb-4 group disabled:opacity-70 disabled:cursor-not-allowed"
+                            >
+                                {isSubmitting ? (
+                                    <>
+                                        <Loader2 size={18} className="animate-spin" />
+                                        Processing...
+                                    </>
+                                ) : (
+                                    <>
+                                        Pay Securely
+                                        <ChevronLeft size={16} className="rotate-180 group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
                             </button>
 
                             <p className="text-xs text-[#98A2B3] text-center">

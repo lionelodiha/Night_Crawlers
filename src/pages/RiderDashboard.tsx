@@ -1,0 +1,439 @@
+import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { MapPin, Package, DollarSign, Clock, Navigation, Power, Bell, CheckCircle, Truck, Phone, ExternalLink, LogOut, ShieldCheck } from 'lucide-react';
+import {
+    getCurrentRider,
+    RiderAccount,
+    Order,
+    setRiderOnlineStatus,
+    getPendingOrdersForRider,
+    getOrdersForRider,
+    acceptOrder,
+    updateOrderStatus,
+    getStoreLocation,
+    logoutRider,
+    reloadFromStorage
+} from '../lib/mockBackend';
+
+const RiderDashboard: React.FC = () => {
+    const navigate = useNavigate();
+    const [rider, setRider] = useState<RiderAccount | null>(null);
+    const [isOnline, setIsOnline] = useState(false);
+    const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
+    const [activeOrders, setActiveOrders] = useState<Order[]>([]);
+    const [completedToday, setCompletedToday] = useState(0);
+    const [todayEarnings, setTodayEarnings] = useState(0);
+
+    const fetchOrders = useCallback(() => {
+        if (!rider) return;
+
+        const pending = getPendingOrdersForRider(rider.location);
+        const myOrders = getOrdersForRider(rider.id);
+
+        setPendingOrders(pending);
+        setActiveOrders(myOrders.filter(o => ['accepted', 'picked_up', 'in_transit'].includes(o.status)));
+
+        // Calculate today's stats
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const todayCompleted = myOrders.filter(o =>
+            o.status === 'delivered' &&
+            new Date(o.deliveredAt || o.createdAt) >= today
+        );
+        setCompletedToday(todayCompleted.length);
+        setTodayEarnings(todayCompleted.reduce((sum, o) => sum + o.deliveryFee, 0));
+    }, [rider]);
+
+    useEffect(() => {
+        const currentRider = getCurrentRider();
+        if (!currentRider) {
+            navigate('/vendor-signin');
+            return;
+        }
+        setRider(currentRider);
+        setIsOnline(currentRider.isOnline || false);
+    }, [navigate]);
+
+    useEffect(() => {
+        if (!rider) return;
+        fetchOrders();
+
+        // Poll for new orders every 5 seconds
+        const interval = setInterval(fetchOrders, 5000);
+        return () => clearInterval(interval);
+    }, [rider, fetchOrders]);
+
+    const toggleOnlineStatus = () => {
+        if (!rider) return;
+        const newStatus = !isOnline;
+        setIsOnline(newStatus);
+        setRiderOnlineStatus(rider.id, newStatus);
+    };
+
+    const handleAcceptOrder = (orderId: string) => {
+        if (!rider) return;
+        const accepted = acceptOrder(orderId, rider.id);
+        if (accepted) {
+            fetchOrders();
+        }
+    };
+
+    const handleUpdateStatus = (orderId: string, status: 'picked_up' | 'in_transit' | 'delivered') => {
+        updateOrderStatus(orderId, status);
+        fetchOrders();
+    };
+
+    const openNavigation = (order: Order, destination: 'store' | 'customer') => {
+        let address = '';
+
+        if (destination === 'store') {
+            const storeAddress = getStoreLocation(order.storeId);
+            address = storeAddress || order.storeName;
+        } else {
+            address = order.customerAddress;
+        }
+
+        // Encode the address for URL
+        const encodedAddress = encodeURIComponent(address);
+
+        // Try to detect if iOS or Android, default to Google Maps
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+        if (isIOS) {
+            // Apple Maps
+            window.open(`maps://maps.apple.com/?daddr=${encodedAddress}`, '_blank');
+        } else {
+            // Google Maps
+            window.open(`https://www.google.com/maps/dir/?api=1&destination=${encodedAddress}`, '_blank');
+        }
+    };
+
+    const formatTime = (dateString: string) => {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffMs = now.getTime() - date.getTime();
+        const diffMins = Math.floor(diffMs / 60000);
+
+        if (diffMins < 1) return 'Just now';
+        if (diffMins < 60) return `${diffMins}m ago`;
+        return `${Math.floor(diffMins / 60)}h ${diffMins % 60}m ago`;
+    };
+
+    if (!rider) {
+        return (
+            <div className="min-h-screen bg-white flex items-center justify-center font-poppins">
+                <div className="flex flex-col items-center gap-3">
+                    <div className="w-8 h-8 border-2 border-dashed border-gray-200 rounded-full animate-spin border-t-[#C62222]"></div>
+                    <p className="text-sm text-gray-500 font-medium">Starting engine...</p>
+                </div>
+            </div>
+        );
+    }
+
+    // Check if rider is verified
+    if (!rider.verified) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-orange-50 to-white flex flex-col items-center justify-center font-poppins p-6">
+                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-8 max-w-md w-full text-center">
+                    <div className="w-20 h-20 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <Clock className="w-10 h-10 text-orange-500" />
+                    </div>
+                    <h1 className="text-2xl font-bold text-gray-900 mb-2">Account Pending Verification</h1>
+                    <p className="text-gray-500 mb-6">
+                        Your rider account is currently under review by our admin team.
+                        You'll be able to start accepting deliveries once approved.
+                    </p>
+
+                    <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-6">
+                        <div className="flex items-center gap-2 text-orange-700 text-sm font-medium">
+                            <ShieldCheck size={18} />
+                            <span>Verification typically takes 24-48 hours</span>
+                        </div>
+                    </div>
+
+                    <div className="space-y-3">
+                        <button
+                            onClick={() => {
+                                // Reload from localStorage to get latest verification status
+                                reloadFromStorage();
+                                const currentRider = getCurrentRider();
+                                if (currentRider) setRider(currentRider);
+                            }}
+                            className="w-full py-3 bg-[#C62222] text-white font-semibold rounded-xl hover:bg-[#a01b1b] transition-colors"
+                        >
+                            Check Status
+                        </button>
+                        <button
+                            onClick={() => {
+                                logoutRider();
+                                navigate('/vendor-signin');
+                            }}
+                            className="w-full py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
+                        >
+                            <LogOut size={18} />
+                            Sign Out
+                        </button>
+                    </div>
+
+                    <p className="text-xs text-gray-400 mt-6">
+                        Need help? Contact support@nightcrawlers.ng
+                    </p>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-50 text-gray-900 font-poppins pb-20">
+            {/* Top Bar */}
+            <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                    <div className={`h-10 w-10 rounded-full flex items-center justify-center border-2 text-white font-bold text-sm ${isOnline ? 'bg-green-500 border-green-400' : 'bg-gray-300 border-gray-200'}`}>
+                        {rider.firstName.charAt(0)}
+                    </div>
+                    <div>
+                        <h1 className="font-bold text-sm leading-tight text-gray-900">{rider.firstName} {rider.lastName}</h1>
+                        <p className="text-[10px] text-gray-500 uppercase tracking-widest flex items-center gap-1">
+                            {rider.vehicleType}
+                            {isOnline && <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></span>}
+                        </p>
+                    </div>
+                </div>
+                <div className="flex items-center gap-2">
+                    <div className="relative cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors">
+                        {pendingOrders.length > 0 && (
+                            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#C62222] rounded-full border-2 border-white text-[9px] text-white font-bold flex items-center justify-center">
+                                {pendingOrders.length}
+                            </span>
+                        )}
+                        <Bell size={20} className="text-gray-500" />
+                    </div>
+                    <button
+                        onClick={() => {
+                            logoutRider();
+                            navigate('/vendor-signin');
+                        }}
+                        className="p-2 hover:bg-red-50 rounded-full text-gray-400 hover:text-red-600 transition-colors"
+                        title="Logout"
+                    >
+                        <LogOut size={20} />
+                    </button>
+                </div>
+            </header>
+
+            <main className="max-w-2xl mx-auto px-6 py-6 space-y-6">
+
+                {/* Status Toggle */}
+                <section className="relative overflow-hidden rounded-3xl bg-white border border-gray-100 shadow-sm h-44 flex flex-col items-center justify-center">
+                    {isOnline && (
+                        <div className="absolute inset-0 z-0">
+                            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-green-500/5 rounded-full blur-3xl animate-pulse"></div>
+                        </div>
+                    )}
+
+                    <div className="z-10 flex flex-col items-center gap-3">
+                        <button
+                            onClick={toggleOnlineStatus}
+                            className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 border-4 ${isOnline ? 'bg-green-500 border-green-400 scale-110' : 'bg-gray-100 border-white hover:bg-gray-200'}`}
+                        >
+                            <Power size={28} className={isOnline ? "text-white" : "text-gray-500"} />
+                        </button>
+                        <div className="text-center">
+                            <h2 className={`text-lg font-bold ${isOnline ? 'text-gray-900' : 'text-gray-400'}`}>
+                                {isOnline ? 'You are Online' : 'You are Offline'}
+                            </h2>
+                            <p className="text-xs text-gray-500 mt-0.5">
+                                {isOnline ? `Receiving orders near ${rider.location}` : 'Go online to start earning'}
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 gap-4">
+                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-28 relative group overflow-hidden hover:shadow-md transition-shadow">
+                        <div className="p-2 bg-green-50 w-fit rounded-lg text-green-600">
+                            <DollarSign size={18} />
+                        </div>
+                        <div>
+                            <p className="text-2xl font-bold text-gray-900 tracking-tight">₦{todayEarnings.toLocaleString()}</p>
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Today's Earnings</p>
+                        </div>
+                    </div>
+                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-28 relative group overflow-hidden hover:shadow-md transition-shadow">
+                        <div className="p-2 bg-blue-50 w-fit rounded-lg text-blue-600">
+                            <CheckCircle size={18} />
+                        </div>
+                        <div>
+                            <p className="text-2xl font-bold text-gray-900 tracking-tight">{completedToday}</p>
+                            <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Completed Today</p>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Active Orders */}
+                {activeOrders.length > 0 && (
+                    <section>
+                        <div className="flex justify-between items-end mb-4">
+                            <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">
+                                <Truck size={20} className="text-[#C62222]" />
+                                Active Orders
+                            </h3>
+                            <span className="text-xs font-bold text-white bg-[#C62222] px-2 py-1 rounded-full">{activeOrders.length}</span>
+                        </div>
+
+                        <div className="space-y-4">
+                            {activeOrders.map((order) => (
+                                <div key={order.id} className="bg-gradient-to-br from-[#C62222] to-[#a01b1b] text-white rounded-2xl p-5 shadow-lg">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <div>
+                                            <h4 className="font-bold text-base">Order #{order.id.slice(-6)}</h4>
+                                            <p className="text-xs text-white/70">{order.storeName} • {order.items.length} items</p>
+                                        </div>
+                                        <span className="font-bold text-lg">₦{(order.totalAmount + order.deliveryFee).toLocaleString()}</span>
+                                    </div>
+
+                                    <div className="bg-white/10 rounded-xl p-3 mb-3">
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <MapPin size={14} />
+                                            <span className="truncate">{order.customerAddress}</span>
+                                        </div>
+                                        <div className="flex items-center gap-2 text-sm mt-1">
+                                            <Phone size={14} />
+                                            <span>{order.customerPhone}</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex gap-2">
+                                        {order.status === 'accepted' && (
+                                            <>
+                                                <button
+                                                    onClick={() => openNavigation(order, 'store')}
+                                                    className="flex-1 py-2.5 bg-white text-[#C62222] text-sm font-bold rounded-xl flex items-center justify-center gap-2"
+                                                >
+                                                    <Navigation size={16} /> Go to Store
+                                                </button>
+                                                <button
+                                                    onClick={() => handleUpdateStatus(order.id, 'picked_up')}
+                                                    className="px-4 py-2.5 bg-white/20 text-white text-sm font-bold rounded-xl"
+                                                >
+                                                    Picked Up
+                                                </button>
+                                            </>
+                                        )}
+                                        {order.status === 'picked_up' && (
+                                            <>
+                                                <button
+                                                    onClick={() => openNavigation(order, 'customer')}
+                                                    className="flex-1 py-2.5 bg-white text-[#C62222] text-sm font-bold rounded-xl flex items-center justify-center gap-2"
+                                                >
+                                                    <Navigation size={16} /> Navigate to Customer
+                                                </button>
+                                                <button
+                                                    onClick={() => handleUpdateStatus(order.id, 'delivered')}
+                                                    className="px-4 py-2.5 bg-white/20 text-white text-sm font-bold rounded-xl"
+                                                >
+                                                    Delivered
+                                                </button>
+                                            </>
+                                        )}
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
+                )}
+
+                {/* Available Orders */}
+                {isOnline && (
+                    <section>
+                        <div className="flex justify-between items-end mb-4">
+                            <h3 className="font-bold text-lg text-gray-900">Nearby Orders</h3>
+                            {pendingOrders.length > 0 && (
+                                <span className="text-xs font-bold text-gray-500">{pendingOrders.length} available</span>
+                            )}
+                        </div>
+
+                        {pendingOrders.length === 0 ? (
+                            <div className="bg-white border border-gray-100 shadow-sm rounded-2xl p-8 text-center">
+                                <Package size={40} className="mx-auto text-gray-300 mb-3" />
+                                <h4 className="font-bold text-gray-700">No orders nearby</h4>
+                                <p className="text-xs text-gray-400 mt-1">New orders will appear here automatically</p>
+                            </div>
+                        ) : (
+                            <div className="space-y-4">
+                                {pendingOrders.map((order, idx) => (
+                                    <div key={order.id} className="bg-white border border-gray-100 shadow-sm rounded-2xl p-5 hover:border-[#C62222]/30 hover:shadow-md transition-all relative overflow-hidden">
+                                        {idx === 0 && <div className="absolute top-0 left-0 bg-[#C62222] text-white text-[9px] font-bold px-3 py-1 rounded-br-lg shadow-sm">NEW</div>}
+
+                                        <div className="flex justify-between items-start mb-3 mt-1">
+                                            <div className="flex gap-3 items-center">
+                                                <div className="h-10 w-10 bg-gray-50 rounded-xl flex items-center justify-center text-gray-400 border border-gray-100">
+                                                    <Package size={18} />
+                                                </div>
+                                                <div>
+                                                    <h4 className="font-bold text-gray-900 text-sm">{order.storeName}</h4>
+                                                    <p className="text-xs text-gray-500 font-medium">{order.items.length} items • {formatTime(order.createdAt)}</p>
+                                                </div>
+                                            </div>
+                                            <div className="text-right">
+                                                <span className="font-bold text-lg text-gray-900">₦{order.deliveryFee.toLocaleString()}</span>
+                                                <p className="text-[10px] text-gray-400">Delivery Fee</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="bg-gray-50 rounded-lg p-3 mb-4 text-xs text-gray-600">
+                                            <div className="flex items-center gap-2">
+                                                <MapPin size={12} className="text-[#C62222]" />
+                                                <span className="truncate">{order.customerAddress}</span>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-3">
+                                            <button
+                                                onClick={() => handleAcceptOrder(order.id)}
+                                                className="flex-1 py-3 bg-[#111827] text-white text-sm font-bold rounded-xl hover:bg-black transition-colors shadow-lg shadow-gray-200"
+                                            >
+                                                Accept Order
+                                            </button>
+                                            <button
+                                                onClick={() => openNavigation(order, 'store')}
+                                                className="p-3 bg-gray-50 text-gray-600 rounded-xl hover:bg-gray-100 transition-colors border border-gray-200"
+                                                title="Preview location"
+                                            >
+                                                <ExternalLink size={18} />
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </section>
+                )}
+
+                {!isOnline && (
+                    <section className="bg-white rounded-2xl p-8 border border-gray-100 shadow-sm text-center">
+                        <Power size={40} className="mx-auto text-gray-300 mb-3" />
+                        <h4 className="font-bold text-gray-700">You're Offline</h4>
+                        <p className="text-xs text-gray-400 mt-1 mb-4">Toggle the power button above to start receiving orders</p>
+                    </section>
+                )}
+
+                {/* Support Section */}
+                <section className="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm">
+                    <div className="flex justify-between items-center">
+                        <div>
+                            <h3 className="font-bold text-gray-900">Rider Support</h3>
+                            <p className="text-xs text-gray-500 mt-0.5">Need help with an ongoing order?</p>
+                        </div>
+                        <button className="bg-gray-100 hover:bg-gray-200 text-gray-900 px-4 py-2 rounded-lg text-xs font-bold transition-colors">
+                            Contact
+                        </button>
+                    </div>
+                </section>
+            </main>
+        </div>
+    );
+};
+
+export default RiderDashboard;
