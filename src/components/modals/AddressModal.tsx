@@ -19,9 +19,9 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
 
   if (!isOpen) return null;
 
-  const filteredAddresses = addresses.filter(addr => 
-    addr.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredAddresses = searchTerm
+    ? addresses.filter(addr => addr.toLowerCase().startsWith(searchTerm.toLowerCase()))
+    : [];
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -39,12 +39,12 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/20 backdrop-blur-sm">
-      <div className="bg-white rounded-[16px] w-[500px] p-[24px] shadow-xl relative animate-in fade-in zoom-in duration-200">
-        
+      <div className="bg-white rounded-[16px] w-[90%] max-w-[500px] p-[24px] shadow-xl relative animate-in fade-in zoom-in duration-200">
+
         {/* Header */}
         <div className="flex items-center justify-between mb-[24px]">
           <h2 className="text-[20px] font-semibold text-[#222222]">Delivery Address</h2>
-          <button 
+          <button
             onClick={onClose}
             className="text-[#667085] hover:text-[#222222] transition-colors"
           >
@@ -68,7 +68,7 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
         </div>
 
         {/* Address List */}
-        <div className="flex flex-col gap-[8px] max-h-[300px] overflow-y-auto">
+        <div className="flex flex-col gap-[4px] min-h-[200px] max-h-[300px] overflow-y-auto border border-[#EAECF0] rounded-[12px] p-[12px] shadow-sm">
           {filteredAddresses.length > 0 ? (
             filteredAddresses.map((address, index) => (
               <button
@@ -82,11 +82,11 @@ const AddressModal: React.FC<AddressModalProps> = ({ isOpen, onClose, onSelectAd
                 {address}
               </button>
             ))
-          ) : (
+          ) : searchTerm ? (
             <div className="text-center py-[24px] text-[#667085] text-[14px]">
               No address found
             </div>
-          )}
+          ) : null}
         </div>
 
       </div>

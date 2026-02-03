@@ -23,7 +23,7 @@ const SignIn: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
+
     setTimeout(() => {
       setIsSubmitting(false);
       alert('Logged in successfully!');
@@ -42,27 +42,27 @@ const SignIn: React.FC = () => {
         <div className="flex-1 flex flex-col justify-between p-4 sm:p-6 md:p-8 lg:p-10">
           <div className="flex-1 flex items-center justify-center">
             <div className="w-full max-w-[320px] sm:max-w-[340px] mx-auto">
-            {/* Header Section */}
-            <div className="flex flex-col items-center text-center mb-3 sm:mb-4">
-              <Link to="/" className="block p-0 m-0 mb-2">
-                <img
-                  src={signupLogo}
-                  alt="Night Crawlers"
-                  className="block w-[120px] sm:w-[140px] md:w-[160px] h-auto object-contain"
-                />
-              </Link>
-              <h1 className="text-sm sm:text-base font-bold text-[#222222] mb-1">
-                Welcome Back!
-              </h1>
-              <p className="text-[#667085] text-xs leading-tight max-w-sm">
-                Welcome back! Please log in with your correct details.
-              </p>
-            </div>
+              {/* Header Section */}
+              <div className="flex flex-col items-center text-center mb-3 sm:mb-4">
+                <Link to="/" className="block p-0 m-0 mb-6">
+                  <img
+                    src={signupLogo}
+                    alt="Night Crawlers"
+                    className="block w-[160px] sm:w-[160px] md:w-[160px] h-auto object-contain"
+                  />
+                </Link>
+                <h1 className="text-sm sm:text-base font-bold text-[#222222] mb-1">
+                  Welcome Back!
+                </h1>
+                <p className="text-[#667085] text-xs leading-tight max-w-sm">
+                  Welcome back! Please log in with your correct details.
+                </p>
+              </div>
 
-            {/* Form Section */}
-            <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
-              <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#344054]">Email*</label>
+              {/* Form Section */}
+              <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
+                <div className="space-y-1">
+                  <label className="block text-xs font-semibold text-[#344054]">Email*</label>
                   <Input
                     type="email"
                     name="email"
@@ -72,10 +72,10 @@ const SignIn: React.FC = () => {
                     className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-xs focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222]"
                     required
                   />
-              </div>
+                </div>
 
-              <div className="space-y-1">
-                <label className="block text-xs font-semibold text-[#344054]">Password*</label>
+                <div className="space-y-1">
+                  <label className="block text-xs font-semibold text-[#344054]">Password*</label>
                   <div className="relative">
                     <Input
                       type="password"
@@ -90,42 +90,42 @@ const SignIn: React.FC = () => {
                   </div>
                 </div>
 
-              {/* Remember Me & Forgot Password */}
-              <div className="flex items-center justify-between">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                    className="w-3.5 h-3.5 border-gray-300 rounded text-[#C62222] focus:ring-[#C62222]"
-                  />
-                  <span className="text-xs text-[#667085]">Remember for 30 days</span>
+                {/* Remember Me & Forgot Password */}
+                <div className="flex items-center justify-between">
+                  <label className="flex items-center gap-2 cursor-pointer">
+                    <input
+                      type="checkbox"
+                      checked={rememberMe}
+                      onChange={(e) => setRememberMe(e.target.checked)}
+                      className="w-3.5 h-3.5 border-gray-300 rounded text-[#C62222] focus:ring-[#C62222]"
+                    />
+                    <span className="text-xs text-[#667085]">Remember for 30 days</span>
                   </label>
-                <Link to="/forgot-password" className="text-xs text-[#C62222] hover:underline">
-                  Forgot password
-                </Link>
-              </div>
+                  <Link to="/forgot-password" className="text-xs text-[#C62222] hover:underline">
+                    Forgot password
+                  </Link>
+                </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
                 >
                   {isSubmitting ? 'Logging in...' : 'Sign In'}
                 </button>
               </form>
 
-            {/* Sign Up Link */}
-            <div className="mt-3 text-center">
-              <p className="text-xs text-[#667085]">
-                Don't have an account?{' '}
-                <Link to="/signup" className="text-[#C62222] hover:underline font-medium">
-                  Sign Up
-                </Link>
-              </p>
+              {/* Sign Up Link */}
+              <div className="mt-3 text-center">
+                <p className="text-xs text-[#667085]">
+                  Don't have an account?{' '}
+                  <Link to="/signup" className="text-[#C62222] hover:underline font-medium">
+                    Sign Up
+                  </Link>
+                </p>
+              </div>
             </div>
-          </div>
           </div>
           <div className="w-full flex items-center justify-between text-xs text-[#667085] px-1">
             <span>© Night Crawlers 2026, inc</span>

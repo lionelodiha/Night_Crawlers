@@ -12,7 +12,7 @@ import { VendorStore, getMenuItemsForStore, MenuItem } from '../lib/mockBackend'
 const VendorDetails: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { cartItems, addToCart, removeFromCart, updateQuantity, cartTotal } = useCart();
+  const { cartItems, addToCart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
   const [isMobileCartOpen, setIsMobileCartOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string>('All');
   const storeState = location.state as VendorStore | undefined;
@@ -52,7 +52,10 @@ const VendorDetails: React.FC = () => {
       id: item.id,
       name: item.name,
       price: item.price,
-      image: item.imageUrl
+      image: item.imageUrl,
+      vendorId: store.id,
+      vendorName: store.name,
+      vendorImage: store.imageUrl
     });
   };
 
@@ -321,55 +324,75 @@ const VendorDetails: React.FC = () => {
               ) : (
                 <>
                   <div className="flex flex-col gap-4">
-                    {cartItems.map((item) => (
-                      <div key={item.id} className="flex gap-3 border border-[#EAECF0] rounded-[8px] p-3">
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-[52px] h-[52px] object-cover rounded-[6px]"
-                        />
-                        <div className="flex-1 flex flex-col gap-2">
-                          <div className="flex justify-between items-start">
-                            <h3 className="text-[13px] font-semibold text-[#222222] leading-tight">{item.name}</h3>
-                            <button
-                              onClick={() => removeFromCart(item.id)}
-                              className="text-[#C62222] hover:text-[#A01B1B]"
-                            >
-                              <Trash2 size={14} />
-                            </button>
+                    {(() => {
+                      const groups: Record<string, { vendorName: string; vendorImage: string; items: typeof cartItems; total: number }> = {};
+                      cartItems.forEach(item => {
+                        const vId = item.vendorId || 'unknown';
+                        if (!groups[vId]) {
+                          groups[vId] = {
+                            vendorName: item.vendorName || 'Unknown Vendor',
+                            vendorImage: item.vendorImage || item.image,
+                            items: [],
+                            total: 0
+                          };
+                        }
+                        groups[vId].items.push(item);
+                        groups[vId].total += (item.price * item.quantity);
+                      });
+                      const groupedItems = Object.values(groups);
+
+                      return groupedItems.map((group, idx) => (
+                        <div key={idx} className="bg-[#F9FAFB]/50 border border-[#EAECF0] rounded-[12px] p-4">
+                          <div className="flex gap-3 mb-3">
+                            <img
+                              src={group.vendorImage}
+                              alt={group.vendorName}
+                              className="w-[52px] h-[52px] object-cover rounded-[8px]"
+                            />
+                            <div className="flex-1 min-w-0">
+                              <div className="flex justify-between items-start">
+                                <h3 className="text-[14px] font-semibold text-[#222222] truncate pr-2">{group.vendorName}</h3>
+                                <span className="text-[12px] text-[#667085] whitespace-nowrap">
+                                  {group.items.reduce((acc, i) => acc + i.quantity, 0)} Items
+                                </span>
+                              </div>
+                              <p className="text-[#667085] text-[12px] mt-1 leading-snug line-clamp-2">
+                                {group.items.map(i => `${i.quantity} portion${i.quantity > 1 ? 's' : ''} of ${i.name}`).join('. ')}.
+                              </p>
+                            </div>
                           </div>
-                          <p className="text-[#667085] text-[11px]">ƒ,İ {item.price.toLocaleString()}</p>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
+
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="text-[14px] text-[#667085] font-medium">Total: <span className="text-[#222222] font-bold">₦{group.total.toLocaleString()}</span></div>
+                            <div className="flex items-center gap-3">
                               <button
-                                onClick={() => decrementItem(item.id)}
-                                className="w-[22px] h-[22px] bg-[#F2F4F7] rounded-[4px] flex items-center justify-center text-[#667085] hover:bg-[#EAECF0]"
+                                onClick={() => navigate('/order-summary')}
+                                className="h-[36px] px-4 bg-[#C62222] text-white text-[12px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors"
                               >
-                                <Minus size={10} />
+                                Proceed to Checkout
                               </button>
-                              <span className="text-[12px] font-medium text-[#222222]">{item.quantity}</span>
                               <button
-                                onClick={() => incrementCartItem(item.id)}
-                                className="w-[22px] h-[22px] bg-[#F2F4F7] rounded-[4px] flex items-center justify-center text-[#667085] hover:bg-[#EAECF0]"
+                                onClick={() => {
+                                  /* In a real app we would remove only this vendor's items */
+                                  clearCart();
+                                }}
+                                className="text-[#C62222] hover:text-[#A01B1B]"
                               >
-                                <Plus size={10} />
+                                <Trash2 size={18} />
                               </button>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ));
+                    })()}
                   </div>
-                  <div className="mt-5 border-t border-[#EAECF0] pt-4">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-[#667085] text-[13px]">Total:</span>
-                      <span className="text-[#222222] text-[16px] font-bold">ƒ,İ{cartTotal.toLocaleString()}</span>
-                    </div>
+
+                  <div className="mt-4 flex justify-end">
                     <button
-                      onClick={() => navigate('/order-summary')}
-                      className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors"
+                      onClick={clearCart}
+                      className="px-4 py-2 bg-[#FEE4E2] text-[#C62222] text-[12px] font-semibold rounded-[6px] hover:bg-[#FECDCA] transition-colors"
                     >
-                      Proceed to Checkout
+                      Clear Cart
                     </button>
                   </div>
                 </>

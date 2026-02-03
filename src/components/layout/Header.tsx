@@ -63,9 +63,8 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                   <Link
                     key={link.name}
                     to={link.href}
-                    className={`nav-link-wavy font-poppins text-[18px] lg:text-[20px] ${getUnderlineClass(link.name)} ${
-                      location.pathname === link.href ? 'active' : ''
-                    }`}
+                    className={`nav-link-wavy font-poppins text-[18px] lg:text-[20px] ${getUnderlineClass(link.name)} ${location.pathname === link.href ? 'active' : ''
+                      }`}
                   >
                     {link.name}
                   </Link>
@@ -87,8 +86,8 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                   </span>
                 )}
               </button>
-              <Link 
-                to="/signin" 
+              <Link
+                to="/signin"
                 className="w-10 h-10 lg:w-[42px] lg:h-[42px] rounded-full bg-night-red-600 text-white flex items-center justify-center hover:bg-night-red-700 transition-colors"
               >
                 <User className="w-5 h-5" />
@@ -121,9 +120,9 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
       </header>
 
       {/* Mobile Menu */}
-      <MobileMenu 
-        isOpen={isMobileMenuOpen} 
-        onClose={() => setIsMobileMenuOpen(false)} 
+      <MobileMenu
+        isOpen={isMobileMenuOpen}
+        onClose={() => setIsMobileMenuOpen(false)}
         onCartClick={handleCartClick}
       />
 

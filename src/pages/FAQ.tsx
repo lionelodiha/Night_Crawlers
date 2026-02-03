@@ -43,7 +43,7 @@ const faqData: FAQItem[] = [
 const categories = ['General Information', 'Purchasing & Payment', 'Customer Support', 'Resources'];
 
 const FAQ: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number>(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('General Information');
 
   const filteredFAQs = faqData.filter(faq => faq.category === selectedCategory);
@@ -78,13 +78,12 @@ const FAQ: React.FC = () => {
                     key={category}
                     onClick={() => {
                       setSelectedCategory(category);
-                      setOpenIndex(0);
+                      setOpenIndex(null);
                     }}
-                    className={`h-[40px] lg:h-[41px] px-[14px] lg:px-[17px] leading-[20px] lg:leading-[24px] text-[14px] lg:text-[16px] text-left transition-all duration-200 whitespace-nowrap flex-shrink-0 ${
-                      selectedCategory === category
+                    className={`h-[40px] lg:h-[41px] px-[14px] lg:px-[17px] leading-[20px] lg:leading-[24px] text-[14px] lg:text-[16px] text-left transition-all duration-200 whitespace-nowrap flex-shrink-0 ${selectedCategory === category
                         ? 'font-medium text-[#222222] border-l-[3px] border-[#C62222] bg-[rgba(198,34,34,0.05)]'
                         : 'font-normal text-[#667085] border-l-[3px] border-transparent hover:bg-gray-50'
-                    }`}
+                      }`}
                   >
                     {category}
                   </button>
@@ -98,17 +97,15 @@ const FAQ: React.FC = () => {
                 filteredFAQs.map((faq, idx) => (
                   <div
                     key={faq.id}
-                    onClick={() => setOpenIndex(idx)}
-                    className={`rounded-[8px] px-[16px] lg:px-[20px] py-[16px] lg:py-[20px] cursor-pointer transition-all duration-200 ${
-                      openIndex === idx
+                    onClick={() => setOpenIndex(openIndex === idx ? null : idx)}
+                    className={`rounded-[8px] px-[16px] lg:px-[20px] py-[16px] lg:py-[20px] cursor-pointer transition-all duration-200 ${openIndex === idx
                         ? 'border-[1px] border-[#C62222] bg-white shadow-sm'
                         : 'bg-[rgba(234,236,240,0.42)] border border-transparent hover:bg-[rgba(234,236,240,0.6)]'
-                    }`}
+                      }`}
                   >
                     <div className="flex items-start justify-between w-full">
-                      <p className={`text-[14px] lg:text-[16px] leading-[22px] lg:leading-[26px] pr-4 ${
-                        openIndex === idx ? 'font-medium text-[#222222]' : 'font-normal text-[#101828]'
-                      }`}>
+                      <p className={`text-[14px] lg:text-[16px] leading-[22px] lg:leading-[26px] pr-4 ${openIndex === idx ? 'font-medium text-[#222222]' : 'font-normal text-[#101828]'
+                        }`}>
                         {faq.question}
                       </p>
                       <div className="flex items-center justify-center rounded-full bg-[#EAECF0] w-[20px] h-[20px] lg:w-[24px] lg:h-[24px] flex-shrink-0 ml-2">
@@ -142,14 +139,14 @@ const FAQ: React.FC = () => {
                 <p className="text-[#222222] text-[20px] font-medium leading-[30px]">Still have a question?</p>
               </div>
               <p className="leading-[18px] text-[#667085] text-[14px]">If you didn't find your answer, feel free to reach out.</p>
-              <a 
-                href="/contact" 
+              <a
+                href="/contact"
                 className="inline-flex items-center justify-center lg:justify-start leading-[24px] text-[#C62222] text-[16px] underline hover:no-underline transition-all duration-200"
               >
                 Contact us
               </a>
             </div>
-            
+
             {/* Decorative underline */}
             <div className="hidden lg:block w-[60px] h-[2px] border-t-[2px] border-[#C62222]"></div>
           </div>
