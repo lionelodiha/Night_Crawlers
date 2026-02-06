@@ -188,7 +188,7 @@ const RiderDashboard: React.FC = () => {
             {/* Top Bar */}
             <header className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-gray-100 px-6 py-4 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                    <div className={`h-10 w-10 rounded-full flex items-center justify-center border-2 text-white font-bold text-sm ${isOnline ? 'bg-green-500 border-green-400' : 'bg-gray-300 border-gray-200'}`}>
+                    <div className={`h-10 w-10 rounded-full flex items-center justify-center border-2 text-white font-bold text-sm bg-[#C62222] border-red-400`}>
                         {rider.firstName.charAt(0)}
                     </div>
                     <div>
@@ -200,20 +200,20 @@ const RiderDashboard: React.FC = () => {
                     </div>
                 </div>
                 <div className="flex items-center gap-2">
-                    <div className="relative cursor-pointer hover:bg-gray-100 p-2 rounded-full transition-colors">
+                    <div className="relative cursor-pointer hover:bg-red-50 p-2 rounded-full transition-colors group">
                         {pendingOrders.length > 0 && (
                             <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-[#C62222] rounded-full border-2 border-white text-[9px] text-white font-bold flex items-center justify-center">
                                 {pendingOrders.length}
                             </span>
                         )}
-                        <Bell size={20} className="text-gray-500" />
+                        <Bell size={20} className="text-gray-400 group-hover:text-[#C62222] transition-colors" />
                     </div>
                     <button
                         onClick={() => {
                             logoutRider();
                             navigate('/vendor-signin');
                         }}
-                        className="p-2 hover:bg-red-50 rounded-full text-gray-400 hover:text-red-600 transition-colors"
+                        className="p-2 bg-red-50 hover:bg-[#C62222] rounded-full text-[#C62222] hover:text-white transition-colors border border-red-100"
                         title="Logout"
                     >
                         <LogOut size={20} />
@@ -234,9 +234,9 @@ const RiderDashboard: React.FC = () => {
                     <div className="z-10 flex flex-col items-center gap-3">
                         <button
                             onClick={toggleOnlineStatus}
-                            className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 border-4 ${isOnline ? 'bg-green-500 border-green-400 scale-110' : 'bg-gray-100 border-white hover:bg-gray-200'}`}
+                            className={`w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-all duration-300 border-4 ${isOnline ? 'bg-green-500 border-green-400 scale-110' : 'bg-white border-[#C62222] text-[#C62222] hover:bg-red-50 shadow-red-100'}`}
                         >
-                            <Power size={28} className={isOnline ? "text-white" : "text-gray-500"} />
+                            <Power size={28} className={isOnline ? "text-white" : "text-[#C62222]"} />
                         </button>
                         <div className="text-center">
                             <h2 className={`text-lg font-bold ${isOnline ? 'text-gray-900' : 'text-gray-400'}`}>
@@ -250,19 +250,20 @@ const RiderDashboard: React.FC = () => {
                 </section>
 
                 {/* Quick Stats */}
+                {/* Quick Stats */}
                 <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-28 relative group overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="p-2 bg-green-50 w-fit rounded-lg text-green-600">
-                            <DollarSign size={18} />
+                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-32 relative group overflow-hidden hover:shadow-md transition-shadow">
+                        <div className="p-3 bg-red-50 w-fit rounded-xl text-[#C62222]">
+                            <DollarSign size={24} />
                         </div>
                         <div>
                             <p className="text-2xl font-bold text-gray-900 tracking-tight">₦{todayEarnings.toLocaleString()}</p>
                             <p className="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Today's Earnings</p>
                         </div>
                     </div>
-                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-28 relative group overflow-hidden hover:shadow-md transition-shadow">
-                        <div className="p-2 bg-blue-50 w-fit rounded-lg text-blue-600">
-                            <CheckCircle size={18} />
+                    <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-32 relative group overflow-hidden hover:shadow-md transition-shadow">
+                        <div className="p-3 bg-red-50 w-fit rounded-xl text-[#C62222]">
+                            <CheckCircle size={24} />
                         </div>
                         <div>
                             <p className="text-2xl font-bold text-gray-900 tracking-tight">{completedToday}</p>
@@ -284,22 +285,22 @@ const RiderDashboard: React.FC = () => {
 
                         <div className="space-y-4">
                             {activeOrders.map((order) => (
-                                <div key={order.id} className="bg-gradient-to-br from-[#C62222] to-[#a01b1b] text-white rounded-2xl p-5 shadow-lg">
+                                <div key={order.id} className="bg-gradient-to-br from-[#C62222] to-[#991b1b] text-white rounded-2xl p-5 shadow-lg shadow-red-900/20">
                                     <div className="flex justify-between items-start mb-3">
                                         <div>
                                             <h4 className="font-bold text-base">Order #{order.id.slice(-6)}</h4>
-                                            <p className="text-xs text-white/70">{order.storeName} • {order.items.length} items</p>
+                                            <p className="text-xs text-red-100/80">{order.storeName} • {order.items.length} items</p>
                                         </div>
                                         <span className="font-bold text-lg">₦{(order.totalAmount + order.deliveryFee).toLocaleString()}</span>
                                     </div>
 
-                                    <div className="bg-white/10 rounded-xl p-3 mb-3">
+                                    <div className="bg-black/20 backdrop-blur-sm rounded-xl p-3 mb-3 border border-white/5">
                                         <div className="flex items-center gap-2 text-sm">
-                                            <MapPin size={14} />
+                                            <MapPin size={14} className="text-red-200" />
                                             <span className="truncate">{order.customerAddress}</span>
                                         </div>
                                         <div className="flex items-center gap-2 text-sm mt-1">
-                                            <Phone size={14} />
+                                            <Phone size={14} className="text-red-200" />
                                             <span>{order.customerPhone}</span>
                                         </div>
                                     </div>
@@ -309,13 +310,13 @@ const RiderDashboard: React.FC = () => {
                                             <>
                                                 <button
                                                     onClick={() => openNavigation(order, 'store')}
-                                                    className="flex-1 py-2.5 bg-white text-[#C62222] text-sm font-bold rounded-xl flex items-center justify-center gap-2"
+                                                    className="flex-1 py-2.5 bg-white text-[#C62222] text-sm font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm"
                                                 >
                                                     <Navigation size={16} /> Go to Store
                                                 </button>
                                                 <button
                                                     onClick={() => handleUpdateStatus(order.id, 'picked_up')}
-                                                    className="px-4 py-2.5 bg-white/20 text-white text-sm font-bold rounded-xl"
+                                                    className="px-4 py-2.5 bg-black/30 hover:bg-black/50 text-white text-sm font-bold rounded-xl transition-colors border border-white/10"
                                                 >
                                                     Picked Up
                                                 </button>
@@ -325,13 +326,13 @@ const RiderDashboard: React.FC = () => {
                                             <>
                                                 <button
                                                     onClick={() => openNavigation(order, 'customer')}
-                                                    className="flex-1 py-2.5 bg-white text-[#C62222] text-sm font-bold rounded-xl flex items-center justify-center gap-2"
+                                                    className="flex-1 py-2.5 bg-white text-[#C62222] text-sm font-bold rounded-xl flex items-center justify-center gap-2 shadow-sm"
                                                 >
                                                     <Navigation size={16} /> Navigate to Customer
                                                 </button>
                                                 <button
                                                     onClick={() => handleUpdateStatus(order.id, 'delivered')}
-                                                    className="px-4 py-2.5 bg-white/20 text-white text-sm font-bold rounded-xl"
+                                                    className="px-4 py-2.5 bg-black/30 hover:bg-black/50 text-white text-sm font-bold rounded-xl transition-colors border border-white/10"
                                                 >
                                                     Delivered
                                                 </button>
@@ -392,7 +393,7 @@ const RiderDashboard: React.FC = () => {
                                         <div className="flex gap-3">
                                             <button
                                                 onClick={() => handleAcceptOrder(order.id)}
-                                                className="flex-1 py-3 bg-[#111827] text-white text-sm font-bold rounded-xl hover:bg-black transition-colors shadow-lg shadow-gray-200"
+                                                className="flex-1 py-3 bg-[#C62222] text-white text-sm font-bold rounded-xl hover:bg-[#a01b1b] transition-colors shadow-lg shadow-red-100"
                                             >
                                                 Accept Order
                                             </button>

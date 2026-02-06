@@ -88,6 +88,7 @@ const Explore: React.FC = () => {
   const [promoIndex, setPromoIndex] = useState(0);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [searchQuery, setSearchQuery] = useState('');
   const storesSectionRef = useRef<HTMLDivElement | null>(null);
 
   const handleOpenAddressModal = () => {
@@ -120,7 +121,17 @@ const Explore: React.FC = () => {
     selectedCategory === 'All' ? undefined : (selectedCategory as BusinessType),
   );
   const shouldUseFallback = Boolean(selectedAddress) && filteredStores.length === 0;
-  const displayedStores = shouldUseFallback ? fallbackStores : filteredStores;
+  const initialDisplayedStores = shouldUseFallback ? fallbackStores : filteredStores;
+
+  const displayedStores = initialDisplayedStores.filter((store) => {
+    if (!searchQuery) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      store.name.toLowerCase().includes(q) ||
+      store.description.toLowerCase().includes(q) ||
+      store.categories.some(c => c.toLowerCase().includes(q))
+    );
+  });
 
   const handleCategoryClick = (name: string) => {
     setSelectedCategory(name);
@@ -163,14 +174,20 @@ const Explore: React.FC = () => {
           {/* Search and Address Row */}
           <div className="flex flex-row items-center justify-between gap-[10px] md:gap-[20px] mb-[40px] md:mb-[60px]">
             {/* Search Bar */}
-            <div className="flex items-center w-[50%] md:w-[70%] max-w-[500px] h-[36px] border border-[#D0D5DD] rounded-[4px] overflow-hidden bg-white/50">
+            <div className="flex items-center w-[50%] md:w-[70%] max-w-[500px] h-[40px] border border-[#D0D5DD] rounded-[8px] overflow-hidden bg-white/50 focus-within:ring-2 focus-within:ring-[#C62222]/20 transition-all shadow-sm">
               <input
                 type="text"
-                placeholder="Search"
-                className="flex-grow h-full px-[10px] md:px-[14px] text-[12px] md:text-[13px] text-[#667085] bg-transparent outline-none placeholder:text-[#98A2B3] min-w-0"
+                placeholder="Search restaurants, items..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="flex-grow h-full px-[12px] md:px-[16px] text-[13px] md:text-[14px] text-[#101828] bg-transparent outline-none placeholder:text-[#98A2B3] min-w-0"
               />
-              <button className="w-[32px] md:w-[36px] h-full bg-[#C62222] flex items-center justify-center text-white hover:bg-[#A01B1B] transition-colors shrink-0">
-                <Search size={14} />
+              <button
+                className="h-full px-4 md:px-6 bg-[#C62222] flex items-center justify-center gap-2 text-white hover:bg-[#A01B1B] transition-colors shrink-0 cursor-pointer"
+                aria-label="Search"
+              >
+                <span className="hidden sm:inline text-[13px] font-medium">Search</span>
+                <Search size={16} />
               </button>
             </div>
 

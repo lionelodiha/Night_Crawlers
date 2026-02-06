@@ -62,13 +62,13 @@ const VendorSignIn: React.FC = () => {
                 alt="Our Partners"
                 className="h-14 sm:h-16 w-auto"
               />
-              <div className="flex p-1 bg-white border border-gray-200 rounded-lg mt-4 w-full max-w-[300px]">
+              <div className="flex p-1 bg-white border border-gray-200 rounded-lg mt-4 w-full max-w-[300px] mx-auto">
                 <button
                   type="button"
                   onClick={() => setLoginType('partner')}
                   className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${loginType === 'partner'
-                      ? 'bg-night-red-600 text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-night-red-600 text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-900'
                     }`}
                 >
                   Partner
@@ -77,8 +77,8 @@ const VendorSignIn: React.FC = () => {
                   type="button"
                   onClick={() => setLoginType('rider')}
                   className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${loginType === 'rider'
-                      ? 'bg-night-red-600 text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-night-red-600 text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-900'
                     }`}
                 >
                   Rider

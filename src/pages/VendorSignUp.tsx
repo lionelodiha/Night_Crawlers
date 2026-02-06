@@ -122,17 +122,17 @@ const VendorSignUp: React.FC = () => {
           <div className="bg-[#f7f7f7] border border-[#e8e8e8] rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.05)] px-6 sm:px-7 md:px-8 py-8 md:py-9 h-full">
 
             <div className="flex flex-col gap-4 mb-6">
-              <h1 className="text-2xl font-semibold text-[#C62222]">
+              <h1 className="text-2xl font-semibold text-[#C62222] text-center">
                 {signUpType === 'partner' ? 'Become a Partner' : 'Become a Rider'}
               </h1>
 
-              <div className="flex p-1 bg-white border border-gray-200 rounded-lg w-full max-w-[300px]">
+              <div className="flex p-1 bg-white border border-gray-200 rounded-lg w-full max-w-[300px] mx-auto">
                 <button
                   type="button"
                   onClick={() => setSignUpType('partner')}
                   className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${signUpType === 'partner'
-                      ? 'bg-night-red-600 text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-night-red-600 text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-900'
                     }`}
                 >
                   Partner
@@ -141,8 +141,8 @@ const VendorSignUp: React.FC = () => {
                   type="button"
                   onClick={() => setSignUpType('rider')}
                   className={`flex-1 py-1.5 text-sm font-medium rounded-md transition-all ${signUpType === 'rider'
-                      ? 'bg-night-red-600 text-white shadow-sm'
-                      : 'text-gray-500 hover:text-gray-900'
+                    ? 'bg-night-red-600 text-white shadow-sm'
+                    : 'text-gray-500 hover:text-gray-900'
                     }`}
                 >
                   Rider

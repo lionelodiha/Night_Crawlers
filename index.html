@@ -18,7 +18,74 @@
     </script>
   </head>
   <body>
-    <div id="root"></div>
+    <style>
+      /* Critical CSS for the pre-loader */
+      .nc-loader-container {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+        font-family: system-ui, -apple-system, sans-serif;
+      }
+      .nc-rings {
+        position: relative;
+        width: 64px;
+        height: 64px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .nc-ring-outer {
+        position: absolute;
+        inset: 0;
+        border: 4px solid #f3f4f6;
+        border-top-color: #C62222;
+        border-radius: 50%;
+        animation: nc-spin 1s linear infinite;
+      }
+      .nc-ring-inner {
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        border: 4px solid transparent;
+        border-bottom-color: black;
+        border-radius: 50%;
+        animation: nc-spin 2s linear infinite reverse;
+      }
+      .nc-core {
+        width: 12px;
+        height: 12px;
+        background-color: #C62222;
+        border-radius: 50%;
+        box-shadow: 0 0 15px #C62222;
+        animation: nc-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      .nc-text {
+        margin-top: 16px;
+        color: #C62222;
+        font-weight: 700;
+        font-size: 14px;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        animation: nc-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+      }
+      @keyframes nc-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+      @keyframes nc-pulse { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
+    </style>
+    <div id="root">
+      <div class="nc-loader-container">
+        <div class="nc-rings">
+          <div class="nc-ring-outer"></div>
+          <div class="nc-ring-inner"></div>
+          <div class="nc-core"></div>
+        </div>
+        <div class="nc-text">Loading</div>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
