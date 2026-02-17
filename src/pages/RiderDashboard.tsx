@@ -5,9 +5,11 @@ import {
     getCurrentRider,
     RiderAccount,
     Order,
+    EarningsPeriod,
     setRiderOnlineStatus,
     getPendingOrdersForRider,
     getOrdersForRider,
+    getRiderEarnings,
     acceptOrder,
     updateOrderStatus,
     getStoreLocation,
@@ -23,6 +25,7 @@ const RiderDashboard: React.FC = () => {
     const [activeOrders, setActiveOrders] = useState<Order[]>([]);
     const [completedToday, setCompletedToday] = useState(0);
     const [todayEarnings, setTodayEarnings] = useState(0);
+    const [riderEarnings, setRiderEarnings] = useState<EarningsPeriod | null>(null);
 
     const fetchOrders = useCallback(() => {
         if (!rider) return;
@@ -42,6 +45,10 @@ const RiderDashboard: React.FC = () => {
         );
         setCompletedToday(todayCompleted.length);
         setTodayEarnings(todayCompleted.reduce((sum, o) => sum + o.deliveryFee, 0));
+
+        // Load full earnings from backend
+        const earnings = getRiderEarnings(rider.id);
+        setRiderEarnings(earnings);
     }, [rider]);
 
     useEffect(() => {
@@ -250,7 +257,6 @@ const RiderDashboard: React.FC = () => {
                 </section>
 
                 {/* Quick Stats */}
-                {/* Quick Stats */}
                 <div className="grid grid-cols-2 gap-4">
                     <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex flex-col justify-between h-32 relative group overflow-hidden hover:shadow-md transition-shadow">
                         <div className="p-3 bg-red-50 w-fit rounded-xl text-[#C62222]">
@@ -271,6 +277,8 @@ const RiderDashboard: React.FC = () => {
                         </div>
                     </div>
                 </div>
+
+
 
                 {/* Active Orders */}
                 {activeOrders.length > 0 && (

@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Footer from '../components/layout/Footer';
-import { Store, Upload, X, Clock, LogOut, ShieldCheck } from 'lucide-react';
+import { Store, Upload, X, Clock, LogOut, ShieldCheck, DollarSign, Package, TrendingUp } from 'lucide-react';
 import pinIcon from '../assets/location-pin-red.svg';
 import {
   createStore,
   getBusinessTypeMeta,
   getCurrentVendor,
   getStoresForVendor,
+  getVendorEarnings,
+  getVendorStoreEarnings,
+  getOrdersForVendor,
   VendorAccount,
   VendorStore,
+  EarningsPeriod,
+  StoreEarnings,
   clearCurrentVendor,
   reloadFromStorage,
 } from '../lib/mockBackend';
@@ -29,6 +34,9 @@ const VendorDashboard: React.FC = () => {
   const navigate = useNavigate();
   const [vendor, setVendor] = useState<VendorAccount | null>(null);
   const [stores, setStores] = useState<VendorStore[]>([]);
+  const [earnings, setEarnings] = useState<EarningsPeriod | null>(null);
+  const [storeEarnings, setStoreEarnings] = useState<StoreEarnings[]>([]);
+  const [todayOrderCount, setTodayOrderCount] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -51,6 +59,20 @@ const VendorDashboard: React.FC = () => {
     }
     setVendor(currentVendor);
     setStores(getStoresForVendor(currentVendor.id));
+
+    // Load earnings
+    const vendorEarnings = getVendorEarnings(currentVendor.id);
+    setEarnings(vendorEarnings);
+
+    // Load per-store earnings
+    setStoreEarnings(getVendorStoreEarnings(currentVendor.id));
+
+    // Count today's orders (all statuses)
+    const allOrders = getOrdersForVendor(currentVendor.id);
+    const todayStart = new Date();
+    todayStart.setHours(0, 0, 0, 0);
+    const todayOrders = allOrders.filter(o => new Date(o.createdAt) >= todayStart);
+    setTodayOrderCount(todayOrders.length);
   }, [navigate]);
 
   if (!vendor) {
@@ -212,18 +234,105 @@ const VendorDashboard: React.FC = () => {
       <main className="flex-grow w-full max-w-[1280px] mx-auto px-4 sm:px-6 md:px-8">
         {/* Dashboard Header */}
         <div className="pt-10 pb-10">
-          <div className="flex items-start gap-6">
-            <div className="w-9 h-9 flex items-center justify-center text-[#C62222]">
-              <Store className="w-6 h-6" />
+          <div className="flex items-start justify-between">
+            <div className="flex items-start gap-6">
+              <div className="w-9 h-9 flex items-center justify-center text-[#C62222]">
+                <Store className="w-6 h-6" />
+              </div>
+              <div>
+                <h1 className="text-2xl font-semibold text-[#C62222] leading-tight">Vendor Dashboard</h1>
+                <p className="text-sm text-[#4B5563]">
+                  Account type: {typeMeta.singular}
+                </p>
+              </div>
             </div>
-            <div>
-              <h1 className="text-2xl font-semibold text-[#C62222] leading-tight">Vendor Dashboard</h1>
-              <p className="text-sm text-[#4B5563]">
-                Account type: {typeMeta.singular}
-              </p>
-            </div>
+            <button
+              onClick={() => {
+                clearCurrentVendor();
+                navigate('/vendor-signin');
+              }}
+              className="flex items-center gap-2 px-4 py-2.5 bg-red-50 hover:bg-[#C62222] text-[#C62222] hover:text-white rounded-xl text-sm font-semibold transition-colors border border-red-100"
+            >
+              <LogOut size={18} />
+              <span className="hidden sm:inline">Sign Out</span>
+            </button>
           </div>
         </div>
+
+        {/* Today's Earnings */}
+        <section className="mb-10">
+          <h2 className="text-lg font-semibold text-[#1F2937] mb-4">Today's Overview</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {/* Earnings Card */}
+            <div className="bg-gradient-to-br from-[#C62222] to-[#991b1b] text-white p-5 rounded-2xl shadow-lg shadow-red-200/40 relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-8 -mt-8 blur-xl"></div>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2.5 bg-white/20 rounded-xl backdrop-blur-sm">
+                  <DollarSign size={20} />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-red-100">Today's Earnings</span>
+              </div>
+              <p className="text-3xl font-bold tracking-tight">₦{(earnings?.today ?? 0).toLocaleString()}</p>
+              <p className="text-xs text-red-100 mt-1">From delivered orders today</p>
+            </div>
+
+            {/* Orders Card */}
+            <div className="bg-white border border-gray-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2.5 bg-red-50 rounded-xl text-[#C62222]">
+                  <Package size={20} />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Today's Orders</span>
+              </div>
+              <p className="text-3xl font-bold text-gray-900 tracking-tight">{todayOrderCount}</p>
+              <p className="text-xs text-gray-400 mt-1">Total orders received today</p>
+            </div>
+
+            {/* Completed Card */}
+            <div className="bg-white border border-gray-100 p-5 rounded-2xl shadow-sm hover:shadow-md transition-shadow">
+              <div className="flex items-center gap-3 mb-3">
+                <div className="p-2.5 bg-red-50 rounded-xl text-[#C62222]">
+                  <TrendingUp size={20} />
+                </div>
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-400">Completed</span>
+              </div>
+              <p className="text-3xl font-bold text-gray-900 tracking-tight">{earnings?.todayOrders ?? 0}</p>
+              <p className="text-xs text-gray-400 mt-1">Delivered orders today</p>
+            </div>
+          </div>
+
+
+
+          {/* Per-Store Earnings Breakdown */}
+          {storeEarnings.length > 0 && (
+            <div className="mt-5">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Earnings by {typeMeta.singular}</h3>
+              <div className="space-y-2">
+                {storeEarnings.map((se) => (
+                  <div
+                    key={se.storeId}
+                    className="flex items-center justify-between p-4 bg-white border border-gray-100 rounded-xl hover:border-gray-200 hover:shadow-sm transition-all"
+                  >
+                    <div className="flex items-center gap-3 min-w-0">
+                      <div className="w-9 h-9 bg-red-50 rounded-lg flex items-center justify-center text-[#C62222] flex-shrink-0">
+                        <Store size={16} />
+                      </div>
+                      <div className="min-w-0">
+                        <p className="text-sm font-semibold text-gray-900 truncate">{se.storeName}</p>
+                        <p className="text-[11px] text-gray-400">
+                          {se.todayOrders} order{se.todayOrders !== 1 ? 's' : ''} delivered today
+                        </p>
+                      </div>
+                    </div>
+                    <p className={`text-lg font-bold tabular-nums ${se.todayEarnings > 0 ? 'text-gray-900' : 'text-gray-300'}`}>
+                      ₦{se.todayEarnings.toLocaleString()}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Your Stores */}
         <section className="mb-12">

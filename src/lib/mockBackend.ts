@@ -968,3 +968,168 @@ export const getOrderStats = () => {
   };
 };
 
+// --- EARNINGS ---
+
+export type EarningsPeriod = {
+  today: number;
+  thisMonth: number;
+  thisYear: number;
+  todayOrders: number;
+  monthOrders: number;
+  yearOrders: number;
+};
+
+/** Get earnings for a specific vendor (across all their stores) */
+export const getVendorEarnings = (vendorId: string): EarningsPeriod => {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const yearStart = new Date(now.getFullYear(), 0, 1);
+
+  // Get all store IDs for this vendor
+  const vendorStoreIds = stores
+    .filter(s => s.vendorId === vendorId)
+    .map(s => s.id);
+
+  // Filter delivered orders for this vendor's stores
+  const vendorOrders = orders.filter(
+    o => o.status === 'delivered' && vendorStoreIds.includes(o.storeId)
+  );
+
+  const todayOrders = vendorOrders.filter(o => new Date(o.deliveredAt || o.createdAt) >= todayStart);
+  const monthOrders = vendorOrders.filter(o => new Date(o.deliveredAt || o.createdAt) >= monthStart);
+  const yearOrders = vendorOrders.filter(o => new Date(o.deliveredAt || o.createdAt) >= yearStart);
+
+  return {
+    today: todayOrders.reduce((sum, o) => sum + o.totalAmount, 0),
+    thisMonth: monthOrders.reduce((sum, o) => sum + o.totalAmount, 0),
+    thisYear: yearOrders.reduce((sum, o) => sum + o.totalAmount, 0),
+    todayOrders: todayOrders.length,
+    monthOrders: monthOrders.length,
+    yearOrders: yearOrders.length,
+  };
+};
+
+/** Get full earnings for a specific store (day/month/year) */
+export type StoreEarnings = {
+  storeId: string;
+  storeName: string;
+  vendorId: string;
+  vendorName: string;
+  todayEarnings: number;
+  todayOrders: number;
+  monthEarnings: number;
+  monthOrders: number;
+  yearEarnings: number;
+  yearOrders: number;
+};
+
+export const getStoreEarnings = (storeId: string): StoreEarnings => {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const yearStart = new Date(now.getFullYear(), 0, 1);
+  const store = stores.find(s => s.id === storeId);
+  const vendor = vendors.find(v => v.id === store?.vendorId);
+
+  const deliveredForStore = orders.filter(
+    o => o.status === 'delivered' && o.storeId === storeId
+  );
+
+  const todayOrders = deliveredForStore.filter(o => new Date(o.deliveredAt || o.createdAt) >= todayStart);
+  const monthOrders = deliveredForStore.filter(o => new Date(o.deliveredAt || o.createdAt) >= monthStart);
+  const yearOrders = deliveredForStore.filter(o => new Date(o.deliveredAt || o.createdAt) >= yearStart);
+
+  return {
+    storeId,
+    storeName: store?.name || 'Unknown',
+    vendorId: store?.vendorId || '',
+    vendorName: vendor ? `${vendor.firstName} ${vendor.lastName}` : 'Unknown',
+    todayEarnings: todayOrders.reduce((sum, o) => sum + o.totalAmount, 0),
+    todayOrders: todayOrders.length,
+    monthEarnings: monthOrders.reduce((sum, o) => sum + o.totalAmount, 0),
+    monthOrders: monthOrders.length,
+    yearEarnings: yearOrders.reduce((sum, o) => sum + o.totalAmount, 0),
+    yearOrders: yearOrders.length,
+  };
+};
+
+/** Get earnings for all stores of a vendor */
+export const getVendorStoreEarnings = (vendorId: string): StoreEarnings[] => {
+  const vendorStores = stores.filter(s => s.vendorId === vendorId);
+  return vendorStores.map(store => getStoreEarnings(store.id));
+};
+
+/** Get all store earnings for admin view */
+export const getAllStoreEarningsForAdmin = (): StoreEarnings[] => {
+  return stores.map(store => getStoreEarnings(store.id));
+};
+
+
+/** Get earnings for a specific rider (delivery fees) */
+export const getRiderEarnings = (riderId: string): EarningsPeriod => {
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+  const yearStart = new Date(now.getFullYear(), 0, 1);
+
+  const riderOrders = orders.filter(
+    o => o.status === 'delivered' && o.riderId === riderId
+  );
+
+  const todayOrders = riderOrders.filter(o => new Date(o.deliveredAt || o.createdAt) >= todayStart);
+  const monthOrders = riderOrders.filter(o => new Date(o.deliveredAt || o.createdAt) >= monthStart);
+  const yearOrders = riderOrders.filter(o => new Date(o.deliveredAt || o.createdAt) >= yearStart);
+
+  return {
+    today: todayOrders.reduce((sum, o) => sum + o.deliveryFee, 0),
+    thisMonth: monthOrders.reduce((sum, o) => sum + o.deliveryFee, 0),
+    thisYear: yearOrders.reduce((sum, o) => sum + o.deliveryFee, 0),
+    todayOrders: todayOrders.length,
+    monthOrders: monthOrders.length,
+    yearOrders: yearOrders.length,
+  };
+};
+
+/** Get all vendor+rider earnings for admin (day/month/year per entity) */
+export type EntityEarnings = {
+  id: string;
+  name: string;
+  type: 'vendor' | 'rider';
+  earnings: EarningsPeriod;
+};
+
+export const getAllEarningsForAdmin = (): EntityEarnings[] => {
+  const results: EntityEarnings[] = [];
+
+  vendors.forEach(v => {
+    results.push({
+      id: v.id,
+      name: `${v.firstName} ${v.lastName}`,
+      type: 'vendor',
+      earnings: getVendorEarnings(v.id),
+    });
+  });
+
+  riders.forEach(r => {
+    results.push({
+      id: r.id,
+      name: `${r.firstName} ${r.lastName}`,
+      type: 'rider',
+      earnings: getRiderEarnings(r.id),
+    });
+  });
+
+  return results;
+};
+
+/** Get all orders for a vendor's stores */
+export const getOrdersForVendor = (vendorId: string): Order[] => {
+  const vendorStoreIds = stores
+    .filter(s => s.vendorId === vendorId)
+    .map(s => s.id);
+  return orders
+    .filter(o => vendorStoreIds.includes(o.storeId))
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+};
+

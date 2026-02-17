@@ -88,18 +88,24 @@ body {
   .nav-link-wavy.active {
     @apply text-night-dark-900 font-semibold;
   }
-
-  .nav-link-contact {}
-
-  .nav-link-vendors {}
-
-  .nav-link-faq {}
 }
 
 /* Utility Classes */
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .scrollbar-hide {
+    scrollbar-width: none;
+    /* Firefox */
+    -ms-overflow-style: none;
+    /* IE/Edge */
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+    /* Chrome, Safari, Opera */
   }
 }
 

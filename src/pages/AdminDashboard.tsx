@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Users, Store, Package, TrendingUp, ShieldAlert, Activity, Bike, LogOut, Search, CheckCircle, X, Check, XCircle, Truck, Clock, Phone, MapPin } from 'lucide-react';
-import { getCurrentAdmin, AdminAccount, getPlatformStats, PlatformStats, getSystemActivity, getPendingActions, ActivityItem, PendingItem, verifyUser, getOrderStats, getOnlineRiders, RiderAccount, getAllRiders } from '../lib/mockBackend';
+import { Users, Store, Package, TrendingUp, ShieldAlert, Activity, Bike, LogOut, Search, CheckCircle, X, Check, XCircle, Truck, Clock, Phone, MapPin, DollarSign, Calendar, BarChart3, ChevronRight } from 'lucide-react';
+import { getCurrentAdmin, AdminAccount, getPlatformStats, PlatformStats, getSystemActivity, getPendingActions, ActivityItem, PendingItem, verifyUser, getOrderStats, getOnlineRiders, RiderAccount, getAllRiders, getAllEarningsForAdmin, EntityEarnings, getAllStoreEarningsForAdmin, StoreEarnings } from '../lib/mockBackend';
 import Footer from '../components/layout/Footer';
 
 import Loader from '../components/ui/Loader';
@@ -29,6 +29,13 @@ const AdminDashboard: React.FC = () => {
     const [showRidersModal, setShowRidersModal] = useState(false);
     const [allRiders, setAllRiders] = useState<RiderAccount[]>([]);
 
+    // Earnings State
+    const [showEarningsModal, setShowEarningsModal] = useState(false);
+    const [allEarnings, setAllEarnings] = useState<EntityEarnings[]>([]);
+    const [allStoreEarnings, setAllStoreEarnings] = useState<StoreEarnings[]>([]);
+    const [earningsTab, setEarningsTab] = useState<'vendors' | 'stores' | 'riders'>('vendors');
+    const [earningsPeriod, setEarningsPeriod] = useState<'today' | 'month' | 'year'>('today');
+
     const fetchData = () => {
         setStats(getPlatformStats());
         setActivity(getSystemActivity());
@@ -36,6 +43,8 @@ const AdminDashboard: React.FC = () => {
         setOrderStats(getOrderStats());
         setOnlineRiders(getOnlineRiders());
         setAllRiders(getAllRiders());
+        setAllEarnings(getAllEarningsForAdmin());
+        setAllStoreEarnings(getAllStoreEarningsForAdmin());
     };
 
     useEffect(() => {
@@ -158,8 +167,11 @@ const AdminDashboard: React.FC = () => {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-6 md:mb-10">
 
-                    {/* Revenue Card */}
-                    <div className="group bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 hover:border-[#C62222]/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300">
+                    {/* Revenue Card - CLICKABLE for Earnings */}
+                    <div
+                        onClick={() => setShowEarningsModal(true)}
+                        className="group bg-white p-4 md:p-6 rounded-xl md:rounded-2xl border border-gray-100 hover:border-[#C62222]/20 hover:shadow-[0_8px_30px_rgb(0,0,0,0.04)] transition-all duration-300 cursor-pointer"
+                    >
                         <div className="flex justify-between items-start mb-2 md:mb-4">
                             <div className="p-2 md:p-3 bg-red-50 text-[#C62222] rounded-lg md:rounded-xl group-hover:scale-110 transition-transform">
                                 <TrendingUp size={18} className="md:hidden" />
@@ -169,6 +181,7 @@ const AdminDashboard: React.FC = () => {
                         </div>
                         <h3 className="text-xl md:text-3xl font-bold text-gray-900 tracking-tight mb-0.5 md:mb-1">{formatCurrency(stats.totalRevenue)}</h3>
                         <p className="text-[10px] md:text-xs font-medium text-gray-400 uppercase tracking-wider">Total Revenue</p>
+                        <p className="text-[10px] md:text-xs text-[#C62222] mt-1 md:mt-2 opacity-0 group-hover:opacity-100 transition-opacity hidden md:block">Click to view earnings breakdown →</p>
                     </div>
 
                     {/* Vendors Card */}
@@ -431,49 +444,49 @@ const AdminDashboard: React.FC = () => {
                                     {allRiders.map((rider) => (
                                         <div
                                             key={rider.id}
-                                            className={`p-4 rounded-xl border ${rider.isOnline ? 'border-red-200 bg-red-50/30' : 'border-gray-100 bg-white'} transition-all`}
+                                            className={`p-3 sm:p-4 rounded-xl border ${rider.isOnline ? 'border-red-200 bg-red-50/30' : 'border-gray-100 bg-white'} transition-all overflow-hidden`}
                                         >
-                                            <div className="flex items-center gap-4">
-                                                <div className={`w-12 h-12 rounded-full flex items-center justify-center text-white font-bold ${rider.isOnline ? 'bg-[#C62222]' : 'bg-gray-800'}`}>
+                                            <div className="flex items-start gap-3 sm:gap-4">
+                                                <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white font-bold text-sm sm:text-base flex-shrink-0 ${rider.isOnline ? 'bg-[#C62222]' : 'bg-gray-800'}`}>
                                                     {rider.firstName.charAt(0)}{rider.lastName.charAt(0)}
                                                 </div>
-                                                <div className="flex-1">
-                                                    <div className="flex items-center gap-2">
-                                                        <h4 className="font-bold text-gray-900">{rider.firstName} {rider.lastName}</h4>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex items-center gap-2 flex-wrap">
+                                                        <h4 className="font-bold text-gray-900 text-sm sm:text-base truncate max-w-[140px] sm:max-w-none">{rider.firstName} {rider.lastName}</h4>
                                                         {rider.isOnline && (
-                                                            <span className="text-[10px] font-bold text-[#C62222] bg-red-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                                            <span className="text-[10px] font-bold text-[#C62222] bg-red-100 px-2 py-0.5 rounded-full flex items-center gap-1 flex-shrink-0">
                                                                 <span className="w-1.5 h-1.5 bg-[#C62222] rounded-full animate-pulse"></span>
                                                                 ONLINE
                                                             </span>
                                                         )}
                                                         {!rider.verified && (
-                                                            <span className="text-[10px] font-bold text-gray-600 bg-gray-200 px-2 py-0.5 rounded-full">
+                                                            <span className="text-[10px] font-bold text-gray-600 bg-gray-200 px-2 py-0.5 rounded-full flex-shrink-0">
                                                                 PENDING
                                                             </span>
                                                         )}
                                                         {rider.verified && (
-                                                            <span className="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center gap-1">
+                                                            <span className="text-[10px] font-bold text-green-600 bg-green-100 px-2 py-0.5 rounded-full flex items-center gap-1 flex-shrink-0">
                                                                 <CheckCircle size={10} />
                                                                 VERIFIED
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <div className="flex items-center gap-4 mt-1 text-sm text-gray-500">
-                                                        <span className="flex items-center gap-1">
+                                                    <div className="flex items-center gap-3 sm:gap-4 mt-1 text-xs sm:text-sm text-gray-500 flex-wrap">
+                                                        <span className="flex items-center gap-1 flex-shrink-0">
                                                             <Bike size={14} />
                                                             {rider.vehicleType}
                                                         </span>
-                                                        <span className="flex items-center gap-1">
-                                                            <MapPin size={14} />
-                                                            {rider.location}
+                                                        <span className="flex items-center gap-1 truncate">
+                                                            <MapPin size={14} className="flex-shrink-0" />
+                                                            <span className="truncate">{rider.location}</span>
                                                         </span>
                                                     </div>
-                                                    <div className="flex items-center gap-4 mt-1 text-xs text-gray-400">
-                                                        <span className="flex items-center gap-1">
+                                                    <div className="flex items-center gap-3 sm:gap-4 mt-1 text-[11px] sm:text-xs text-gray-400 flex-wrap">
+                                                        <span className="flex items-center gap-1 flex-shrink-0">
                                                             <Phone size={12} />
                                                             {rider.phoneNumber}
                                                         </span>
-                                                        <span>{rider.email}</span>
+                                                        <span className="truncate">{rider.email}</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -481,6 +494,348 @@ const AdminDashboard: React.FC = () => {
                                     ))}
                                 </div>
                             )}
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Earnings Modal */}
+            {showEarningsModal && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setShowEarningsModal(false)} />
+                    <div className="bg-white w-full max-w-3xl max-h-[85vh] rounded-2xl shadow-2xl relative z-50 animate-in fade-in zoom-in-95 duration-200 overflow-hidden flex flex-col">
+                        {/* Header */}
+                        <div className="p-6 border-b border-gray-100 bg-gradient-to-r from-gray-50 to-white">
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <div className="flex items-center gap-2 mb-1">
+                                        <BarChart3 size={20} className="text-[#C62222]" />
+                                        <h3 className="text-xl font-bold text-gray-900">Earnings Overview</h3>
+                                    </div>
+                                    <p className="text-sm text-gray-500">Detailed breakdown by day, month &amp; year</p>
+                                </div>
+                                <button
+                                    onClick={() => setShowEarningsModal(false)}
+                                    className="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-200 rounded-lg transition-colors"
+                                >
+                                    <X size={20} />
+                                </button>
+                            </div>
+
+                            {/* Tabs: Vendors / Stores / Riders */}
+                            <div className="flex gap-2 mt-4 overflow-x-auto scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                                <button
+                                    onClick={() => setEarningsTab('vendors')}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2 flex-shrink-0 ${earningsTab === 'vendors' ? 'bg-[#C62222] text-white shadow-lg shadow-red-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                >
+                                    <Users size={16} />
+                                    Vendors
+                                </button>
+                                <button
+                                    onClick={() => setEarningsTab('stores')}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2 flex-shrink-0 ${earningsTab === 'stores' ? 'bg-[#C62222] text-white shadow-lg shadow-red-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                >
+                                    <Store size={16} />
+                                    Stores
+                                </button>
+                                <button
+                                    onClick={() => setEarningsTab('riders')}
+                                    className={`px-4 py-2 rounded-lg text-sm font-bold transition-colors flex items-center gap-2 flex-shrink-0 ${earningsTab === 'riders' ? 'bg-[#C62222] text-white shadow-lg shadow-red-200' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                                >
+                                    <Bike size={16} />
+                                    Riders
+                                </button>
+                            </div>
+
+                            {/* Period Selector */}
+                            <div className="flex gap-1 mt-3 bg-gray-100 rounded-lg p-1 w-fit">
+                                {(['today', 'month', 'year'] as const).map(period => (
+                                    <button
+                                        key={period}
+                                        onClick={() => setEarningsPeriod(period)}
+                                        className={`px-3 py-1.5 rounded-md text-xs font-bold transition-colors ${earningsPeriod === period ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                                    >
+                                        {period === 'today' ? 'Today' : period === 'month' ? 'This Month' : 'This Year'}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* Earnings List */}
+                        <div className="overflow-y-auto flex-1 p-4">
+                            {earningsTab === 'stores' ? (
+                                /* ---------- STORES TAB ---------- */
+                                (() => {
+                                    if (allStoreEarnings.length === 0) {
+                                        return (
+                                            <div className="text-center py-12 text-gray-500">
+                                                <Store size={48} className="mx-auto mb-4 opacity-30" />
+                                                <p className="font-medium">No stores created yet</p>
+                                                <p className="text-xs text-gray-400 mt-1">Store earnings will appear once vendors create stores</p>
+                                            </div>
+                                        );
+                                    }
+
+                                    const getStoreAmount = (se: StoreEarnings) => {
+                                        if (earningsPeriod === 'today') return se.todayEarnings;
+                                        if (earningsPeriod === 'month') return se.monthEarnings;
+                                        return se.yearEarnings;
+                                    };
+                                    const getStoreOrders = (se: StoreEarnings) => {
+                                        if (earningsPeriod === 'today') return se.todayOrders;
+                                        if (earningsPeriod === 'month') return se.monthOrders;
+                                        return se.yearOrders;
+                                    };
+
+                                    const totalStoreEarnings = allStoreEarnings.reduce((sum, se) => sum + getStoreAmount(se), 0);
+                                    const totalStoreOrders = allStoreEarnings.reduce((sum, se) => sum + getStoreOrders(se), 0);
+
+                                    // Group by vendor
+                                    const byVendor: Record<string, StoreEarnings[]> = {};
+                                    allStoreEarnings.forEach(se => {
+                                        if (!byVendor[se.vendorId]) byVendor[se.vendorId] = [];
+                                        byVendor[se.vendorId].push(se);
+                                    });
+
+                                    return (
+                                        <>
+                                            {/* Summary Bar */}
+                                            <div className="grid grid-cols-2 gap-3 mb-4">
+                                                <div className="bg-gradient-to-br from-[#C62222] to-[#991b1b] text-white p-4 rounded-xl">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <DollarSign size={16} />
+                                                        <span className="text-xs font-bold text-red-100 uppercase tracking-wider">Total Store Earnings</span>
+                                                    </div>
+                                                    <p className="text-2xl font-bold">₦{totalStoreEarnings.toLocaleString()}</p>
+                                                </div>
+                                                <div className="bg-gray-900 text-white p-4 rounded-xl">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <Package size={16} />
+                                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Orders</span>
+                                                    </div>
+                                                    <p className="text-2xl font-bold">{totalStoreOrders}</p>
+                                                </div>
+                                            </div>
+
+                                            {/* Stores grouped by vendor */}
+                                            <div className="space-y-4">
+                                                {Object.entries(byVendor)
+                                                    .sort(([, a], [, b]) => {
+                                                        const sumA = a.reduce((s, se) => s + getStoreAmount(se), 0);
+                                                        const sumB = b.reduce((s, se) => s + getStoreAmount(se), 0);
+                                                        return sumB - sumA;
+                                                    })
+                                                    .map(([vendorId, vendorStores]) => {
+                                                        const vendorTotal = vendorStores.reduce((s, se) => s + getStoreAmount(se), 0);
+                                                        const vendorOrderTotal = vendorStores.reduce((s, se) => s + getStoreOrders(se), 0);
+                                                        return (
+                                                            <div key={vendorId} className="border border-gray-100 rounded-xl overflow-hidden">
+                                                                {/* Vendor header */}
+                                                                <div className="flex items-center justify-between p-4 bg-gray-50 border-b border-gray-100">
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className="w-8 h-8 rounded-full bg-[#C62222] flex items-center justify-center text-white text-xs font-bold">
+                                                                            {vendorStores[0].vendorName.split(' ').map(n => n.charAt(0)).join('').substring(0, 2)}
+                                                                        </div>
+                                                                        <div>
+                                                                            <p className="text-sm font-bold text-gray-900">{vendorStores[0].vendorName}</p>
+                                                                            <p className="text-[10px] text-gray-400">{vendorStores.length} store{vendorStores.length !== 1 ? 's' : ''} • {vendorOrderTotal} orders</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p className="text-sm font-bold text-gray-900">₦{vendorTotal.toLocaleString()}</p>
+                                                                </div>
+                                                                {/* Individual stores */}
+                                                                <div className="divide-y divide-gray-50">
+                                                                    {vendorStores
+                                                                        .sort((a, b) => getStoreAmount(b) - getStoreAmount(a))
+                                                                        .map(se => {
+                                                                            const amount = getStoreAmount(se);
+                                                                            const count = getStoreOrders(se);
+                                                                            return (
+                                                                                <div key={se.storeId} className="flex items-center gap-3 p-3 px-4 hover:bg-gray-50/50 transition-colors">
+                                                                                    <div className="w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center text-[#C62222] flex-shrink-0">
+                                                                                        <Store size={14} />
+                                                                                    </div>
+                                                                                    <div className="flex-1 min-w-0">
+                                                                                        <p className="text-sm font-medium text-gray-800 truncate">{se.storeName}</p>
+                                                                                        <p className="text-[10px] text-gray-400">{count} order{count !== 1 ? 's' : ''}</p>
+                                                                                    </div>
+                                                                                    <p className={`font-bold text-sm tabular-nums ${amount > 0 ? 'text-gray-900' : 'text-gray-300'}`}>₦{amount.toLocaleString()}</p>
+                                                                                </div>
+                                                                            );
+                                                                        })}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+
+                                            {/* All periods summary */}
+                                            <div className="mt-6 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                                    <Calendar size={14} />
+                                                    All Periods Summary (Stores)
+                                                </h4>
+                                                <div className="grid grid-cols-3 gap-3">
+                                                    <div className={`p-3 rounded-lg border transition-colors ${earningsPeriod === 'today' ? 'border-[#C62222] bg-red-50' : 'border-gray-200 bg-white'}`}>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Today</p>
+                                                        <p className="text-sm font-bold text-gray-900 mt-1">
+                                                            ₦{allStoreEarnings.reduce((s, se) => s + se.todayEarnings, 0).toLocaleString()}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-400">{allStoreEarnings.reduce((s, se) => s + se.todayOrders, 0)} orders</p>
+                                                    </div>
+                                                    <div className={`p-3 rounded-lg border transition-colors ${earningsPeriod === 'month' ? 'border-[#C62222] bg-red-50' : 'border-gray-200 bg-white'}`}>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">This Month</p>
+                                                        <p className="text-sm font-bold text-gray-900 mt-1">
+                                                            ₦{allStoreEarnings.reduce((s, se) => s + se.monthEarnings, 0).toLocaleString()}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-400">{allStoreEarnings.reduce((s, se) => s + se.monthOrders, 0)} orders</p>
+                                                    </div>
+                                                    <div className={`p-3 rounded-lg border transition-colors ${earningsPeriod === 'year' ? 'border-[#C62222] bg-red-50' : 'border-gray-200 bg-white'}`}>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">This Year</p>
+                                                        <p className="text-sm font-bold text-gray-900 mt-1">
+                                                            ₦{allStoreEarnings.reduce((s, se) => s + se.yearEarnings, 0).toLocaleString()}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-400">{allStoreEarnings.reduce((s, se) => s + se.yearOrders, 0)} orders</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    );
+                                })()
+                            ) : (
+                                /* ---------- VENDORS / RIDERS TAB ---------- */
+                                (() => {
+                                    const filtered = allEarnings.filter(e => e.type === (earningsTab === 'vendors' ? 'vendor' : 'rider'));
+
+                                    if (filtered.length === 0) {
+                                        return (
+                                            <div className="text-center py-12 text-gray-500">
+                                                {earningsTab === 'vendors' ?
+                                                    <Store size={48} className="mx-auto mb-4 opacity-30" /> :
+                                                    <Bike size={48} className="mx-auto mb-4 opacity-30" />
+                                                }
+                                                <p className="font-medium">No {earningsTab} registered yet</p>
+                                                <p className="text-xs text-gray-400 mt-1">Earnings will appear here once {earningsTab} start receiving orders</p>
+                                            </div>
+                                        );
+                                    }
+
+                                    // Summary totals
+                                    const totalEarnings = filtered.reduce((sum, e) => {
+                                        if (earningsPeriod === 'today') return sum + e.earnings.today;
+                                        if (earningsPeriod === 'month') return sum + e.earnings.thisMonth;
+                                        return sum + e.earnings.thisYear;
+                                    }, 0);
+                                    const totalOrders = filtered.reduce((sum, e) => {
+                                        if (earningsPeriod === 'today') return sum + e.earnings.todayOrders;
+                                        if (earningsPeriod === 'month') return sum + e.earnings.monthOrders;
+                                        return sum + e.earnings.yearOrders;
+                                    }, 0);
+
+                                    return (
+                                        <>
+                                            {/* Summary Bar */}
+                                            <div className="grid grid-cols-2 gap-3 mb-4">
+                                                <div className="bg-gradient-to-br from-[#C62222] to-[#991b1b] text-white p-4 rounded-xl">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <DollarSign size={16} />
+                                                        <span className="text-xs font-bold text-red-100 uppercase tracking-wider">Total Earnings</span>
+                                                    </div>
+                                                    <p className="text-2xl font-bold">₦{totalEarnings.toLocaleString()}</p>
+                                                </div>
+                                                <div className="bg-gray-900 text-white p-4 rounded-xl">
+                                                    <div className="flex items-center gap-2 mb-1">
+                                                        <Package size={16} />
+                                                        <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Orders</span>
+                                                    </div>
+                                                    <p className="text-2xl font-bold">{totalOrders}</p>
+                                                </div>
+                                            </div>
+
+                                            {/* Individual Earnings */}
+                                            <div className="space-y-2">
+                                                {filtered
+                                                    .sort((a, b) => {
+                                                        const getAmount = (e: EntityEarnings) => {
+                                                            if (earningsPeriod === 'today') return e.earnings.today;
+                                                            if (earningsPeriod === 'month') return e.earnings.thisMonth;
+                                                            return e.earnings.thisYear;
+                                                        };
+                                                        return getAmount(b) - getAmount(a);
+                                                    })
+                                                    .map(entity => {
+                                                        const amount = earningsPeriod === 'today' ? entity.earnings.today
+                                                            : earningsPeriod === 'month' ? entity.earnings.thisMonth
+                                                                : entity.earnings.thisYear;
+                                                        const orderCount = earningsPeriod === 'today' ? entity.earnings.todayOrders
+                                                            : earningsPeriod === 'month' ? entity.earnings.monthOrders
+                                                                : entity.earnings.yearOrders;
+
+                                                        return (
+                                                            <div key={entity.id} className="flex items-center gap-4 p-4 rounded-xl border border-gray-100 bg-white hover:border-gray-200 hover:shadow-sm transition-all">
+                                                                <div className={`w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm ${entity.type === 'vendor' ? 'bg-[#C62222]' : 'bg-gray-800'}`}>
+                                                                    {entity.name.split(' ').map(n => n.charAt(0)).join('').substring(0, 2)}
+                                                                </div>
+                                                                <div className="flex-1 min-w-0">
+                                                                    <h4 className="font-bold text-gray-900 text-sm truncate">{entity.name}</h4>
+                                                                    <div className="flex items-center gap-3 mt-0.5">
+                                                                        <span className="text-xs text-gray-500">{orderCount} order{orderCount !== 1 ? 's' : ''}</span>
+                                                                        <span className="text-[10px] text-gray-300">•</span>
+                                                                        <span className="text-xs text-gray-400 capitalize">{entity.type === 'vendor' ? 'Product Sales' : 'Delivery Fees'}</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="text-right flex items-center gap-2">
+                                                                    <p className={`font-bold text-lg ${amount > 0 ? 'text-gray-900' : 'text-gray-300'}`}>₦{amount.toLocaleString()}</p>
+                                                                    {entity.type === 'vendor' && (
+                                                                        <button
+                                                                            onClick={() => setEarningsTab('stores')}
+                                                                            className="text-gray-300 hover:text-[#C62222] transition-colors"
+                                                                            title="View stores breakdown"
+                                                                        >
+                                                                            <ChevronRight size={16} />
+                                                                        </button>
+                                                                    )}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })
+                                                }
+                                            </div>
+
+                                            {/* All periods summary at bottom */}
+                                            <div className="mt-6 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                                                <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-3 flex items-center gap-2">
+                                                    <Calendar size={14} />
+                                                    All Periods Summary
+                                                </h4>
+                                                <div className="grid grid-cols-3 gap-3">
+                                                    <div className={`p-3 rounded-lg border transition-colors ${earningsPeriod === 'today' ? 'border-[#C62222] bg-red-50' : 'border-gray-200 bg-white'}`}>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Today</p>
+                                                        <p className="text-sm font-bold text-gray-900 mt-1">
+                                                            ₦{filtered.reduce((s, e) => s + e.earnings.today, 0).toLocaleString()}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-400">{filtered.reduce((s, e) => s + e.earnings.todayOrders, 0)} orders</p>
+                                                    </div>
+                                                    <div className={`p-3 rounded-lg border transition-colors ${earningsPeriod === 'month' ? 'border-[#C62222] bg-red-50' : 'border-gray-200 bg-white'}`}>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">This Month</p>
+                                                        <p className="text-sm font-bold text-gray-900 mt-1">
+                                                            ₦{filtered.reduce((s, e) => s + e.earnings.thisMonth, 0).toLocaleString()}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-400">{filtered.reduce((s, e) => s + e.earnings.monthOrders, 0)} orders</p>
+                                                    </div>
+                                                    <div className={`p-3 rounded-lg border transition-colors ${earningsPeriod === 'year' ? 'border-[#C62222] bg-red-50' : 'border-gray-200 bg-white'}`}>
+                                                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-wider">This Year</p>
+                                                        <p className="text-sm font-bold text-gray-900 mt-1">
+                                                            ₦{filtered.reduce((s, e) => s + e.earnings.thisYear, 0).toLocaleString()}
+                                                        </p>
+                                                        <p className="text-[10px] text-gray-400">{filtered.reduce((s, e) => s + e.earnings.yearOrders, 0)} orders</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </>
+                                    );
+                                })())}
                         </div>
                     </div>
                 </div>
