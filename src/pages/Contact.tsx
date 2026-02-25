@@ -34,7 +34,7 @@ const Contact: React.FC = () => {
                     <div className="flex flex-col items-start gap-4 lg:gap-5 max-w-3xl">
                         <div className="flex flex-col items-start gap-3">
                             <p className="text-[#C62222] text-base font-semibold leading-normal font-poppins">Contact us</p>
-                            <h1 className="text-[#101828] text-[28px] sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight font-poppins">
+                            <h1 className="text-[#101828] text-[24px] sm:text-4xl lg:text-5xl font-semibold leading-tight tracking-tight font-poppins">
                                 Chat to our friendly team
                             </h1>
                         </div>
@@ -170,9 +170,9 @@ const Contact: React.FC = () => {
                             {/* Submit Button */}
                             <button
                                 type="submit"
-                                className="flex items-center self-stretch justify-center gap-[8px] border border-[#C62222] rounded-[4px] bg-[#C62222] shadow-sm px-[19px] py-[8px] sm:py-[11px] hover:bg-[#a51d1d] transition-colors"
+                                className="flex items-center self-stretch justify-center gap-[8px] border border-[#C62222] rounded-[4px] bg-[#C62222] shadow-sm px-[19px] py-[10px] sm:py-[11px] hover:bg-[#a51d1d] transition-colors"
                             >
-                                <p className="text-white text-[16px] sm:text-[20px] font-medium leading-[24px] font-poppins">Send message</p>
+                                <p className="text-white text-[14px] sm:text-[20px] font-medium leading-[24px] font-poppins">Send message</p>
                             </button>
                         </form>
                     </div>
