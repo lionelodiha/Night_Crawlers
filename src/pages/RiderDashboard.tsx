@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalLoader } from '../context/GlobalLoaderContext';
 import { MapPin, Package, DollarSign, Clock, Navigation, Power, Bell, CheckCircle, Truck, Phone, ExternalLink, LogOut, ShieldCheck } from 'lucide-react';
 import {
     getCurrentRider,
@@ -19,6 +20,7 @@ import {
 
 const RiderDashboard: React.FC = () => {
     const navigate = useNavigate();
+    const { showLoaderWithDelay } = useGlobalLoader();
     const [rider, setRider] = useState<RiderAccount | null>(null);
     const [isOnline, setIsOnline] = useState(false);
     const [pendingOrders, setPendingOrders] = useState<Order[]>([]);
@@ -72,6 +74,7 @@ const RiderDashboard: React.FC = () => {
 
     const toggleOnlineStatus = () => {
         if (!rider) return;
+        showLoaderWithDelay(500);
         const newStatus = !isOnline;
         setIsOnline(newStatus);
         setRiderOnlineStatus(rider.id, newStatus);
@@ -172,8 +175,11 @@ const RiderDashboard: React.FC = () => {
                         </button>
                         <button
                             onClick={() => {
-                                logoutRider();
-                                navigate('/vendor-signin');
+                                showLoaderWithDelay(600);
+                                setTimeout(() => {
+                                    logoutRider();
+                                    navigate('/vendor-signin');
+                                }, 300);
                             }}
                             className="w-full py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
                         >
@@ -217,8 +223,11 @@ const RiderDashboard: React.FC = () => {
                     </div>
                     <button
                         onClick={() => {
-                            logoutRider();
-                            navigate('/vendor-signin');
+                            showLoaderWithDelay(600);
+                            setTimeout(() => {
+                                logoutRider();
+                                navigate('/vendor-signin');
+                            }, 300);
                         }}
                         className="p-2 bg-red-50 hover:bg-[#C62222] rounded-full text-[#C62222] hover:text-white transition-colors border border-red-100"
                         title="Logout"
@@ -281,7 +290,7 @@ const RiderDashboard: React.FC = () => {
 
 
                 {/* Active Orders */}
-                {activeOrders.length > 0 && (
+                {isOnline && activeOrders.length > 0 && (
                     <section>
                         <div className="flex justify-between items-end mb-4">
                             <h3 className="font-bold text-lg text-gray-900 flex items-center gap-2">

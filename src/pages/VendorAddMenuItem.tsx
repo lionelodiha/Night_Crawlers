@@ -99,6 +99,8 @@ const VendorAddMenuItem: React.FC = () => {
       setForm({ name: '', categoryInput: '', price: '', description: '', imageUrl: '' });
       setCategories([]);
       alert('Menu item added successfully!');
+      // Refresh so the new item appears in the menu
+      window.location.reload();
     } catch (error) {
       alert('Failed to add menu item. Please try again.');
     }

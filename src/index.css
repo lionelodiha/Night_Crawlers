@@ -113,3 +113,16 @@ body {
 .focus-visible {
   @apply focus:outline-none focus:ring-2 focus:ring-night-red-500 focus:ring-offset-2;
 }
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

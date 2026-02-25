@@ -1,20 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ChevronLeft, Trash2, Plus, Minus, CreditCard, MapPin, Clock, CheckCircle, Loader2 } from 'lucide-react';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import { useCart } from '../context/CartContext';
+import { useAuth, Transaction } from '../context/AuthContext';
 import { createOrder } from '../lib/mockBackend';
 
 const OrderSummary: React.FC = () => {
     const navigate = useNavigate();
     const { cartItems, removeFromCart, updateQuantity, cartTotal, clearCart } = useCart();
+    const { user, isAuthenticated, addTransaction } = useAuth();
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [orderPlaced, setOrderPlaced] = useState(false);
     const [orderId, setOrderId] = useState<string | null>(null);
-    const [deliveryAddress, setDeliveryAddress] = useState('Nmdpra HQ, 123 Main Street, Downtown');
-    const [customerName, setCustomerName] = useState('Customer');
-    const [customerPhone, setCustomerPhone] = useState('+234 801 234 5678');
+
+    // Use the user's default address, fallback to generic
+    const defaultAddr = user?.addresses.find(a => a.isDefault) || user?.addresses[0];
+    const [deliveryAddress, setDeliveryAddress] = useState(
+        defaultAddr?.address || 'Nmdpra HQ, 123 Main Street, Downtown'
+    );
+    const [customerName, setCustomerName] = useState(
+        user ? `${user.firstName} ${user.lastName}` : 'Customer'
+    );
+    const [customerPhone, setCustomerPhone] = useState(
+        user?.phone || '+234 801 234 5678'
+    );
+
+    // Keep fields in sync if user logs in after page load
+    useEffect(() => {
+        if (user) {
+            setCustomerName(`${user.firstName} ${user.lastName}`);
+            setCustomerPhone(user.phone);
+            const da = user.addresses.find(a => a.isDefault) || user.addresses[0];
+            if (da) setDeliveryAddress(da.address);
+        }
+    }, [user]);
 
     const deliveryFee = 800; // Mock delivery fee
     const serviceFee = Math.round(cartTotal * 0.05); // 5% service fee
@@ -57,6 +78,31 @@ const OrderSummary: React.FC = () => {
                 })),
                 deliveryFee,
             });
+
+            // Create a transaction in the user's profile so it appears in their history
+            if (isAuthenticated) {
+                const orderNum = Math.floor(10000 + Math.random() * 90000);
+                const txn: Transaction = {
+                    id: 'txn_' + order.id,
+                    orderId: `#NC-${orderNum}`,
+                    date: new Date().toISOString(),
+                    status: 'preparing',
+                    items: cartItems.map(item => ({
+                        name: item.name,
+                        quantity: item.quantity,
+                        price: item.price,
+                        image: item.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop',
+                    })),
+                    subtotal: cartTotal,
+                    deliveryFee,
+                    total: finalTotal,
+                    vendorName: storeName,
+                    vendorImage: cartItems[0]?.vendorImage,
+                    paymentMethod: 'Card on Delivery',
+                    deliveryAddress,
+                };
+                addTransaction(txn);
+            }
 
             setOrderId(order.id);
             setOrderPlaced(true);
@@ -213,21 +259,68 @@ const OrderSummary: React.FC = () => {
                         <div className="bg-white rounded-xl shadow-sm border border-[#EAECF0] p-6">
                             <h2 className="text-lg font-semibold text-[#222222] mb-4">Delivery Details</h2>
                             <div className="space-y-4">
-                                <div className="flex items-start gap-4 p-4 bg-[#F9FAFB] rounded-lg border border-[#EAECF0]">
-                                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-[#C62222]">
-                                        <MapPin size={20} />
-                                    </div>
-                                    <div className="flex-grow">
-                                        <div className="flex justify-between items-center mb-1">
-                                            <p className="text-[#222222] font-medium text-sm">Delivery Address</p>
-                                            <button className="text-[#C62222] text-xs font-semibold hover:underline">Change</button>
+                                {/* Address Section */}
+                                <div className="p-4 bg-[#F9FAFB] rounded-lg border border-[#EAECF0]">
+                                    <div className="flex items-center gap-2 mb-3">
+                                        <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center shadow-sm text-[#C62222]">
+                                            <MapPin size={16} />
                                         </div>
-                                        <p className="text-[#667085] text-sm">
-                                            Nmdpra HQ, 123 Main Street, Downtown
-                                        </p>
+                                        <p className="text-[#222222] font-medium text-sm">Delivery Address</p>
                                     </div>
+
+                                    {(!user || user.addresses.length === 0) ? (
+                                        /* No addresses saved */
+                                        <div className="text-center py-4">
+                                            <p className="text-[#667085] text-sm mb-2">No delivery address saved</p>
+                                            <button
+                                                onClick={() => navigate('/user-profile')}
+                                                className="text-[#C62222] text-xs font-semibold hover:underline"
+                                            >
+                                                Go to Profile to add an address →
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        /* Show all saved addresses as selectable options */
+                                        <div className="space-y-2">
+                                            {user.addresses.map(addr => (
+                                                <button
+                                                    key={addr.id}
+                                                    onClick={() => setDeliveryAddress(addr.address)}
+                                                    className={`w-full text-left p-3 rounded-lg border text-sm transition-all flex items-start gap-3 ${deliveryAddress === addr.address
+                                                        ? 'border-[#C62222] bg-[#FFF5F5]'
+                                                        : 'border-gray-200 bg-white hover:border-[#C62222]/40'
+                                                        }`}
+                                                >
+                                                    <div className={`mt-0.5 w-4 h-4 rounded-full border-2 flex items-center justify-center flex-shrink-0 ${deliveryAddress === addr.address
+                                                        ? 'border-[#C62222]'
+                                                        : 'border-gray-300'
+                                                        }`}>
+                                                        {deliveryAddress === addr.address && (
+                                                            <div className="w-2 h-2 rounded-full bg-[#C62222]" />
+                                                        )}
+                                                    </div>
+                                                    <div>
+                                                        <p className={`font-semibold text-xs mb-0.5 ${deliveryAddress === addr.address ? 'text-[#C62222]' : 'text-gray-800'
+                                                            }`}>
+                                                            {addr.label}
+                                                            {addr.isDefault && (
+                                                                <span className="ml-1.5 text-[9px] font-bold bg-[#FEE4E2] text-[#C62222] px-1.5 py-0.5 rounded-full">
+                                                                    Default
+                                                                </span>
+                                                            )}
+                                                        </p>
+                                                        <p className={`text-xs ${deliveryAddress === addr.address ? 'text-[#C62222]/70' : 'text-gray-500'
+                                                            }`}>
+                                                            {addr.address}
+                                                        </p>
+                                                    </div>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
                                 </div>
 
+                                {/* Estimated time */}
                                 <div className="flex items-start gap-4 p-4 bg-[#F9FAFB] rounded-lg border border-[#EAECF0]">
                                     <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-sm text-[#C62222]">
                                         <Clock size={20} />
@@ -263,14 +356,42 @@ const OrderSummary: React.FC = () => {
                                 </div>
                             </div>
 
-                            <div className="flex justify-between items-center mb-8">
+                            <div className="flex justify-between items-center mb-6">
                                 <span className="text-[#222222] font-bold text-lg">Total</span>
                                 <span className="text-[#C62222] font-bold text-xl">₦ {finalTotal.toLocaleString()}</span>
                             </div>
 
+                            {/* Phone number warning */}
+                            {user && !user.phone && (
+                                <div className="mb-4 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+                                    <p className="text-xs text-amber-700 font-medium mb-1">📞 Phone number required</p>
+                                    <p className="text-[11px] text-amber-600">Add your phone number so the rider can contact you for delivery.</p>
+                                    <button
+                                        onClick={() => navigate('/user-profile')}
+                                        className="text-[11px] text-[#C62222] font-semibold mt-1 hover:underline"
+                                    >
+                                        Go to Profile →
+                                    </button>
+                                </div>
+                            )}
+
+                            {/* No address warning */}
+                            {user && user.addresses.length === 0 && (
+                                <div className="mb-4 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-lg">
+                                    <p className="text-xs text-amber-700 font-medium mb-1">📍 Delivery address required</p>
+                                    <p className="text-[11px] text-amber-600">Add a delivery address before placing your order.</p>
+                                    <button
+                                        onClick={() => navigate('/user-profile')}
+                                        className="text-[11px] text-[#C62222] font-semibold mt-1 hover:underline"
+                                    >
+                                        Go to Profile →
+                                    </button>
+                                </div>
+                            )}
+
                             <button
                                 onClick={handlePlaceOrder}
-                                disabled={isSubmitting}
+                                disabled={isSubmitting || !user?.phone || (user?.addresses.length === 0)}
                                 className="w-full h-12 bg-[#222222] text-white font-semibold rounded-lg hover:bg-black transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mb-4 group disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? (

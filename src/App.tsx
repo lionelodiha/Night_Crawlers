@@ -1,6 +1,8 @@
 import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Loader from './components/ui/Loader';
+import ScrollToTop from './components/ScrollToTop';
+import { GlobalLoaderProvider } from './context/GlobalLoaderContext';
 
 // Lazy load all pages for global transition effect
 const Home = lazy(() => import('./pages/Home'));
@@ -12,6 +14,7 @@ const Vendors = lazy(() => import('./pages/Vendors'));
 const VendorSignUp = lazy(() => import('./pages/VendorSignUp'));
 const VendorSignIn = lazy(() => import('./pages/VendorSignIn'));
 const VendorDashboard = lazy(() => import('./pages/VendorDashboard'));
+const VendorOrders = lazy(() => import('./pages/VendorOrders'));
 const VendorRestaurant = lazy(() => import('./pages/VendorRestaurant'));
 const VendorAddMenuItem = lazy(() => import('./pages/VendorAddMenuItem'));
 const RiderDashboard = lazy(() => import('./pages/RiderDashboard'));
@@ -21,35 +24,49 @@ const UserProfile = lazy(() => import('./pages/UserProfile'));
 const Explore = lazy(() => import('./pages/Explore'));
 const VendorDetails = lazy(() => import('./pages/VendorDetails'));
 const OrderSummary = lazy(() => import('./pages/OrderSummary'));
+const Overview = lazy(() => import('./pages/Overview'));
+const Features = lazy(() => import('./pages/Features'));
+const About = lazy(() => import('./pages/About'));
+const Terms = lazy(() => import('./pages/Terms'));
+const Privacy = lazy(() => import('./pages/Privacy'));
 
 function App() {
   return (
     <Router basename={import.meta.env.BASE_URL}>
-      <Suspense fallback={<Loader fullScreen />}>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/faq" element={<FAQ />} />
-          <Route path="/vendors" element={<Vendors />} />
-          <Route path="/vendor-signup" element={<VendorSignUp />} />
-          <Route path="/vendor-signin" element={<VendorSignIn />} />
-          <Route path="/vendor-dashboard" element={<VendorDashboard />} />
-          <Route path="/vendor-dashboard/restaurant/:id" element={<VendorRestaurant />} />
-          <Route path="/vendor-dashboard/restaurant/:id/add-item" element={<VendorAddMenuItem />} />
+      <GlobalLoaderProvider>
+        <ScrollToTop />
+        <Suspense fallback={<Loader fullScreen />}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/contact" element={<Contact />} />
+            <Route path="/faq" element={<FAQ />} />
+            <Route path="/vendors" element={<Vendors />} />
+            <Route path="/vendor-signup" element={<VendorSignUp />} />
+            <Route path="/vendor-signin" element={<VendorSignIn />} />
+            <Route path="/vendor-dashboard" element={<VendorDashboard />} />
+            <Route path="/vendor-dashboard/orders" element={<VendorOrders />} />
+            <Route path="/vendor-dashboard/restaurant/:id" element={<VendorRestaurant />} />
+            <Route path="/vendor-dashboard/restaurant/:id/add-item" element={<VendorAddMenuItem />} />
 
-          {/* New Pages */}
-          <Route path="/rider-dashboard" element={<RiderDashboard />} />
-          <Route path="/admin-login" element={<AdminLogin />} />
-          <Route path="/admin-dashboard" element={<AdminDashboard />} />
-          <Route path="/user-profile" element={<UserProfile />} />
+            {/* New Pages */}
+            <Route path="/rider-dashboard" element={<RiderDashboard />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/user-profile" element={<UserProfile />} />
 
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/vendor-details" element={<VendorDetails />} />
-          <Route path="/order-summary" element={<OrderSummary />} />
-        </Routes>
-      </Suspense>
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/vendor-details" element={<VendorDetails />} />
+            <Route path="/order-summary" element={<OrderSummary />} />
+            <Route path="/overview" element={<Overview />} />
+            <Route path="/features" element={<Features />} />
+            <Route path="/about" element={<About />} />
+            <Route path="/terms" element={<Terms />} />
+            <Route path="/privacy" element={<Privacy />} />
+          </Routes>
+        </Suspense>
+      </GlobalLoaderProvider>
     </Router>
   );
 }

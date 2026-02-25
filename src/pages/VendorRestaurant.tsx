@@ -83,6 +83,8 @@ const VendorRestaurant: React.FC = () => {
     if (confirm('Are you sure you want to delete this item?')) {
       deleteMenuItem(itemId);
       setRefreshTrigger(prev => prev + 1);
+      // Reload after short delay so delete is visible
+      setTimeout(() => window.location.reload(), 300);
     }
   };
 
@@ -137,6 +139,8 @@ const VendorRestaurant: React.FC = () => {
       setRefreshTrigger(prev => prev + 1);
       setViewMode('menu');
       alert('Item added successfully!');
+      // Reload so item appears fresh
+      window.location.reload();
     } catch (error) {
       alert('Failed to add item. Please try again.');
     }
@@ -261,6 +265,8 @@ const VendorRestaurant: React.FC = () => {
     setEditImageFile(null);
     setIsSaving(false);
     setEditMessage('Details updated.');
+    // Reload after a moment so user sees the success message
+    setTimeout(() => window.location.reload(), 800);
   };
 
   return (

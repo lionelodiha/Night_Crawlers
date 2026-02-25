@@ -1,40 +1,63 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SignUpForm } from '../types';
 import Input from '../components/ui/Input';
 import signupImage from '../assets/signup-image.png';
 import signupLogo from '../assets/signup-logo.png';
 import helpCircle from '../assets/help-circle.svg';
 import mailIcon from '../assets/mail.svg';
+import { useAuth } from '../context/AuthContext';
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState<SignUpForm>({
     username: '',
-    phone: '',
+    email: '',
     password: '',
     confirmPassword: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const { signup } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (formData.password !== formData.confirmPassword) {
-      alert('Passwords do not match!');
+      setError('Passwords do not match!');
+      return;
+    }
+
+    if (formData.password.length < 8) {
+      setError('Password must be at least 8 characters.');
       return;
     }
 
     setIsSubmitting(true);
+    setError('');
 
-    setTimeout(() => {
+    try {
+      const success = await signup({
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
+      if (success) {
+        navigate('/user-profile');
+      } else {
+        setError('Could not create account. Please try again.');
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      alert('Account created successfully!');
-    }, 2000);
+    }
   };
 
   return (
@@ -62,6 +85,13 @@ const SignUp: React.FC = () => {
                 </p>
               </div>
 
+              {/* Error Message */}
+              {error && (
+                <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-md">
+                  <p className="text-xs text-red-600 text-center">{error}</p>
+                </div>
+              )}
+
               {/* Form Section */}
               <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
                 <div className="space-y-1">
@@ -78,12 +108,12 @@ const SignUp: React.FC = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="block text-xs font-semibold text-[#344054]">Phone Number*</label>
+                  <label className="block text-xs font-semibold text-[#344054]">Email*</label>
                   <Input
-                    type="tel"
-                    name="phone"
-                    placeholder="Enter your phone number"
-                    value={formData.phone}
+                    type="email"
+                    name="email"
+                    placeholder="Enter your email address"
+                    value={formData.email}
                     onChange={handleInputChange}
                     className="w-full px-3 py-2 border border-[#D0D5DD] rounded-md shadow-sm text-xs focus:ring-2 focus:ring-[#C62222] focus:border-[#C62222]"
                     required
@@ -127,9 +157,17 @@ const SignUp: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                  className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? 'Creating Account...' : 'Create Account'}
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Creating Account...
+                    </>
+                  ) : 'Create Account'}
                 </button>
               </form>
 

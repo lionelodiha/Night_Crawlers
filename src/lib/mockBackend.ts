@@ -179,7 +179,7 @@ export type RiderAccount = {
   verified: boolean;
 };
 
-export type OrderStatus = 'pending' | 'accepted' | 'picked_up' | 'in_transit' | 'delivered' | 'cancelled';
+export type OrderStatus = 'pending' | 'preparing' | 'ready' | 'accepted' | 'picked_up' | 'in_transit' | 'delivered' | 'cancelled';
 
 export type Order = {
   id: string;
@@ -400,19 +400,7 @@ export const createVendorAccount = (input: CreateVendorInput): VendorAccount => 
   const password = input.password.trim();
   const existing = vendors.find((vendor) => vendor.email === email);
   if (existing) {
-    const businessType = resolveBusinessType(input.businessType);
-    existing.firstName = input.firstName.trim();
-    existing.lastName = input.lastName.trim();
-    existing.businessType = businessType;
-    existing.businessTypeRaw = input.businessType.trim();
-    existing.phoneNumber = input.phoneNumber.trim();
-    existing.location = input.location.trim();
-    existing.password = password || existing.password;
-    // Keep existing verified status
-    if (existing.verified === undefined) existing.verified = false;
-    currentVendorId = existing.id;
-    saveState();
-    return existing;
+    throw new Error('Email already registered.');
   }
 
   const businessType = resolveBusinessType(input.businessType);
@@ -582,17 +570,7 @@ export const createRiderAccount = (input: CreateRiderInput): RiderAccount => {
 
   const existing = riders.find((r) => r.email === email);
   if (existing) {
-    existing.firstName = input.firstName.trim();
-    existing.lastName = input.lastName.trim();
-    existing.vehicleType = input.vehicleType.trim();
-    existing.phoneNumber = input.phoneNumber.trim();
-    existing.location = input.location.trim();
-    existing.password = password || existing.password;
-    // Keep existing verified status
-    if (existing.verified === undefined) existing.verified = false;
-    currentRiderId = existing.id;
-    saveState();
-    return existing;
+    throw new Error('Email already registered.');
   }
 
   const rider: RiderAccount = {
@@ -889,9 +867,9 @@ export const createOrder = (input: CreateOrderInput): Order => {
 
 export const getPendingOrdersForRider = (riderLocation: string): Order[] => {
   // In a real app, we'd use geolocation to find nearby orders
-  // For now, we'll return all pending orders (not assigned to any rider)
+  // For now, we'll return all ready orders (ready from Vendor and not assigned to any rider)
   return orders
-    .filter(o => o.status === 'pending' && !o.riderId)
+    .filter(o => o.status === 'ready' && !o.riderId)
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 };
 
@@ -905,7 +883,7 @@ export const acceptOrder = (orderId: string, riderId: string): Order | null => {
   const order = orders.find(o => o.id === orderId);
   if (!order) return null;
 
-  if (order.status !== 'pending') return null; // Already taken
+  if (order.status !== 'ready') return null; // Already taken or not ready
 
   order.riderId = riderId;
   order.status = 'accepted';
@@ -946,7 +924,7 @@ export const getOrderStats = () => {
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
   const todayOrders = orders.filter(o => new Date(o.createdAt) >= today);
-  const pendingOrders = orders.filter(o => o.status === 'pending');
+  const pendingOrders = orders.filter(o => ['pending', 'preparing', 'ready'].includes(o.status));
   const activeOrders = orders.filter(o => ['accepted', 'picked_up', 'in_transit'].includes(o.status));
   const completedOrders = orders.filter(o => o.status === 'delivered');
 

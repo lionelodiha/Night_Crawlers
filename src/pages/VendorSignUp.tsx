@@ -71,30 +71,35 @@ const VendorSignUp: React.FC = () => {
 
     setIsSubmitting(true);
 
-    if (signUpType === 'partner') {
-      createVendorAccount({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        businessType: formData.businessType,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email,
-        location: formData.location,
-        password: formData.password,
-      });
+    try {
+      if (signUpType === 'partner') {
+        createVendorAccount({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          businessType: formData.businessType,
+          phoneNumber: formData.phoneNumber,
+          email: formData.email,
+          location: formData.location,
+          password: formData.password,
+        });
+        setIsSubmitting(false);
+        navigate('/vendor-dashboard');
+      } else {
+        createRiderAccount({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          vehicleType: formData.vehicleType,
+          phoneNumber: formData.phoneNumber,
+          email: formData.email,
+          location: formData.location,
+          password: formData.password,
+        });
+        setIsSubmitting(false);
+        navigate('/rider-dashboard');
+      }
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Error occurred during signup.');
       setIsSubmitting(false);
-      navigate('/vendor-dashboard');
-    } else {
-      createRiderAccount({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        vehicleType: formData.vehicleType,
-        phoneNumber: formData.phoneNumber,
-        email: formData.email,
-        location: formData.location,
-        password: formData.password,
-      });
-      setIsSubmitting(false);
-      navigate('/rider-dashboard');
     }
   };
 
@@ -118,7 +123,7 @@ const VendorSignUp: React.FC = () => {
       </header>
 
       <main className="w-full max-w-[1400px] mx-auto flex-1 px-3 sm:px-5 md:px-6 pb-10">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-5 md:gap-8 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.1fr] gap-5 md:gap-8 items-stretch">
           <div className="bg-[#f7f7f7] border border-[#e8e8e8] rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.05)] px-6 sm:px-7 md:px-8 py-8 md:py-9 h-full">
 
             <div className="flex flex-col gap-4 mb-6">
@@ -300,11 +305,11 @@ const VendorSignUp: React.FC = () => {
             </form>
           </div>
 
-          <div className="hidden md:flex w-full h-full">
+          <div className="hidden lg:flex w-full h-full relative">
             <img
               src={vendorSignUpImage}
               alt="Vendor sign up"
-              className="w-full h-full max-h-[560px] object-cover rounded-2xl"
+              className="absolute inset-0 w-full h-full object-cover rounded-2xl shadow-[0_12px_36px_rgba(0,0,0,0.05)] border border-[#e8e8e8]"
             />
           </div>
         </div>

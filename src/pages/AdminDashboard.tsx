@@ -78,6 +78,8 @@ const AdminDashboard: React.FC = () => {
         setPending(prev => prev.filter(p => p.id !== selectedAction.id));
         setSelectedAction(null);
         fetchData();
+        // Reload so data is fresh
+        setTimeout(() => window.location.reload(), 500);
     };
 
     if (!admin || !stats) {

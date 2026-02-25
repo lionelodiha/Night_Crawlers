@@ -35,7 +35,7 @@ export interface SignInForm {
 
 export interface SignUpForm {
   username: string;
-  phone: string;
+  email: string;
   password: string;
   confirmPassword: string;
 }

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Header from '../components/layout/Header';
 import Footer from '../components/layout/Footer';
 import HeroSection from '../components/home/HeroSection';
@@ -13,6 +14,7 @@ import { X, Trash2, ShoppingBasket } from 'lucide-react';
 const Home: React.FC = () => {
   const { cartItems, cartTotal, removeFromCart, clearCart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-white">
@@ -84,7 +86,10 @@ const Home: React.FC = () => {
                   <span className="text-[#667085] text-[13px]">Total:</span>
                   <span className="text-[#222222] text-[16px] font-bold">NGN {cartTotal.toLocaleString()}</span>
                 </div>
-                <button className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors mb-2">
+                <button
+                  onClick={() => { setIsCartOpen(false); navigate('/order-summary'); }}
+                  className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors mb-2"
+                >
                   Proceed to Checkout
                 </button>
                 <button

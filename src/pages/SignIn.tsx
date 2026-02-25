@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SignInForm } from '../types';
 import Input from '../components/ui/Input';
 import signinImage from '../assets/signin-image.png';
 import signupLogo from '../assets/signup-logo.png';
 import helpCircle from '../assets/help-circle.svg';
 import mailIcon from '../assets/mail.svg';
+import { useAuth } from '../context/AuthContext';
 
 const SignIn: React.FC = () => {
   const [formData, setFormData] = useState<SignInForm>({
@@ -14,20 +15,33 @@ const SignIn: React.FC = () => {
   });
   const [rememberMe, setRememberMe] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    setError('');
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setError('');
 
-    setTimeout(() => {
+    try {
+      const success = await login(formData.email, formData.password);
+      if (success) {
+        navigate('/user-profile');
+      } else {
+        setError('Invalid credentials. Please try again.');
+      }
+    } catch {
+      setError('Something went wrong. Please try again.');
+    } finally {
       setIsSubmitting(false);
-      alert('Logged in successfully!');
-    }, 2000);
+    }
   };
 
   return (
@@ -58,6 +72,13 @@ const SignIn: React.FC = () => {
                   Welcome back! Please log in with your correct details.
                 </p>
               </div>
+
+              {/* Error Message */}
+              {error && (
+                <div className="mb-3 p-2.5 bg-red-50 border border-red-200 rounded-md">
+                  <p className="text-xs text-red-600 text-center">{error}</p>
+                </div>
+              )}
 
               {/* Form Section */}
               <form onSubmit={handleSubmit} className="space-y-2.5 sm:space-y-3">
@@ -110,9 +131,17 @@ const SignIn: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium"
+                  className="w-full bg-[#C62222] text-white py-2 px-4 rounded-md hover:bg-[#A01B1B] transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-xs font-medium flex items-center justify-center gap-2"
                 >
-                  {isSubmitting ? 'Logging in...' : 'Sign In'}
+                  {isSubmitting ? (
+                    <>
+                      <svg className="animate-spin h-3.5 w-3.5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Signing in...
+                    </>
+                  ) : 'Sign In'}
                 </button>
               </form>
 

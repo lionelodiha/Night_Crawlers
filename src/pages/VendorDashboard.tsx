@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useGlobalLoader } from '../context/GlobalLoaderContext';
 import Footer from '../components/layout/Footer';
-import { Store, Upload, X, Clock, LogOut, ShieldCheck, DollarSign, Package, TrendingUp } from 'lucide-react';
+import { Store, Upload, X, Clock, LogOut, ShieldCheck, DollarSign, Package, TrendingUp, Bell } from 'lucide-react';
 import pinIcon from '../assets/location-pin-red.svg';
 import {
   createStore,
@@ -32,11 +33,13 @@ type StoreForm = {
 
 const VendorDashboard: React.FC = () => {
   const navigate = useNavigate();
+  const { showLoaderWithDelay } = useGlobalLoader();
   const [vendor, setVendor] = useState<VendorAccount | null>(null);
   const [stores, setStores] = useState<VendorStore[]>([]);
   const [earnings, setEarnings] = useState<EarningsPeriod | null>(null);
   const [storeEarnings, setStoreEarnings] = useState<StoreEarnings[]>([]);
   const [todayOrderCount, setTodayOrderCount] = useState(0);
+  const [activeOrdersCount, setActiveOrdersCount] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -73,6 +76,7 @@ const VendorDashboard: React.FC = () => {
     todayStart.setHours(0, 0, 0, 0);
     const todayOrders = allOrders.filter(o => new Date(o.createdAt) >= todayStart);
     setTodayOrderCount(todayOrders.length);
+    setActiveOrdersCount(allOrders.filter(o => ['pending', 'preparing', 'ready'].includes(o.status)).length);
   }, [navigate]);
 
   if (!vendor) {
@@ -107,6 +111,7 @@ const VendorDashboard: React.FC = () => {
           <div className="space-y-3">
             <button
               onClick={() => {
+                showLoaderWithDelay(400); // Simulate network refresh
                 // Reload from localStorage to get latest verification status
                 reloadFromStorage();
                 const currentVendor = getCurrentVendor();
@@ -118,8 +123,11 @@ const VendorDashboard: React.FC = () => {
             </button>
             <button
               onClick={() => {
-                clearCurrentVendor();
-                navigate('/vendor-signin');
+                showLoaderWithDelay(500);
+                setTimeout(() => {
+                  clearCurrentVendor();
+                  navigate('/vendor-signin');
+                }, 300);
               }}
               className="w-full py-3 bg-gray-100 text-gray-700 font-medium rounded-xl hover:bg-gray-200 transition-colors flex items-center justify-center gap-2"
             >
@@ -248,8 +256,11 @@ const VendorDashboard: React.FC = () => {
             </div>
             <button
               onClick={() => {
-                clearCurrentVendor();
-                navigate('/vendor-signin');
+                showLoaderWithDelay(500);
+                setTimeout(() => {
+                  clearCurrentVendor();
+                  navigate('/vendor-signin');
+                }, 300);
               }}
               className="flex items-center gap-2 px-4 py-2.5 bg-red-50 hover:bg-[#C62222] text-[#C62222] hover:text-white rounded-xl text-sm font-semibold transition-colors border border-red-100"
             >
@@ -261,7 +272,21 @@ const VendorDashboard: React.FC = () => {
 
         {/* Today's Earnings */}
         <section className="mb-10">
-          <h2 className="text-lg font-semibold text-[#1F2937] mb-4">Today's Overview</h2>
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-[#1F2937]">Today's Overview</h2>
+            <button
+              onClick={() => navigate('/vendor-dashboard/orders')}
+              className="flex items-center gap-2 px-4 py-2 bg-[#C62222] text-white rounded-xl text-sm font-semibold hover:bg-[#a01b1b] transition-colors relative shadow-md shadow-red-200"
+            >
+              <Bell size={18} />
+              Manage Orders
+              {activeOrdersCount > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 bg-yellow-400 text-yellow-900 text-[10px] font-bold px-2 py-0.5 rounded-full border-2 border-white">
+                  {activeOrdersCount}
+                </span>
+              )}
+            </button>
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {/* Earnings Card */}
             <div className="bg-gradient-to-br from-[#C62222] to-[#991b1b] text-white p-5 rounded-2xl shadow-lg shadow-red-200/40 relative overflow-hidden">

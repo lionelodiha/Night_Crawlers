@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ShoppingCart, User, Menu, X, Trash2, ShoppingBasket } from 'lucide-react';
 import { NAVIGATION_LINKS } from '../../utils/constants';
 import logo from '../../assets/logo.png';
 import MobileMenu from './MobileMenu';
 import { useCart } from '../../context/CartContext';
+import { useAuth, getInitials } from '../../context/AuthContext';
 
 type HeaderProps = {
   onCartClick?: () => void;
@@ -12,9 +13,11 @@ type HeaderProps = {
 
 const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isFallbackCartOpen, setIsFallbackCartOpen] = useState(false);
   const { itemCount, cartItems, cartTotal, removeFromCart, clearCart } = useCart();
+  const { user, isAuthenticated } = useAuth();
   const shouldUseFallbackCart = !onCartClick;
 
   const handleCartClick = () => {
@@ -87,10 +90,26 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                 )}
               </button>
               <Link
-                to="/signin"
-                className="w-10 h-10 lg:w-[42px] lg:h-[42px] rounded-full bg-night-red-600 text-white flex items-center justify-center hover:bg-night-red-700 transition-colors"
+                to={isAuthenticated ? "/user-profile" : "/signin"}
+                className={`relative w-10 h-10 lg:w-[42px] lg:h-[42px] rounded-full flex items-center justify-center transition-all ${isAuthenticated
+                  ? 'overflow-hidden border-2 border-[#C62222] hover:border-[#A01B1B]'
+                  : 'bg-night-red-600 text-white hover:bg-night-red-700'
+                  }`}
               >
-                <User className="w-5 h-5" />
+                {isAuthenticated && user ? (
+                  <>
+                    {user.avatar ? (
+                      <img src={user.avatar} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <div className="w-full h-full bg-gradient-to-br from-[#C62222] to-[#8B1616] flex items-center justify-center">
+                        <span className="text-white font-bold text-xs">{getInitials(user.firstName, user.lastName)}</span>
+                      </div>
+                    )}
+                    <span className="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-emerald-500 rounded-full border-2 border-white" />
+                  </>
+                ) : (
+                  <User className="w-5 h-5" />
+                )}
               </Link>
             </div>
 
@@ -183,7 +202,10 @@ const Header: React.FC<HeaderProps> = ({ onCartClick }) => {
                   <span className="text-[#667085] text-[13px]">Total:</span>
                   <span className="text-[#222222] text-[16px] font-bold">NGN {cartTotal.toLocaleString()}</span>
                 </div>
-                <button className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors mb-2">
+                <button
+                  onClick={() => { setIsFallbackCartOpen(false); navigate('/order-summary'); }}
+                  className="w-full h-[40px] bg-[#C62222] text-white text-[13px] font-semibold rounded-[6px] hover:bg-[#A01B1B] transition-colors mb-2"
+                >
                   Proceed to Checkout
                 </button>
                 <button
