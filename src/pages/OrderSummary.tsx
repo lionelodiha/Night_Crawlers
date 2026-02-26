@@ -268,7 +268,18 @@ const OrderSummary: React.FC = () => {
                                         <p className="text-[#222222] font-medium text-sm">Delivery Address</p>
                                     </div>
 
-                                    {(!user || user.addresses.length === 0) ? (
+                                    {!user ? (
+                                        /* Not logged in */
+                                        <div className="text-center py-4">
+                                            <p className="text-[#667085] text-sm mb-2">You need to sign in to set a delivery address</p>
+                                            <button
+                                                onClick={() => navigate('/signin')}
+                                                className="text-[#C62222] text-xs font-semibold hover:underline"
+                                            >
+                                                Sign In / Sign Up →
+                                            </button>
+                                        </div>
+                                    ) : user.addresses.length === 0 ? (
                                         /* No addresses saved */
                                         <div className="text-center py-4">
                                             <p className="text-[#667085] text-sm mb-2">No delivery address saved</p>
@@ -361,6 +372,20 @@ const OrderSummary: React.FC = () => {
                                 <span className="text-[#C62222] font-bold text-xl">₦ {finalTotal.toLocaleString()}</span>
                             </div>
 
+                            {/* Not logged in warning */}
+                            {!user && (
+                                <div className="mb-4 px-3 py-2.5 bg-blue-50 border border-blue-200 rounded-lg">
+                                    <p className="text-xs text-blue-700 font-medium mb-1">👋 Sign in required</p>
+                                    <p className="text-[11px] text-blue-600">Please sign in to complete your checkout securely.</p>
+                                    <button
+                                        onClick={() => navigate('/signin')}
+                                        className="text-[11px] text-blue-700 font-semibold mt-1 hover:underline"
+                                    >
+                                        Sign In / Sign Up →
+                                    </button>
+                                </div>
+                            )}
+
                             {/* Phone number warning */}
                             {user && !user.phone && (
                                 <div className="mb-4 px-3 py-2.5 bg-amber-50 border border-amber-200 rounded-lg">
@@ -391,7 +416,7 @@ const OrderSummary: React.FC = () => {
 
                             <button
                                 onClick={handlePlaceOrder}
-                                disabled={isSubmitting || !user?.phone || (user?.addresses.length === 0)}
+                                disabled={isSubmitting || !user || !user.phone || user.addresses.length === 0}
                                 className="w-full h-12 bg-[#222222] text-white font-semibold rounded-lg hover:bg-black transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 mb-4 group disabled:opacity-70 disabled:cursor-not-allowed"
                             >
                                 {isSubmitting ? (
