@@ -326,7 +326,12 @@ const saveState = () => {
     currentVendorId, currentRiderId, currentAdminId,
     processedIds
   };
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+  } catch (error) {
+    console.warn('Failed to save to localStorage. The storage quota may have been exceeded.', error);
+    // Optionally: could try to prune older data here if necessary
+  }
 };
 
 // Reload state from localStorage (useful when another tab/admin updates data)

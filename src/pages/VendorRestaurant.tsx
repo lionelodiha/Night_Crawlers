@@ -79,10 +79,17 @@ const VendorRestaurant: React.FC = () => {
     return menuItems.filter(item => item.categories.includes(activeCategory));
   }, [menuItems, activeCategory]);
 
+  const [itemToDelete, setItemToDelete] = useState<string | null>(null);
+
   const handleDeleteItem = (itemId: string) => {
-    if (confirm('Are you sure you want to delete this item?')) {
-      deleteMenuItem(itemId);
+    setItemToDelete(itemId);
+  };
+
+  const confirmDelete = () => {
+    if (itemToDelete) {
+      deleteMenuItem(itemToDelete);
       setRefreshTrigger(prev => prev + 1);
+      setItemToDelete(null);
       // Reload after short delay so delete is visible
       setTimeout(() => window.location.reload(), 300);
     }
@@ -97,6 +104,8 @@ const VendorRestaurant: React.FC = () => {
     imageUrl: ''
   });
   const [addItemCategories, setAddItemCategories] = useState<string[]>([]);
+  const [addItemImageFile, setAddItemImageFile] = useState<File | null>(null);
+  const [isAddingItem, setIsAddingItem] = useState(false);
 
   const handleAddItemChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -118,12 +127,36 @@ const VendorRestaurant: React.FC = () => {
     setAddItemCategories(prev => prev.filter(cat => cat !== categoryToRemove));
   };
 
-  const handleAddItemSubmit = (e: React.FormEvent) => {
+  const handleAddItemSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!addItemForm.name.trim() || !addItemForm.price.trim()) {
       alert('Please fill in required fields (Name and Price)');
       return;
     }
+
+    setIsAddingItem(true);
+    let finalImageUrl = addItemForm.imageUrl.trim();
+
+    if (addItemImageFile) {
+      try {
+        finalImageUrl = await readFileAsDataUrl(addItemImageFile);
+      } catch (error) {
+        setIsAddingItem(false);
+        alert('Unable to upload the image. Please try again.');
+        return;
+      }
+    } else if (finalImageUrl) {
+      const resolvedUrl = await resolveImageUrl(finalImageUrl);
+      if (!resolvedUrl) {
+        setIsAddingItem(false);
+        alert('Please use a direct image URL or upload a file.');
+        return;
+      }
+      finalImageUrl = resolvedUrl;
+    } else {
+      finalImageUrl = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop';
+    }
+
     try {
       createMenuItem({
         storeId: store.id,
@@ -131,17 +164,20 @@ const VendorRestaurant: React.FC = () => {
         categories: addItemCategories,
         price: Number(addItemForm.price) || 0,
         description: addItemForm.description.trim(),
-        imageUrl: addItemForm.imageUrl.trim() || 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop',
+        imageUrl: finalImageUrl,
       });
       // Reset form
       setAddItemForm({ name: '', categoryInput: '', price: '', description: '', imageUrl: '' });
       setAddItemCategories([]);
+      setAddItemImageFile(null);
       setRefreshTrigger(prev => prev + 1);
       setViewMode('menu');
+      setIsAddingItem(false);
       alert('Item added successfully!');
       // Reload so item appears fresh
       window.location.reload();
     } catch (error) {
+      setIsAddingItem(false);
       alert('Failed to add item. Please try again.');
     }
   };
@@ -183,13 +219,47 @@ const VendorRestaurant: React.FC = () => {
       .map((category) => category.trim())
       .filter(Boolean);
 
-  const readFileAsDataUrl = (file: File) =>
-    new Promise<string>((resolve, reject) => {
+  const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const MAX_SIZE = 1600; // Resize to reasonable dimensions for web
+
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            // Compress heavily: JPEG at 85% quality (keeps sizes very small for localStorage)
+            resolve(canvas.toDataURL('image/jpeg', 0.85));
+          } else {
+            resolve(e.target?.result as string); // Fallback
+          }
+        };
+        img.onerror = () => reject(new Error('Unable to read image file.'));
+        img.src = e.target?.result as string;
+      };
       reader.onerror = () => reject(new Error('Unable to read image file.'));
       reader.readAsDataURL(file);
     });
+  };
 
   const handleEditChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -251,22 +321,27 @@ const VendorRestaurant: React.FC = () => {
       imageUrl = resolvedUrl;
     }
 
-    const updated = updateStore(store.id, {
-      name: editForm.name.trim(),
-      categories: editCategories,
-      address: editForm.address.trim(),
-      description: editForm.description.trim(),
-      imageUrl,
-      openingTime: editForm.openingTime.trim() || store.openingTime,
-      closingTime: editForm.closingTime.trim(),
-    });
+    try {
+      const updated = updateStore(store.id, {
+        name: editForm.name.trim(),
+        categories: editCategories,
+        address: editForm.address.trim(),
+        description: editForm.description.trim(),
+        imageUrl,
+        openingTime: editForm.openingTime.trim() || store.openingTime,
+        closingTime: editForm.closingTime.trim(),
+      });
 
-    setStore(updated);
-    setEditImageFile(null);
-    setIsSaving(false);
-    setEditMessage('Details updated.');
-    // Reload after a moment so user sees the success message
-    setTimeout(() => window.location.reload(), 800);
+      setStore(updated);
+      setEditImageFile(null);
+      setIsSaving(false);
+      setEditMessage('Details updated.');
+      // Reload after a moment so user sees the success message
+      setTimeout(() => window.location.reload(), 800);
+    } catch (error: any) {
+      setIsSaving(false);
+      setEditError(error.message || 'Failed to update store details.');
+    }
   };
 
   return (
@@ -290,11 +365,11 @@ const VendorRestaurant: React.FC = () => {
 
         <div className="pt-2 pb-10">
           <div className="rounded-lg overflow-hidden mb-8">
-            <div className="w-full h-[300px] sm:h-[380px] md:h-[460px]">
+            <div className="w-full h-[300px] sm:h-[380px] md:h-[460px] bg-gray-50 flex items-center justify-center">
               <img
                 src={store.imageUrl}
                 alt={store.name}
-                className="w-full h-full object-cover"
+                className="max-w-full max-h-full object-contain"
               />
             </div>
             <div className="pt-5 px-1">
@@ -383,7 +458,7 @@ const VendorRestaurant: React.FC = () => {
                       <img
                         src={item.imageUrl}
                         alt={item.name}
-                        className="w-[80px] h-[80px] object-cover rounded-md flex-shrink-0"
+                        className="w-[80px] h-[80px] object-contain bg-gray-50 rounded-md flex-shrink-0"
                       />
                       <div className="flex-1 flex flex-col justify-between">
                         <div>
@@ -510,12 +585,23 @@ const VendorRestaurant: React.FC = () => {
                   />
                 </div>
 
+                <div>
+                  <label className="block text-gray-700 text-sm font-medium mb-1">Or Upload Item Image</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => setAddItemImageFile(event.target.files?.[0] ?? null)}
+                    className="w-full text-sm text-gray-700"
+                  />
+                </div>
+
                 <button
                   type="submit"
-                  className="inline-flex items-center justify-center gap-2 w-full h-10 px-4 bg-[#C62222] text-white text-sm font-medium rounded-md hover:bg-[#A01B1B] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C62222]"
+                  disabled={isAddingItem}
+                  className="inline-flex items-center justify-center gap-2 w-full h-10 px-4 bg-[#C62222] text-white text-sm font-medium rounded-md hover:bg-[#A01B1B] transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#C62222] disabled:opacity-70"
                 >
                   <Upload className="w-4 h-4" />
-                  Add {typeMeta.itemSingular}
+                  {isAddingItem ? 'Adding...' : `Add ${typeMeta.itemSingular}`}
                 </button>
               </form>
             </section>
@@ -662,6 +748,37 @@ const VendorRestaurant: React.FC = () => {
           )}
         </div>
       </main>
+
+      {/* Delete Item Confirmation Modal */}
+      {itemToDelete && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+            <div className="p-6">
+              <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center mb-4 text-red-600">
+                <Trash2 size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">Delete Item</h3>
+              <p className="text-gray-500 text-sm mb-6">
+                Are you sure you want to delete this item? This action cannot be undone.
+              </p>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={() => setItemToDelete(null)}
+                  className="flex-1 px-4 py-2.5 bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold rounded-xl transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={confirmDelete}
+                  className="flex-1 px-4 py-2.5 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-xl transition-colors shadow-sm shadow-red-200"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>

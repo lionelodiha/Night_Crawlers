@@ -166,13 +166,47 @@ const VendorDashboard: React.FC = () => {
     setCategoryTags((prev) => prev.filter((tag) => tag !== tagToRemove));
   };
 
-  const readFileAsDataUrl = (file: File) =>
-    new Promise<string>((resolve, reject) => {
+  const readFileAsDataUrl = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
+      reader.onload = (e) => {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const MAX_SIZE = 1600; // Increased for higher quality
+
+          if (width > height) {
+            if (width > MAX_SIZE) {
+              height *= MAX_SIZE / width;
+              width = MAX_SIZE;
+            }
+          } else {
+            if (height > MAX_SIZE) {
+              width *= MAX_SIZE / height;
+              height = MAX_SIZE;
+            }
+          }
+
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          if (ctx) {
+            ctx.drawImage(img, 0, 0, width, height);
+            // Compress heavily: JPEG at 70% quality (keeps sizes very small for localStorage)
+            resolve(canvas.toDataURL('image/jpeg', 0.85));
+          } else {
+            resolve(e.target?.result as string); // Fallback
+          }
+        };
+        img.onerror = () => reject(new Error('Unable to read image file.'));
+        img.src = e.target?.result as string;
+      };
       reader.onerror = () => reject(new Error('Unable to read image file.'));
       reader.readAsDataURL(file);
     });
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -384,8 +418,8 @@ const VendorDashboard: React.FC = () => {
                     }
                   }}
                 >
-                  <div className="h-48 w-full overflow-hidden">
-                    <img src={store.imageUrl} alt={store.name} className="w-full h-full object-cover" />
+                  <div className="h-48 w-full overflow-hidden bg-gray-50">
+                    <img src={store.imageUrl} alt={store.name} className="w-full h-full object-contain" />
                   </div>
                   <div className="p-4">
                     <div className="flex items-center justify-between mb-2">
