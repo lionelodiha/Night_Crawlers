@@ -43,15 +43,15 @@ const SignUp: React.FC = () => {
     setError('');
 
     try {
-      const success = await signup({
+      const result = await signup({
         username: formData.username,
         email: formData.email,
         password: formData.password,
       });
-      if (success) {
+      if (result.success) {
         navigate('/user-profile');
       } else {
-        setError('Could not create account. Please try again.');
+        setError(result.error || 'Could not create account. Please try again.');
       }
     } catch {
       setError('Something went wrong. Please try again.');

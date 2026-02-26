@@ -55,7 +55,7 @@ interface AuthContextType {
     isAuthenticated: boolean;
     isLoading: boolean;
     login: (email: string, password: string) => Promise<boolean>;
-    signup: (data: { username: string; email: string; password: string }) => Promise<boolean>;
+    signup: (data: { username: string; email: string; password: string }) => Promise<{ success: boolean; error?: string }>;
     logout: () => void;
     updateProfile: (updates: Partial<UserProfile>) => void;
     addTransaction: (transaction: Transaction) => void;
@@ -260,7 +260,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         return false;
     }, []);
 
-    const signup = useCallback(async (data: { username: string; email: string; password: string }): Promise<boolean> => {
+    const signup = useCallback(async (data: { username: string; email: string; password: string }): Promise<{ success: boolean; error?: string }> => {
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 1500));
 
@@ -272,7 +272,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         // Check if email already in use
         if (registry.some((u: UserProfile) => u.email === data.email)) {
             setIsLoading(false);
-            return false;
+            return { success: false, error: 'Email address is already in use.' };
         }
 
         const nameParts = data.username.split(' ');
@@ -292,7 +292,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
         setUser(newUser);
         setTransactions([]);
         setIsLoading(false);
-        return true;
+        return { success: true };
     }, []);
 
     const logout = useCallback(() => {
