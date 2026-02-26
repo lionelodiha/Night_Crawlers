@@ -10,6 +10,7 @@ import {
   getMenuItemsForStore,
   createMenuItem,
   deleteMenuItem,
+  updateMenuItem,
   VendorStore,
   MenuItem,
 } from '../lib/mockBackend';
@@ -90,8 +91,107 @@ const VendorRestaurant: React.FC = () => {
       deleteMenuItem(itemToDelete);
       setRefreshTrigger(prev => prev + 1);
       setItemToDelete(null);
-      // Reload after short delay so delete is visible
       setTimeout(() => window.location.reload(), 300);
+    }
+  };
+
+  // Edit Item Form State
+  const [editingItemId, setEditingItemId] = useState<string | null>(null);
+  const [editItemForm, setEditItemForm] = useState({
+    name: '',
+    price: '',
+    description: '',
+    imageUrl: '',
+    categoryInput: ''
+  });
+  const [editItemCategories, setEditItemCategories] = useState<string[]>([]);
+  const [editItemImageFile, setEditItemImageFile] = useState<File | null>(null);
+  const [isUpdatingItem, setIsUpdatingItem] = useState(false);
+
+  const handleEditItemChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setEditItemForm(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditItemCategoryKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      const newCategory = editItemForm.categoryInput.trim();
+      if (newCategory && !editItemCategories.includes(newCategory)) {
+        setEditItemCategories(prev => [...prev, newCategory]);
+        setEditItemForm(prev => ({ ...prev, categoryInput: '' }));
+      }
+    }
+  };
+
+  const removeEditItemCategory = (categoryToRemove: string) => {
+    setEditItemCategories(prev => prev.filter(cat => cat !== categoryToRemove));
+  };
+
+  const startEditingItem = (item: MenuItem) => {
+    setEditingItemId(item.id);
+    setEditItemForm({
+      name: item.name,
+      price: String(item.price),
+      description: item.description || '',
+      imageUrl: item.imageUrl,
+      categoryInput: ''
+    });
+    setEditItemCategories(item.categories);
+    setEditItemImageFile(null);
+  };
+
+  const cancelEditingItem = () => {
+    setEditingItemId(null);
+  };
+
+  const handleUpdateItemSubmit = async (e: React.FormEvent, itemId: string) => {
+    e.preventDefault();
+    if (!editItemForm.name.trim() || !editItemForm.price.trim()) {
+      alert('Please fill in required fields (Name and Price)');
+      return;
+    }
+
+    setIsUpdatingItem(true);
+    let finalImageUrl = editItemForm.imageUrl.trim();
+
+    if (editItemImageFile) {
+      try {
+        finalImageUrl = await readFileAsDataUrl(editItemImageFile);
+      } catch (error) {
+        setIsUpdatingItem(false);
+        alert('Unable to upload the image. Please try again.');
+        return;
+      }
+    } else if (finalImageUrl) {
+      const resolvedUrl = await resolveImageUrl(finalImageUrl);
+      if (!resolvedUrl) {
+        setIsUpdatingItem(false);
+        alert('Please use a direct image URL or upload a file.');
+        return;
+      }
+      finalImageUrl = resolvedUrl;
+    } else {
+      finalImageUrl = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?q=80&w=2070&auto=format&fit=crop';
+    }
+
+    try {
+      updateMenuItem(itemId, {
+        name: editItemForm.name.trim(),
+        categories: editItemCategories,
+        price: Number(editItemForm.price) || 0,
+        description: editItemForm.description.trim(),
+        imageUrl: finalImageUrl,
+      });
+
+      setRefreshTrigger(prev => prev + 1);
+      setEditingItemId(null);
+      setIsUpdatingItem(false);
+      // Let the user see changes immediately
+      setTimeout(() => window.location.reload(), 300);
+    } catch (error) {
+      setIsUpdatingItem(false);
+      alert('Failed to update item. Please try again.');
     }
   };
 
@@ -394,7 +494,14 @@ const VendorRestaurant: React.FC = () => {
                   View {typeMeta.itemPlural}
                 </button>
                 <button
-                  onClick={() => setViewMode('add')}
+                  onClick={() => {
+                    setViewMode('add');
+                    if (activeCategory !== 'All') {
+                      setAddItemCategories([activeCategory]);
+                    } else {
+                      setAddItemCategories([]);
+                    }
+                  }}
                   className={`px-4 py-2 text-xs font-medium rounded-sm ${viewMode === 'add'
                     ? 'bg-[#C62222] text-white'
                     : 'text-[#4B5563] hover:text-[#111827]'
@@ -442,7 +549,14 @@ const VendorRestaurant: React.FC = () => {
                     </p>
                     {menuItems.length === 0 && (
                       <button
-                        onClick={() => setViewMode('add')}
+                        onClick={() => {
+                          setViewMode('add');
+                          if (activeCategory !== 'All') {
+                            setAddItemCategories([activeCategory]);
+                          } else {
+                            setAddItemCategories([]);
+                          }
+                        }}
                         className="text-[#C62222] font-medium hover:underline"
                       >
                         Add your first item
@@ -451,50 +565,148 @@ const VendorRestaurant: React.FC = () => {
                   </div>
                 ) : (
                   filteredMenuItems.map((item) => (
-                    <div
-                      key={item.id}
-                      className="flex gap-3 p-4 border border-[#EAECF0] rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
-                    >
-                      <img
-                        src={item.imageUrl}
-                        alt={item.name}
-                        className="w-[80px] h-[80px] object-contain bg-gray-50 rounded-md flex-shrink-0"
-                      />
-                      <div className="flex-1 flex flex-col justify-between">
-                        <div>
-                          <div className="flex justify-between items-start gap-2">
-                            <h3 className="text-[#222222] text-sm sm:text-base font-semibold leading-snug line-clamp-1">
-                              {item.name}
-                            </h3>
-                            <button
-                              onClick={() => handleDeleteItem(item.id)}
-                              className="text-gray-400 hover:text-red-600 transition-colors p-1 flex-shrink-0"
-                              title="Delete item"
-                            >
-                              <Trash2 size={16} />
+                    editingItemId === item.id ? (
+                      <div key={item.id} className="p-4 border border-[#EAECF0] rounded-lg bg-gray-50/50 shadow-sm animate-in fade-in zoom-in-95 duration-200">
+                        <form onSubmit={(e) => handleUpdateItemSubmit(e, item.id)} className="space-y-3">
+                          <div className="flex justify-between items-center mb-2">
+                            <h4 className="text-sm font-semibold text-gray-900">Edit Item</h4>
+                            <button type="button" onClick={cancelEditingItem} className="text-gray-400 hover:text-gray-600">
+                              <X size={16} />
                             </button>
                           </div>
-                          <p className="text-[#667085] text-xs sm:text-sm mt-1 line-clamp-2 min-h-[40px]">
-                            {item.description}
-                          </p>
-                        </div>
-                        <div className="flex justify-between items-end mt-2">
-                          <span className="text-[#222222] text-sm sm:text-base font-semibold whitespace-nowrap">
-                            ₦ {item.price.toLocaleString()}
-                          </span>
-                          <div className="flex gap-1 flex-wrap justify-end">
-                            {item.categories.slice(0, 2).map((cat) => (
-                              <span key={cat} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full whitespace-nowrap">
-                                {cat}
-                              </span>
-                            ))}
-                            {item.categories.length > 2 && (
-                              <span className="text-[10px] text-gray-500 self-center">+{item.categories.length - 2}</span>
-                            )}
+
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                              <input
+                                name="name"
+                                value={editItemForm.name}
+                                onChange={handleEditItemChange}
+                                className="w-full h-9 px-3 bg-white border border-[#EAECF0] rounded-md text-gray-700 text-sm focus:outline-none focus:ring-1 focus:ring-[#C62222]"
+                                placeholder="Item Name"
+                              />
+                            </div>
+                            <div>
+                              <input
+                                name="price"
+                                value={editItemForm.price}
+                                onChange={handleEditItemChange}
+                                className="w-full h-9 px-3 bg-white border border-[#EAECF0] rounded-md text-gray-700 text-sm focus:outline-none focus:ring-1 focus:ring-[#C62222]"
+                                placeholder="Price"
+                              />
+                            </div>
+                          </div>
+
+                          <div>
+                            <textarea
+                              name="description"
+                              value={editItemForm.description}
+                              onChange={handleEditItemChange}
+                              className="w-full min-h-[60px] px-3 py-2 bg-white border border-[#EAECF0] rounded-md text-gray-700 text-sm focus:outline-none focus:ring-1 focus:ring-[#C62222]"
+                              placeholder="Description"
+                            />
+                          </div>
+
+                          <div className="flex gap-2 items-center flex-wrap">
+                            <div className="flex-1 min-w-[200px] border border-[#EAECF0] bg-white rounded-md p-1.5 flex gap-1 flex-wrap items-center">
+                              {editItemCategories.map(cat => (
+                                <span key={cat} className="text-[10px] bg-[#C62222] text-white px-2 py-0.5 rounded-full flex items-center gap-1">
+                                  {cat}
+                                  <button type="button" onClick={() => removeEditItemCategory(cat)}><X size={10} /></button>
+                                </span>
+                              ))}
+                              <input
+                                name="categoryInput"
+                                value={editItemForm.categoryInput}
+                                onChange={handleEditItemChange}
+                                onKeyDown={handleEditItemCategoryKeyDown}
+                                className="flex-1 min-w-[80px] text-xs outline-none bg-transparent"
+                                placeholder={editItemCategories.length === 0 ? "Add category..." : ""}
+                              />
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2 items-center text-xs">
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => setEditItemImageFile(e.target.files?.[0] ?? null)}
+                              className="w-full"
+                            />
+                          </div>
+
+                          <div className="flex justify-end gap-2 pt-2 border-t border-gray-100">
+                            <button
+                              type="button"
+                              onClick={cancelEditingItem}
+                              className="px-3 py-1.5 text-xs font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              disabled={isUpdatingItem}
+                              className="px-3 py-1.5 text-xs font-semibold text-white bg-[#C62222] hover:bg-[#A01B1B] rounded transition-colors disabled:opacity-50"
+                            >
+                              {isUpdatingItem ? 'Saving...' : 'Save Changes'}
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    ) : (
+                      <div
+                        key={item.id}
+                        className="flex gap-3 p-4 border border-[#EAECF0] rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow"
+                      >
+                        <img
+                          src={item.imageUrl}
+                          alt={item.name}
+                          className="w-[80px] h-[80px] object-contain bg-gray-50 rounded-md flex-shrink-0"
+                        />
+                        <div className="flex-1 flex flex-col justify-between">
+                          <div>
+                            <div className="flex justify-between items-start gap-2">
+                              <h3 className="text-[#222222] text-sm sm:text-base font-semibold leading-snug line-clamp-1">
+                                {item.name}
+                              </h3>
+                              <div className="flex gap-1 flex-shrink-0">
+                                <button
+                                  onClick={() => startEditingItem(item)}
+                                  className="text-gray-400 hover:text-blue-600 transition-colors p-1"
+                                  title="Edit item"
+                                >
+                                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                </button>
+                                <button
+                                  onClick={() => handleDeleteItem(item.id)}
+                                  className="text-gray-400 hover:text-red-600 transition-colors p-1"
+                                  title="Delete item"
+                                >
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </div>
+                            <p className="text-[#667085] text-xs sm:text-sm mt-1 line-clamp-2 min-h-[40px]">
+                              {item.description}
+                            </p>
+                          </div>
+                          <div className="flex justify-between items-end mt-2">
+                            <span className="text-[#222222] text-sm sm:text-base font-semibold whitespace-nowrap">
+                              ₦ {item.price.toLocaleString()}
+                            </span>
+                            <div className="flex gap-1 flex-wrap justify-end">
+                              {item.categories.slice(0, 2).map((cat) => (
+                                <span key={cat} className="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full whitespace-nowrap">
+                                  {cat}
+                                </span>
+                              ))}
+                              {item.categories.length > 2 && (
+                                <span className="text-[10px] text-gray-500 self-center">+{item.categories.length - 2}</span>
+                              )}
+                            </div>
                           </div>
                         </div>
                       </div>
-                    </div>
+                    )
                   ))
                 )}
               </div>
@@ -549,7 +761,30 @@ const VendorRestaurant: React.FC = () => {
                       />
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 mt-1">Press Enter or comma to add a category</p>
+                  <div className="flex items-center justify-between mt-1">
+                    <p className="text-xs text-gray-500">Press Enter or comma to add a category</p>
+                    {menuCategories.length > 1 && (
+                      <div className="flex items-center gap-2 text-xs">
+                        <span className="text-gray-400">Available:</span>
+                        <div className="flex gap-1 flex-wrap">
+                          {menuCategories.filter(c => c !== 'All').map(c => (
+                            <button
+                              key={c}
+                              type="button"
+                              onClick={() => {
+                                if (!addItemCategories.includes(c)) {
+                                  setAddItemCategories(prev => [...prev, c]);
+                                }
+                              }}
+                              className="text-[#C62222] hover:underline"
+                            >
+                              {c}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div>

@@ -556,6 +556,22 @@ export const createMenuItem = (input: CreateMenuItemInput): MenuItem => {
   return menuItem;
 };
 
+export const updateMenuItem = (itemId: string, updates: Partial<MenuItem>): MenuItem | null => {
+  const item = menuItems.find(i => i.id === itemId);
+  if (!item) return null;
+
+  if (updates.name !== undefined) item.name = updates.name.trim();
+  if (updates.price !== undefined) item.price = Number(updates.price) || 0;
+  if (updates.description !== undefined) item.description = updates.description.trim();
+  if (updates.imageUrl !== undefined) item.imageUrl = updates.imageUrl.trim();
+  if (updates.categories !== undefined) {
+    item.categories = updates.categories.map(c => c.trim()).filter(Boolean);
+  }
+
+  saveState();
+  return item;
+};
+
 export const getMenuItemsForStore = (storeId: string): MenuItem[] =>
   menuItems.filter((item) => item.storeId === storeId);
 
