@@ -1,0 +1,61 @@
+* {
+  box-sizing: border-box;
+}
+
+.qstTitleContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 309px;
+  height: 88px;
+  row-gap: 8px;
+
+  .qstTitle {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    align-self: stretch;
+    column-gap: 16px;
+    margin-right: 55px;
+
+    .about {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+    }
+
+    .stillHaveAQuestion {
+      flex-shrink: 0;
+      line-height: 30px;
+      letter-spacing: 0;
+      color: #222222;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+    }
+  }
+
+  .ifYouDidNtFindYourAn {
+    flex-shrink: 0;
+    width: 309px;
+    height: 18px;
+    line-height: 18px;
+    letter-spacing: 0;
+    color: var(--Gray-500, #667085);
+    font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 12px;
+  }
+
+  .subheading {
+    flex-shrink: 0;
+    align-self: stretch;
+    width: 309px;
+    height: 24px;
+    line-height: 24px;
+    letter-spacing: 0;
+    color: #c62222;
+    font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    text-decoration: underline;
+  }
+}

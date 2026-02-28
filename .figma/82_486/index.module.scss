@@ -1,0 +1,567 @@
+* {
+  box-sizing: border-box;
+}
+
+.explore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffffff;
+  padding-top: 11px;
+  width: 1440px;
+  height: 1595px;
+  overflow: hidden;
+
+  .autoWrapper2 {
+    position: relative;
+    width: 1355px;
+    height: 285px;
+
+    .search {
+      flex-shrink: 0;
+      width: 30px;
+      height: 30px;
+    }
+
+    .nightCrawlersLogoWhi {
+      position: absolute;
+      top: -76px;
+      left: -17px;
+      width: 284px;
+      height: 284px;
+    }
+
+    .searchAddress {
+      display: inline-flex;
+      position: absolute;
+      top: 143px;
+      right: -5px;
+      align-items: center;
+      column-gap: 666px;
+      width: 1361px;
+      height: 40px;
+
+      .input {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        column-gap: 4px;
+        border: 1px solid var(--Gray-300, #d0d5dd);
+        border-radius: 4px;
+        background: var(--White, #ffffff);
+        padding: 9px 13px;
+        width: 465px;
+        height: 40px;
+        overflow: hidden;
+
+        .text {
+          flex-shrink: 0;
+          width: 396px;
+          line-height: 24px;
+          letter-spacing: 0;
+          color: var(--Gray-500, #667085);
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 16px;
+        }
+
+        .buttonSubscribe {
+          display: flex;
+          flex-shrink: 0;
+          align-items: center;
+          justify-content: center;
+          column-gap: 10px;
+          border-radius: 0px 4px 4px 0px;
+          background: #c62222;
+          padding: 10px;
+          width: 51px;
+          height: 40px;
+        }
+      }
+
+      .moreButton {
+        display: inline-flex;
+        flex-shrink: 0;
+        align-items: center;
+        column-gap: 16px;
+
+        .selectAddress {
+          flex-shrink: 0;
+          line-height: 30px;
+          letter-spacing: 0;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 20px;
+        }
+
+        .autoWrapper {
+          position: relative;
+          flex-shrink: 0;
+          width: 20px;
+          height: 20px;
+
+          .chevronDown {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            rotate: -180deg;
+          }
+        }
+      }
+    }
+
+    .categoryTitle {
+      display: flex;
+      position: absolute;
+      top: 0;
+      left: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      width: 1355px;
+      height: 285px;
+      row-gap: 74px;
+
+      .heading {
+        flex-grow: 1;
+        align-self: stretch;
+        line-height: 44px;
+        letter-spacing: -0.64px;
+        color: var(--Gray-900, #101828);
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 32px;
+        font-weight: 500;
+      }
+
+      .exploreCategories {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        align-self: stretch;
+        column-gap: 141px;
+
+        .taco {
+          width: 60px;
+          height: 60px;
+        }
+
+        .groceries {
+          margin: 8px 0px 0px;
+          line-height: 27px;
+          letter-spacing: 0;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 18px;
+        }
+
+        .vector {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          padding: 40px 32px 32px 39px;
+          background-image: url(../image/mje9iyqn-pbizuca.svg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+
+          .fastMovingConsumerGo {
+            margin-left: 14px;
+            width: 60px;
+            height: 60px;
+          }
+        }
+
+        .vector2 {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          padding: 40px 29px 32px 36px;
+          background-image: url(../image/mje9iyqn-g3gvjob.svg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+
+          .pharmacyShop {
+            margin-left: 15px;
+            width: 60px;
+            height: 60px;
+          }
+        }
+
+        .vector3 {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          padding: 40px 7px 32px 15px;
+          background-image: url(../image/mje9iyqo-jsit1sb.svg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+
+          .discoBall {
+            margin-left: 37px;
+            width: 60px;
+            height: 60px;
+          }
+        }
+
+        .vector4 {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          padding: 40px 41px 30px 57px;
+          background-image: url(../image/mje9iyqo-xemksie.svg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+
+          .food {
+            margin: 7px 0px 0px 5px;
+            line-height: 30px;
+            letter-spacing: 0;
+            color: #222222;
+            font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 20px;
+          }
+        }
+
+        .vector5 {
+          display: flex;
+          flex-direction: column;
+          flex-shrink: 0;
+          align-items: flex-start;
+          padding: 40px 43px 30px 54px;
+          background-image: url(../image/mje9iyqo-hzry9mf.svg);
+          background-position: center;
+          background-size: cover;
+          background-repeat: no-repeat;
+
+          .drinks {
+            margin: 7px 0px 0px;
+            line-height: 30px;
+            letter-spacing: 0;
+            color: #222222;
+            font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 20px;
+          }
+        }
+      }
+
+      .menuNav {
+        display: inline-flex;
+        position: absolute;
+        top: 53px;
+        left: 449px;
+        flex-shrink: 0;
+        align-items: center;
+        column-gap: 64px;
+        width: 557px;
+        height: 36px;
+
+        .home {
+          flex-shrink: 0;
+          line-height: 36px;
+          letter-spacing: 0;
+          color: #222222;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 24px;
+        }
+      }
+    }
+
+    .navButtons {
+      display: inline-flex;
+      position: absolute;
+      top: 50px;
+      right: -3px;
+      align-items: center;
+      column-gap: 36px;
+      width: 120px;
+      height: 42px;
+
+      .buttonLogIn {
+        display: flex;
+        flex-shrink: 0;
+        align-items: flex-start;
+        border-radius: 200px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+        background: #c62222;
+        padding: 10px 10px 7px 7px;
+
+        .shoppingCart {
+          width: 25px;
+          height: 25px;
+        }
+      }
+
+      .buttonLogIn2 {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        justify-content: center;
+        column-gap: 7px;
+        border-radius: 200px;
+        box-shadow: 0px 4px 4px 0px #0000001a;
+        background: #c62222;
+        width: 42px;
+        height: 42px;
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    margin: 521px 464px 0px;
+    padding-right: 80px;
+    padding-left: 80px;
+
+    .illustration {
+      display: flex;
+      position: relative;
+      align-items: flex-start;
+      align-self: stretch;
+      margin-right: 100px;
+      margin-left: 100px;
+      padding: 4px 0px 2px 11px;
+
+      .autoWrapper3 {
+        position: absolute;
+        top: 0;
+        left: 16px;
+        width: 112px;
+        height: 104px;
+
+        .backgroundCircle {
+          position: absolute;
+          top: 0;
+          left: 8px;
+          border-radius: 50%;
+          background: #e7575742;
+          width: 104px;
+          height: 104px;
+
+          .location {
+            position: absolute;
+            top: 27px;
+            left: 27px;
+            width: 50px;
+            height: 50px;
+          }
+        }
+
+        .circle {
+          position: absolute;
+          top: 14px;
+          left: 0;
+          border-radius: 50%;
+          background: #e7575742;
+          width: 10px;
+          height: 10px;
+        }
+      }
+
+      .autoWrapper4 {
+        display: flex;
+        position: relative;
+        align-items: flex-start;
+        align-self: stretch;
+
+        .circle2 {
+          margin-top: 98px;
+          border-radius: 50%;
+          background: #e7575742;
+          width: 14px;
+          height: 14px;
+        }
+
+        .circle3 {
+          margin-left: 105px;
+          border-radius: 50%;
+          background: #e7575742;
+          width: 8px;
+          height: 8px;
+        }
+
+        .circle4 {
+          margin-top: 24px;
+          border-radius: 50%;
+          background: #e7575742;
+          width: 14px;
+          height: 14px;
+        }
+      }
+    }
+
+    .textAndSupportingTex {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-self: stretch;
+      margin-top: 16px;
+      row-gap: 4px;
+
+      .text2 {
+        flex-shrink: 0;
+        align-self: stretch;
+        text-align: center;
+        line-height: 24px;
+        letter-spacing: 0;
+        color: var(--Gray-900, #101828);
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+      }
+
+      .supportingText {
+        flex-shrink: 0;
+        align-self: stretch;
+        width: 352px;
+        text-align: center;
+        line-height: 20px;
+        letter-spacing: 0;
+        color: var(--Gray-500, #667085);
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 14px;
+      }
+    }
+  }
+
+  .footer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: stretch;
+    margin-top: 304px;
+    background: #222222;
+    height: 272px;
+    overflow: hidden;
+
+    .autoWrapper5 {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      justify-content: space-between;
+      margin-top: -23px;
+      padding-right: 39px;
+      padding-left: 25px;
+
+      .logoFooterText {
+        position: relative;
+        width: 281px;
+        height: 182px;
+
+        .nightCrawlersLogoBla {
+          position: absolute;
+          top: -12px;
+          left: -1px;
+          width: 240px;
+          height: 240px;
+        }
+
+        .getYourFavoriteMeals {
+          position: absolute;
+          top: 139px;
+          left: 16px;
+          width: 268px;
+          height: 40px;
+          line-height: 20px;
+          letter-spacing: 0;
+          color: #ffffff;
+          font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+          font-size: 14px;
+        }
+      }
+
+      .links {
+        display: flex;
+        align-items: flex-start;
+        column-gap: 32px;
+        margin-top: 60px;
+        width: 690px;
+
+        .aFooterLinksColumn {
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          align-items: flex-start;
+          row-gap: 10px;
+
+          .heading2 {
+            flex-shrink: 0;
+            align-self: stretch;
+            line-height: 20px;
+            letter-spacing: 0;
+            color: var(--Gray-400, #98a2b3);
+            font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+          }
+
+          .footerLinks {
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            align-items: flex-start;
+            align-self: stretch;
+            row-gap: 6px;
+
+            .text3 {
+              flex-shrink: 0;
+              line-height: 24px;
+              letter-spacing: 0;
+              color: var(--Gray-200, #e4e7ec);
+              font-family: Inter, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+              font-size: 16px;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+
+    .footerIncSocials {
+      display: flex;
+      align-items: flex-start;
+      align-self: stretch;
+      justify-content: space-between;
+      margin-top: 62px;
+      border-radius: 0px 0px 4px 4px;
+      background: #c62222;
+      padding: 12px 39px 8px 41px;
+      min-width: 1440px;
+      overflow: hidden;
+
+      .footerText {
+        margin: 2px 0px 0px;
+        width: 296px;
+        height: 27px;
+        line-height: 30px;
+        letter-spacing: 0;
+        color: #ffffff;
+        font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+        font-size: 18px;
+      }
+
+      .socials {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 186px;
+        min-width: 186px;
+        height: 31px;
+
+        .instagram {
+          width: 30px;
+          height: 30px;
+        }
+      }
+    }
+  }
+}

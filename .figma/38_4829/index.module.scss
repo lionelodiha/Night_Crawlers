@@ -1,0 +1,71 @@
+* {
+  box-sizing: border-box;
+}
+
+.heroSection5 {
+  display: inline-flex;
+  align-items: center;
+  column-gap: 57px;
+  width: 1391px;
+  height: 467px;
+
+  .vector {
+    position: relative;
+    flex-shrink: 0;
+    width: 723px;
+    height: 467px;
+    background-image: url(../image/mjcs0hhd-e552yif.svg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+
+    .f35De54EE1534162Ac35 {
+      position: absolute;
+      top: 44px;
+      left: 19px;
+      width: 368px;
+      height: 368px;
+    }
+
+    .weOnlyOfferTheBestSe {
+      position: absolute;
+      top: 241px;
+      left: 387px;
+      width: 276px;
+      height: 62px;
+      line-height: 29px;
+      letter-spacing: -0.48px;
+      color: #ffffff;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 24px;
+      font-weight: 500;
+    }
+  }
+
+  .hero4Content {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    align-items: flex-start;
+
+    .redefiningConvenienc {
+      width: 611px;
+      line-height: 58px;
+      letter-spacing: -0.96px;
+      color: #222222;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+    }
+
+    .nightCrawlersIsMoreT {
+      margin: 48px 0px 0px;
+      width: 605px;
+      line-height: 24px;
+      letter-spacing: -0.4px;
+      color: #222222;
+      font-family: Poppins, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimHei, Arial, Helvetica, sans-serif;
+      font-size: 20px;
+    }
+  }
+}
