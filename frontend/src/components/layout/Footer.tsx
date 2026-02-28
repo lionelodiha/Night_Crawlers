@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
-import instagramIcon from '../../../.figma/image/mje8ir02-k02ewke.png';
-import whatsappIcon from '../../../.figma/image/mje8ir02-wrgzyap.png';
-import facebookIcon from '../../../.figma/image/mje8iqzx-1n4d3p5.png';
+import instagramIcon from '../../../../.figma/image/mje8ir02-k02ewke.png';
+import whatsappIcon from '../../../../.figma/image/mje8ir02-wrgzyap.png';
+import facebookIcon from '../../../../.figma/image/mje8iqzx-1n4d3p5.png';
 
 const Footer: React.FC = () => {
   return (

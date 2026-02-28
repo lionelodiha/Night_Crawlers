@@ -1,5 +1,5 @@
 import React from 'react';
-import hero2Image from '../../../.figma/image/mje7na9d-ei1m5xv.png';
+import hero2Image from '../../../../.figma/image/mje7na9d-ei1m5xv.png';
 
 const IntroSection: React.FC = () => {
   return (

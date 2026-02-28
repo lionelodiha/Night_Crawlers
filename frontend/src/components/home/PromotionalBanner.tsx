@@ -1,6 +1,6 @@
 import React from 'react';
-import blobSvg from '../../../.figma/image/mjcs0hhd-e552yif.svg';
-import bowlPng from '../../../.figma/image/mjcs0hhx-rdln25f.png';
+import blobSvg from '../../../../.figma/image/mjcs0hhd-e552yif.svg';
+import bowlPng from '../../../../.figma/image/mjcs0hhx-rdln25f.png';
 
 const PromotionalBanner: React.FC = () => {
   return (

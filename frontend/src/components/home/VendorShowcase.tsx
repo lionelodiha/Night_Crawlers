@@ -2,11 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 
-import kfcImg from '../../../.figma/image/mje79tfs-ebqiolr.png';
-import chickenRepublicImg from '../../../.figma/image/mje79tft-mnpk82m.png';
-import dominosImg from '../../../.figma/image/mje79tfy-zdt3g00.png';
-import kilimanjaroImg from '../../../.figma/image/mje79tfy-vnfduy8.png';
-import pizzaHutImg from '../../../.figma/image/mje79tfy-l6ekoeg.png';
+import kfcImg from '../../../../.figma/image/mje79tfs-ebqiolr.png';
+import chickenRepublicImg from '../../../../.figma/image/mje79tft-mnpk82m.png';
+import dominosImg from '../../../../.figma/image/mje79tfy-zdt3g00.png';
+import kilimanjaroImg from '../../../../.figma/image/mje79tfy-vnfduy8.png';
+import pizzaHutImg from '../../../../.figma/image/mje79tfy-l6ekoeg.png';
 
 const VendorShowcase: React.FC = () => {
   return (

@@ -1,7 +1,7 @@
 import React from 'react';
-import phoneIcon from '../../../.figma/image/mje8rtgf-vds6a68.png';
-import deliveryIcon from '../../../.figma/image/mje8rtgg-bjjwlgu.png';
-import qualityIcon from '../../../.figma/image/mje8rtgg-m4cr5j7.png';
+import phoneIcon from '../../../../.figma/image/mje8rtgf-vds6a68.png';
+import deliveryIcon from '../../../../.figma/image/mje8rtgg-bjjwlgu.png';
+import qualityIcon from '../../../../.figma/image/mje8rtgg-m4cr5j7.png';
 
 const FeaturesSection: React.FC = () => {
   return (

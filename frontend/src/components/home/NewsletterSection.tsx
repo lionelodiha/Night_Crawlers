@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { NewsletterForm } from '../../types';
-import subscribeImage from '../../../.figma/image/mje7taht-9jmjknp.png';
+import subscribeImage from '../../../../.figma/image/mje7taht-9jmjknp.png';
 
 const NewsletterSection: React.FC = () => {
   const [formData, setFormData] = useState<NewsletterForm>({
